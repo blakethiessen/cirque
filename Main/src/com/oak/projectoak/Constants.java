@@ -11,7 +11,7 @@ public class Constants
 
     public static final float DEFAULT_FRAME_DURATION = .1f;
 
-    public static final Vector2 GRAVITY = new Vector2(0, -10);
+    public static final Vector2 GRAVITY = new Vector2(0, 0);
 
     public static final float METERS_TO_PIXELS = 100f;
     public static final float PIXELS_TO_METERS = .01f;

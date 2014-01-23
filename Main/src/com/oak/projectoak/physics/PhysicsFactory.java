@@ -44,4 +44,13 @@ public class PhysicsFactory
 
         return body;
     }
+
+    public static Body createArenaCircleBody()
+    {
+        Body body = b2world.createBody(Box2DDefs.CIRCLE_BODY_DEF);
+
+        body.createFixture(Box2DDefs.CIRCLE_FIXTURE_DEF);
+
+        return body;
+    }
 }

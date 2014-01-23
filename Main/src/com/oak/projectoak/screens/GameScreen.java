@@ -54,7 +54,6 @@ public class GameScreen implements Screen
 
         world.setSystem(platformerSystem);
 
-        // God initialization
         InputSystem input = new InputSystem();
         inputManager.addInputProcessor(input);
         world.setSystem(input);
@@ -74,8 +73,9 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createEntity(EntityType.FLOOR, world, 0, 0);
-        EntityFactory.createEntity(EntityType.PLAYER, world, 2, 2);
+//        EntityFactory.createEntity(EntityType.FLOOR, world, 0, 0);
+        EntityFactory.createEntity(EntityType.PLAYER, world, 6, 5);
+        EntityFactory.createEntity(EntityType.CIRCLE, world, 6, 3);
     }
 
 	@Override

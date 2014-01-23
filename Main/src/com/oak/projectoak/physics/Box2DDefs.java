@@ -25,15 +25,18 @@ public class Box2DDefs
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();
     private static final PolygonShape PLAYER_FOOT_SHAPE = createPlayerFootShape();
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
+    private static final Shape CIRCLE_SHAPE = createCircleShape();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
     public static final FixtureDef PLAYER_FOOT_SENSOR = createPlayerFootSensor();
     public static final FixtureDef FLOOR_FIXTURE_DEF = createFloorFixtureDef();
+    public static final FixtureDef CIRCLE_FIXTURE_DEF = createCircleFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
     public static final BodyDef FLOOR_BODY_DEF = createFloorBodyDef();
+    public static final BodyDef CIRCLE_BODY_DEF = createCircleBodyDef();
 
     // Shape constructors
     private static PolygonShape createPlayerTorsoShape()
@@ -59,6 +62,14 @@ public class Box2DDefs
     {
         EdgeShape shape = new EdgeShape();
         shape.set(0, 2, 20, 2);
+
+        return shape;
+    }
+
+    private static Shape createCircleShape()
+    {
+        CircleShape shape = new CircleShape();
+        shape.setRadius(2);
 
         return shape;
     }
@@ -95,6 +106,17 @@ public class Box2DDefs
         return fixtureDef;
     }
 
+    private static FixtureDef createCircleFixtureDef()
+    {
+        FixtureDef fixtureDef = new FixtureDef();
+
+        fixtureDef.shape = CIRCLE_SHAPE;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 1f;
+
+        return fixtureDef;
+    }
+
     // Body Def constructors
     private static BodyDef createPlayerBodyDef()
     {
@@ -113,10 +135,11 @@ public class Box2DDefs
         return bodyDef;
     }
 
-    private static BodyDef createTerrainBodyDef()
+    private static BodyDef createCircleBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
+
         return bodyDef;
     }
 }

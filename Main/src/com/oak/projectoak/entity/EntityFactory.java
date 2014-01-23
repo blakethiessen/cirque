@@ -29,6 +29,8 @@ public class EntityFactory
                 return createPlayer(world, x, y);
             case FLOOR:
                 return createFloor(world, x, y);
+            case CIRCLE:
+                return createArenaCircle(world, x, y);
             default:
                 Gdx.app.error("Unsupported Entity", "Entity of type " + type.toString() +
                         " has not been linked to a create method.");
@@ -40,7 +42,8 @@ public class EntityFactory
     public enum EntityType
     {
         PLAYER,
-        FLOOR
+        FLOOR,
+        CIRCLE
     }
 
     private static Entity createPlayer(World world, float x, float y)
@@ -66,6 +69,17 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new Physics(PhysicsFactory.createFloorBody(), x, y));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    private static Entity createArenaCircle(World world, float x, float y)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), x, y));
 
         e.addToWorld();
 
