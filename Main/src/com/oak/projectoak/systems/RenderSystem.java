@@ -75,16 +75,20 @@ public class RenderSystem extends EntitySystem
 
         if (render.isVisible)
         {
+            if (render.flipped)
+            {
+                if (!render.currentTexture.isFlipX())
+                    render.currentTexture.flip(true, false);
+            }
+            else
+            {
+                if (render.currentTexture.isFlipX())
+                    render.currentTexture.flip(true, false);
+            }
+
             batch.setColor(render.r, render.g, render.b, render.a);
 
-            // If the sprite is flipped...
-            float flipModifiedX;
-            if (render.scaleX < 0)
-                flipModifiedX = render.x + render.currentTexture.getRegionWidth();
-            else
-                flipModifiedX = render.x;
-
-            batch.draw(render.currentTexture, flipModifiedX, render.y, 0, 0,
+            batch.draw(render.currentTexture, render.x, render.y, 0, 0,
                     render.currentTexture.getRegionWidth(),
                     render.currentTexture.getRegionHeight(),
                     render.scaleX, render.scaleY, render.rotation);

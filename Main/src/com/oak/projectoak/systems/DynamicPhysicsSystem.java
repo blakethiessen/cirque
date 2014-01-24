@@ -29,12 +29,12 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
     @Override
     protected void process(Entity e)
     {
-        Render draw = dm.get(e);
+        Render render = dm.get(e);
         Body body = dpm.get(e).body;
         Vector2 position = body.getPosition();
 
-        draw.x = Constants.ConvertMetersToPixels(position.x);
-        draw.y = Constants.ConvertMetersToPixels(position.y);
+        render.x = Constants.ConvertMetersToPixels(position.x);
+        render.y = Constants.ConvertMetersToPixels(position.y);
 
         // Apply radial gravitational force
         Vector2 toArenaCenter = new Vector2(0, 0);
@@ -43,12 +43,14 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         body.applyForceToCenter(toArenaCenter, true);
 
         // Set the player's feet towards the center of the circle.
-        body.setTransform(position, (float)Math.atan2(toArenaCenter.x, -toArenaCenter.y));
+        double rotation = Math.atan2(toArenaCenter.x, -toArenaCenter.y);
+        body.setTransform(position, (float)rotation);
+        render.rotation = (float)Math.toDegrees(rotation);
 
 //        DEBUGDISPLAY CODE
         Vector2 velocity = body.getLinearVelocity();
         float mass = body.getMass();
-        DebugDisplay.addLine("Player pos(px): " + Math.floor(draw.x) + ", " + Math.floor(draw.y));
+        DebugDisplay.addLine("Player pos(px): " + Math.floor(render.x) + ", " + Math.floor(render.y));
         DebugDisplay.addLine("Player pos(m): " + Math.floor(position.x) + ", " + Math.floor(position.y));
         DebugDisplay.addLine("Player vel(m): " + Math.floor(velocity.x) + ", " + Math.floor(velocity.y));
         DebugDisplay.addLine("Player mass: " + mass);

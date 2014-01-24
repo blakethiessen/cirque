@@ -24,6 +24,7 @@ public class Render extends Component
     public float scaleX = 1;
     public float scaleY = 1;
     public float rotation;
+    public boolean flipped;
 
     public Layer layer;
     public boolean isVisible;
@@ -35,6 +36,7 @@ public class Render extends Component
         this.x = x;
         this.y = y;
         this.layer = layer;
+        this.flipped = false;
 
         isVisible = true;
     }

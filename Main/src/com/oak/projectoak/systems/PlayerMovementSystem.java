@@ -51,14 +51,14 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         if (controller.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprite
-            render.scaleX = -1;
+            render.flipped = true;
             animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, -platformer.latMaxVel);
         }
         else if (controller.isActionOn(Action.MOVING_RIGHT))
         {
-            render.scaleX = 1;
+            render.flipped = false;
             animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, platformer.latMaxVel);
@@ -102,7 +102,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         if (body.getLinearVelocity().len2() < Math.pow(platformer.latMaxVel, 2))
         {
             Vector2 moveVec = new Vector2(acceleration, 0);
-            moveVec.rotate((float) (body.getAngle() * 180 / Math.PI));
+            moveVec.rotate((float)Math.toDegrees(body.getAngle()));
 
             body.applyForceToCenter(moveVec, true);
         }
