@@ -28,14 +28,9 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<Controller> cm;
 
-    private Timer jumpTimeout;
-    private boolean jumpTimeoutOver = true;
-
     public PlayerMovementSystem()
     {
         super(Aspect.getAspectForAll(Controller.class, Player.class));
-
-        jumpTimeout = new Timer();
     }
 
     @Override
@@ -45,7 +40,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         Controller controller = cm.get(e);
         DynamicPhysics physics = dpm.get(e);
         Body body = physics.body;
-        Platformer platformer = pm.get(e);
+        final Platformer platformer = pm.get(e);
         Render render = rm.get(e);
         Animate animate = am.get(e);
 
@@ -80,23 +75,21 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         }
 
         if (controller.isActionOn(Action.JUMPING) && platformer.footContactCount > 0)
-        {
-            if (jumpTimeoutOver)
+            if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.
                 body.applyForceToCenter(physics.curGravityVec.scl(-platformer.jumpAccel), true);
-                jumpTimeoutOver = false;
+                platformer.jumpTimeoutOver = false;
 
-                jumpTimeout.schedule(new TimerTask()
+                platformer.jumpTimeout.schedule(new TimerTask()
                 {
                     @Override
                     public void run()
                     {
-                        jumpTimeoutOver = true;
+                        platformer.jumpTimeoutOver = true;
                     }
                 }, 500);
             }
-        }
     }
 
     private void moveLaterally(Body body, Platformer platformer, float acceleration)
