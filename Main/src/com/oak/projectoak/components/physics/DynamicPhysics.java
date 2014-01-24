@@ -1,5 +1,6 @@
 package com.oak.projectoak.components.physics;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 /*
@@ -9,8 +10,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class DynamicPhysics extends Physics
 {
+    public Vector2 curGravityVec;
+
     public DynamicPhysics(Body body, float x, float y)
     {
         super(body, x, y);
+
+        curGravityVec = Vector2.Zero;
     }
 }

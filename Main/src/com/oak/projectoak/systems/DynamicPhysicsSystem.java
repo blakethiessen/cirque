@@ -30,20 +30,23 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
     protected void process(Entity e)
     {
         Render render = dm.get(e);
-        Body body = dpm.get(e).body;
+        DynamicPhysics physics = dpm.get(e);
+
+        Body body = physics.body;
         Vector2 position = body.getPosition();
 
         render.x = Constants.ConvertMetersToPixels(position.x);
         render.y = Constants.ConvertMetersToPixels(position.y);
 
         // Apply radial gravitational force
-        Vector2 toArenaCenter = new Vector2(0, 0);
-        toArenaCenter.add(arenaCenter);
-        toArenaCenter.sub(position);
-        body.applyForceToCenter(toArenaCenter, true);
+        Vector2 curGravityVector = arenaCenter.cpy();
+        curGravityVector.sub(position);
+        body.applyForceToCenter(curGravityVector, true);
+
+        physics.curGravityVec = curGravityVector;
 
         // Set the player's feet towards the center of the circle.
-        double rotation = Math.atan2(toArenaCenter.x, -toArenaCenter.y);
+        double rotation = Math.atan2(curGravityVector.x, -curGravityVector.y);
         body.setTransform(position, (float)rotation);
         render.rotation = (float)Math.toDegrees(rotation);
 

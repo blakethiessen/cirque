@@ -43,7 +43,8 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     {
         // The following assumes runners always have the following components.
         Controller controller = cm.get(e);
-        Body body = dpm.get(e).body;
+        DynamicPhysics physics = dpm.get(e);
+        Body body = physics.body;
         Platformer platformer = pm.get(e);
         Render render = rm.get(e);
         Animate animate = am.get(e);
@@ -82,7 +83,8 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         {
             if (jumpTimeoutOver)
             {
-                body.applyForceToCenter(0, platformer.jumpAccel, true);
+                // Apply jump force in the opposite direction of gravity.
+                body.applyForceToCenter(physics.curGravityVec.scl(-platformer.jumpAccel), true);
                 jumpTimeoutOver = false;
 
                 jumpTimeout.schedule(new TimerTask()
