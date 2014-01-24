@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.AssetLoader;
@@ -53,16 +54,14 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             render.scaleX = -1;
             animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
 
-            if (body.getLinearVelocity().x >= -platformer.latMaxVel)
-                body.applyForceToCenter(-platformer.latAccel, 0, true);
+            moveLaterally(body, platformer, -platformer.latMaxVel);
         }
         else if (controller.isActionOn(Action.MOVING_RIGHT))
         {
             render.scaleX = 1;
             animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
 
-            if (body.getLinearVelocity().x <= platformer.latMaxVel)
-                body.applyForceToCenter(platformer.latAccel, 0, true);
+            moveLaterally(body, platformer, platformer.latMaxVel);
         }
         else
         {
@@ -95,6 +94,17 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                     }
                 }, 500);
             }
+        }
+    }
+
+    private void moveLaterally(Body body, Platformer platformer, float acceleration)
+    {
+        if (body.getLinearVelocity().len2() < Math.pow(platformer.latMaxVel, 2))
+        {
+            Vector2 moveVec = new Vector2(acceleration, 0);
+            moveVec.rotate((float) (body.getAngle() * 180 / Math.PI));
+
+            body.applyForceToCenter(moveVec, true);
         }
     }
 }
