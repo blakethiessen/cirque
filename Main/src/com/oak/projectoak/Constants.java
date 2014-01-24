@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Constants
 {
+    public static final Vector2 ARENA_CENTER = new Vector2(6, 3);
+
     public class Groups
     {
         public static final String PLAYERS = "players";

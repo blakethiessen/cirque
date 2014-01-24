@@ -122,7 +122,6 @@ public class Box2DDefs
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
 
         return bodyDef;
     }

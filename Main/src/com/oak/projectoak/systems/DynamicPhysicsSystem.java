@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.DynamicPhysics;
@@ -17,23 +18,34 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
 
-    public DynamicPhysicsSystem()
+    private Vector2 arenaCenter;
+
+    public DynamicPhysicsSystem(Vector2 arenaCenter)
     {
         super(Aspect.getAspectForAll(DynamicPhysics.class, Render.class));
+        this.arenaCenter = arenaCenter;
     }
 
     @Override
     protected void process(Entity e)
     {
         Render draw = dm.get(e);
-        Vector2 position = dpm.get(e).body.getPosition();
+        Body body = dpm.get(e).body;
+        Vector2 position = body.getPosition();
 
         draw.x = Constants.ConvertMetersToPixels(position.x);
         draw.y = Constants.ConvertMetersToPixels(position.y);
 
+        Vector2 gravitationalForce = new Vector2(0, 0);
+        gravitationalForce.add(position);
+        gravitationalForce.sub(arenaCenter);
+        gravitationalForce.scl(-1);
+        // Apply gravitational forces
+        body.applyForceToCenter(gravitationalForce, true);
+
 //        DEBUGDISPLAY CODE
-        Vector2 velocity = dpm.get(e).body.getLinearVelocity();
-        float mass = dpm.get(e).body.getMass();
+        Vector2 velocity = body.getLinearVelocity();
+        float mass = body.getMass();
         DebugDisplay.addLine("Player pos(px): " + Math.floor(draw.x) + ", " + Math.floor(draw.y));
         DebugDisplay.addLine("Player pos(m): " + Math.floor(position.x) + ", " + Math.floor(position.y));
         DebugDisplay.addLine("Player vel(m): " + Math.floor(velocity.x) + ", " + Math.floor(velocity.y));

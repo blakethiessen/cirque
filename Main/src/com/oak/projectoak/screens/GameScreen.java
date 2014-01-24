@@ -47,7 +47,7 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager(world);
 
         // Setup systems
-        world.setSystem(new DynamicPhysicsSystem());
+        world.setSystem(new DynamicPhysicsSystem(Constants.ARENA_CENTER));
 
         PlatformerSystem platformerSystem = new PlatformerSystem();
         b2world.setContactListener(platformerSystem);
@@ -75,7 +75,7 @@ public class GameScreen implements Screen
 
 //        EntityFactory.createEntity(EntityType.FLOOR, world, 0, 0);
         EntityFactory.createEntity(EntityType.PLAYER, world, 6, 5);
-        EntityFactory.createEntity(EntityType.CIRCLE, world, 6, 3);
+        EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
     }
 
 	@Override
