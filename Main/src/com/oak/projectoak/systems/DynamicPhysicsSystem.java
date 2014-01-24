@@ -36,12 +36,14 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         draw.x = Constants.ConvertMetersToPixels(position.x);
         draw.y = Constants.ConvertMetersToPixels(position.y);
 
-        Vector2 gravitationalForce = new Vector2(0, 0);
-        gravitationalForce.add(position);
-        gravitationalForce.sub(arenaCenter);
-        gravitationalForce.scl(-1);
-        // Apply gravitational forces
-        body.applyForceToCenter(gravitationalForce, true);
+        // Apply radial gravitational force
+        Vector2 toArenaCenter = new Vector2(0, 0);
+        toArenaCenter.add(arenaCenter);
+        toArenaCenter.sub(position);
+        body.applyForceToCenter(toArenaCenter, true);
+
+        // Set the player's feet towards the center of the circle.
+        body.setTransform(position, (float)Math.atan2(toArenaCenter.x, -toArenaCenter.y));
 
 //        DEBUGDISPLAY CODE
         Vector2 velocity = body.getLinearVelocity();
