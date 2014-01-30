@@ -1,5 +1,6 @@
 package com.oak.projectoak;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,7 +10,9 @@ public class Constants
 
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
-    public static final Vector2 ARENA_CENTER = new Vector2(6, 3);
+    public static final Vector2 ARENA_CENTER = new Vector2(
+            ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
+            ConvertPixelsToMeters(Gdx.graphics.getHeight() / 2));
 
     public class Groups
     {

@@ -21,6 +21,7 @@ public class CameraSystem extends VoidEntitySystem
     @Override
     protected void processSystem()
     {
+        camera.rotate(.25f);
         camera.update();
     }
 
