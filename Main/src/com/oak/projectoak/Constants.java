@@ -1,9 +1,13 @@
 package com.oak.projectoak;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants
 {
+    public static int curPlayersActive = 0;
+    public static final int MAX_NUM_OF_PLAYERS = 4;
+
     public static final Vector2 ARENA_CENTER = new Vector2(6, 3);
 
     public class Groups
@@ -29,5 +33,11 @@ public class Constants
         return worldCoord * PIXELS_TO_METERS;
     }
 
-    //endregion
+    public static final int NUM_OF_CONTROLS = 3;
+    public static final int P1_LEFT_KEY = Input.Keys.A;
+    public static final int P1_RIGHT_KEY = Input.Keys.D;
+    public static final int P1_JUMP_KEY = Input.Keys.W;
+    public static final int P2_LEFT_KEY = Input.Keys.LEFT;
+    public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
+    public static final int P2_JUMP_KEY = Input.Keys.UP;
 }

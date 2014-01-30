@@ -8,6 +8,7 @@ import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.Render.Layer;
+import com.oak.projectoak.components.physics.External;
 import com.oak.projectoak.components.physics.Internal;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
@@ -26,8 +27,10 @@ public class EntityFactory
     {
         switch(type)
         {
-            case PLAYER:
-                return createPlayer(world, x, y);
+            case EXTERNAL_PLAYER:
+                return createExternalPlayer(world, x, y);
+            case INTERNAL_PLAYER:
+                return createInternalPlayer(world, x, y);
             case FLOOR:
                 return createFloor(world, x, y);
             case CIRCLE:
@@ -42,12 +45,32 @@ public class EntityFactory
     // Each entity type X must have a mapping to a corresponding createX method.
     public enum EntityType
     {
-        PLAYER,
+        EXTERNAL_PLAYER,
+        INTERNAL_PLAYER,
         FLOOR,
         CIRCLE
     }
 
-    private static Entity createPlayer(World world, float x, float y)
+    private static Entity createExternalPlayer(World world, float x, float y)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), x, y));
+        e.addComponent(new Controller());
+        e.addComponent(new Platformer(3, 4, 30));
+        e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
+        e.addComponent(new Animate("idle"));
+        e.addComponent(new Player());
+        e.addComponent(new External());
+
+        world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    private static Entity createInternalPlayer(World world, float x, float y)
     {
         Entity e = world.createEntity();
 

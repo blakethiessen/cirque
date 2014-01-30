@@ -15,6 +15,7 @@ import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.entity.EntityFactory.EntityType;
 import com.oak.projectoak.systems.*;
 import com.oak.projectoak.systems.InputSystem;
+import com.oak.projectoak.systems.physics.*;
 
 /*
     The GameScreen is screen that contains the actual game.
@@ -76,7 +77,8 @@ public class GameScreen implements Screen
         PhysicsFactory.setWorld(b2world);
 
 //        EntityFactory.createEntity(EntityType.FLOOR, world, 0, 0);
-        EntityFactory.createEntity(EntityType.PLAYER, world, 6, 4);
+        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 5);
+        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 4);
         EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
     }
 

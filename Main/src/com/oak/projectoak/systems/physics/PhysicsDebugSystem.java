@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.physics;
 
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.graphics.Camera;
