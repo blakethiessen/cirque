@@ -18,12 +18,9 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
 
-    private Vector2 arenaCenter;
-
-    public DynamicPhysicsSystem(Vector2 arenaCenter)
+    public DynamicPhysicsSystem()
     {
         super(Aspect.getAspectForAll(DynamicPhysics.class, Render.class));
-        this.arenaCenter = arenaCenter;
     }
 
     @Override
@@ -37,18 +34,6 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
 
         render.x = Constants.ConvertMetersToPixels(position.x);
         render.y = Constants.ConvertMetersToPixels(position.y);
-
-        // Apply radial gravitational force
-        Vector2 curGravityVector = arenaCenter.cpy();
-        curGravityVector.sub(position);
-        body.applyForceToCenter(curGravityVector, true);
-
-        physics.curGravityVec = curGravityVector;
-
-        // Set the player's feet towards the center of the circle.
-        double rotation = Math.atan2(curGravityVector.x, -curGravityVector.y);
-        body.setTransform(position, (float)rotation);
-        render.rotation = (float)Math.toDegrees(rotation);
 
 //        DEBUGDISPLAY CODE
         Vector2 velocity = body.getLinearVelocity();

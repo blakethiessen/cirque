@@ -8,6 +8,7 @@ import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.Render.Layer;
+import com.oak.projectoak.components.physics.Internal;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
 
@@ -56,6 +57,7 @@ public class EntityFactory
         e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
         e.addComponent(new Animate("idle"));
         e.addComponent(new Player());
+        e.addComponent(new Internal());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 
