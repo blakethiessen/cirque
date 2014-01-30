@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.oak.projectoak.Constants;
 
 /*
     Box2DDefs are the physics definitions that shape
@@ -69,19 +70,16 @@ public class Box2DDefs
 
     private static Shape createCircle()
     {
-        final int RADIUS = 2;
-        final int PRECISION = RADIUS * 10;
+        Vector2[] edges = new Vector2[Constants.ARENA_CIRCLE_VERTEX_COUNT];
 
-        Vector2[] edges = new Vector2[PRECISION];
+        float angle = (float)(2 * Math.PI / Constants.ARENA_CIRCLE_VERTEX_COUNT);
 
-        float angle = (float)(2 * Math.PI / PRECISION);
-
-        for (int i = 0; i < PRECISION; i ++)
+        for (int i = 0; i < Constants.ARENA_CIRCLE_VERTEX_COUNT; i ++)
         {
-            edges[i] = new Vector2((float)(RADIUS * Math.cos(angle * i)),
-                    (float)(RADIUS * Math.sin(angle * i)));
+            edges[i] = new Vector2((float)(Constants.ARENA_RADIUS * Math.cos(angle * i)),
+                    (float)(Constants.ARENA_RADIUS * Math.sin(angle * i)));
         }
-        
+
         ChainShape shape = new ChainShape();
         shape.createLoop(edges);
 

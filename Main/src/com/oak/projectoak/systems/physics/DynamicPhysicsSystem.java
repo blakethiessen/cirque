@@ -41,13 +41,13 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         render.y = Constants.ConvertMetersToPixels(position.y);
 
 //        DEBUGDISPLAY CODE
-        Vector2 velocity = body.getLinearVelocity();
-        float mass = body.getMass();
-        DebugDisplay.addLine("Player " + player.playerNum + " pos(px): " + Math.floor(render.x) + ", " + Math.floor(render.y));
-        DebugDisplay.addLine("Player " + player.playerNum + " pos(m): " + Math.floor(position.x) + ", " + Math.floor(position.y));
-        DebugDisplay.addLine("Player " + player.playerNum + " vel(m): " + Math.floor(velocity.x) + ", " + Math.floor(velocity.y));
-        DebugDisplay.addLine("Player " + player.playerNum + " mass: " + mass);
-        DebugDisplay.addLine("");
+//        Vector2 velocity = body.getLinearVelocity();
+//        float mass = body.getMass();
+//        DebugDisplay.addLine("Player " + player.playerNum + " pos(px): " + Math.floor(render.x) + ", " + Math.floor(render.y));
+//        DebugDisplay.addLine("Player " + player.playerNum + " pos(m): " + Math.floor(position.x) + ", " + Math.floor(position.y));
+//        DebugDisplay.addLine("Player " + player.playerNum + " vel(m): " + Math.floor(velocity.x) + ", " + Math.floor(velocity.y));
+//        DebugDisplay.addLine("Player " + player.playerNum + " mass: " + mass);
+//        DebugDisplay.addLine("");
 //        DEBUGDISPLAY CODE END
     }
 }

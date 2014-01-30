@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants
 {
     public static int curPlayersActive = 0;
+
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
     public static final Vector2 ARENA_CENTER = new Vector2(6, 3);
@@ -17,7 +18,13 @@ public class Constants
 
     public static final float DEFAULT_FRAME_DURATION = .1f;
 
+    public static final int PLAYER_LAT_ACCEL = 3;
+    public static final int PLAYER_LAT_MAX_VEL = 4;
+    public static final int PLAYER_JUMP_ACCEL = 16;
+
     public static final Vector2 GRAVITY = Vector2.Zero;
+    public static final int ARENA_RADIUS = 4;
+    public static final int ARENA_CIRCLE_VERTEX_COUNT = ARENA_RADIUS * 10;
 
     public static final float METERS_TO_PIXELS = 100f;
     public static final float PIXELS_TO_METERS = .01f;

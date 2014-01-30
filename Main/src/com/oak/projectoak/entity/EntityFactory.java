@@ -57,7 +57,8 @@ public class EntityFactory
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), x, y));
         e.addComponent(new Controller());
-        e.addComponent(new Platformer(3, 4, 30));
+        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
+                Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
         e.addComponent(new Animate("idle"));
         e.addComponent(new Player());
@@ -76,7 +77,8 @@ public class EntityFactory
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), x, y));
         e.addComponent(new Controller());
-        e.addComponent(new Platformer(3, 4, 30));
+        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
+                Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
         e.addComponent(new Animate("idle"));
         e.addComponent(new Player());

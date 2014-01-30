@@ -36,6 +36,7 @@ public class GameScreen implements Screen
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.zoom = 1.5f;
 
         // Setup Entity world
         world = new World();
@@ -77,8 +78,8 @@ public class GameScreen implements Screen
         PhysicsFactory.setWorld(b2world);
 
 //        EntityFactory.createEntity(EntityType.FLOOR, world, 0, 0);
-        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 5);
-        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 4);
+        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 8);
+        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 6);
         EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
     }
 
