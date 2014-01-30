@@ -1,5 +1,6 @@
 package com.oak.projectoak.physics;
 
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -25,13 +26,13 @@ public class Box2DDefs
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();
     private static final PolygonShape PLAYER_FOOT_SHAPE = createPlayerFootShape();
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
-    private static final Shape CIRCLE_SHAPE = createCircleShape();
+    private static final Shape CIRCLE_SHAPE = createCircle();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
     public static final FixtureDef PLAYER_FOOT_SENSOR = createPlayerFootSensor();
     public static final FixtureDef FLOOR_FIXTURE_DEF = createFloorFixtureDef();
-    public static final FixtureDef CIRCLE_FIXTURE_DEF = createCircleFixtureDef();
+    public static final FixtureDef CIRCLE_FIXTURE_DEF = createCircleSegmentFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
@@ -66,10 +67,23 @@ public class Box2DDefs
         return shape;
     }
 
-    private static Shape createCircleShape()
+    private static Shape createCircle()
     {
-        CircleShape shape = new CircleShape();
-        shape.setRadius(2);
+        final int RADIUS = 2;
+        final int PRECISION = RADIUS * 10;
+
+        Vector2[] edges = new Vector2[PRECISION];
+
+        float angle = (float)(2 * Math.PI / PRECISION);
+
+        for (int i = 0; i < PRECISION; i ++)
+        {
+            edges[i] = new Vector2((float)(RADIUS * Math.cos(angle * i)),
+                    (float)(RADIUS * Math.sin(angle * i)));
+        }
+        
+        ChainShape shape = new ChainShape();
+        shape.createLoop(edges);
 
         return shape;
     }
@@ -106,7 +120,7 @@ public class Box2DDefs
         return fixtureDef;
     }
 
-    private static FixtureDef createCircleFixtureDef()
+    private static FixtureDef createCircleSegmentFixtureDef()
     {
         FixtureDef fixtureDef = new FixtureDef();
 
