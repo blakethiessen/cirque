@@ -4,18 +4,18 @@ import com.artemis.Component;
 import com.oak.projectoak.Action;
 
 /*
-    The Controller component is attached to entities
+    The PlayerController component is attached to entities
     that can be controlled in some way by a player, AI, etc.
  */
 
-public class Controller extends Component
+public class PlayerController extends Component
 {
     public byte actionMask;
 
     public float mouseX;
     public float mouseY;
 
-    public Controller()
+    public PlayerController()
     {
         actionMask = 0;
         this.mouseX = 0f;

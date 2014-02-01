@@ -4,6 +4,8 @@ import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.oak.projectoak.AssetLoader;
@@ -78,8 +80,15 @@ public class GameScreen implements Screen
         PhysicsFactory.setWorld(b2world);
 
         EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 8);
+        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 0);
         EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 6);
+        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 2);
         EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
+
+        for(Controller controller: Controllers.getControllers())
+        {
+            Gdx.app.log("Controller", controller.getName());
+        }
     }
 
 	@Override

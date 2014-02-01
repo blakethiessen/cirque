@@ -6,13 +6,14 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.*;
+import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
+import com.oak.projectoak.components.PlayerController;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /*
     The InputSystem is a 2nd layer of input reception
@@ -20,45 +21,72 @@ import java.util.Map;
  */
 
 public class InputSystem extends EntityProcessingSystem
-        implements InputProcessor
+        implements InputProcessor, ControllerListener
 {
-    @Mapper ComponentMapper<Controller> cm;
+    @Mapper ComponentMapper<PlayerController> cm;
     @Mapper ComponentMapper<Player> pm;
 
-    private HashMap<Action, Control>[] controlStates;
+    private HashMap<Integer, PlayerAction> keyMaps;
+    private HashMap<Action, Boolean>[] controlStates;
 
     public InputSystem()
     {
-        super(Aspect.getAspectForAll(Controller.class, Player.class));
+        super(Aspect.getAspectForAll(PlayerController.class, Player.class));
+
+        keyMaps = new HashMap<Integer, PlayerAction>(Constants.NUM_OF_CONTROLS);
+
+        keyMaps.put(Constants.P1_LEFT_KEY, new PlayerAction(1, Action.MOVING_LEFT));
+        keyMaps.put(Constants.P1_RIGHT_KEY, new PlayerAction(1, Action.MOVING_RIGHT));
+        keyMaps.put(Constants.P1_JUMP_KEY, new PlayerAction(1, Action.JUMPING));
+
+        keyMaps.put(Constants.P2_LEFT_KEY, new PlayerAction(2, Action.MOVING_LEFT));
+        keyMaps.put(Constants.P2_RIGHT_KEY, new PlayerAction(2, Action.MOVING_RIGHT));
+        keyMaps.put(Constants.P2_JUMP_KEY, new PlayerAction(2, Action.JUMPING));
+
+        keyMaps.put(Constants.P3_LEFT_KEY, new PlayerAction(3, Action.MOVING_LEFT));
+        keyMaps.put(Constants.P3_RIGHT_KEY, new PlayerAction(3, Action.MOVING_RIGHT));
+        keyMaps.put(Constants.P3_JUMP_KEY, new PlayerAction(3, Action.JUMPING));
+
+        keyMaps.put(Constants.P4_LEFT_KEY, new PlayerAction(4, Action.MOVING_LEFT));
+        keyMaps.put(Constants.P4_RIGHT_KEY, new PlayerAction(4, Action.MOVING_RIGHT));
+        keyMaps.put(Constants.P4_JUMP_KEY, new PlayerAction(4, Action.JUMPING));
 
         controlStates = new HashMap[Constants.MAX_NUM_OF_PLAYERS];
 
         for (int i = 0; i < Constants.MAX_NUM_OF_PLAYERS; i++)
         {
-            controlStates[i] = new HashMap<Action, Control>(Constants.NUM_OF_CONTROLS);
+            controlStates[i] = new HashMap<Action, Boolean>(Constants.NUM_OF_CONTROLS);
         }
 
-        controlStates[0].put(Action.MOVING_LEFT, new Control(Constants.P1_LEFT_KEY, false));
-        controlStates[0].put(Action.MOVING_RIGHT, new Control(Constants.P1_RIGHT_KEY, false));
-        controlStates[0].put(Action.JUMPING, new Control(Constants.P1_JUMP_KEY, false));
+        controlStates[0].put(Action.MOVING_LEFT, false);
+        controlStates[0].put(Action.MOVING_RIGHT, false);
+        controlStates[0].put(Action.JUMPING, false);
 
-        controlStates[1].put(Action.MOVING_LEFT, new Control(Constants.P2_LEFT_KEY, false));
-        controlStates[1].put(Action.MOVING_RIGHT, new Control(Constants.P2_RIGHT_KEY, false));
-        controlStates[1].put(Action.JUMPING, new Control(Constants.P2_JUMP_KEY, false));
+        controlStates[1].put(Action.MOVING_LEFT, false);
+        controlStates[1].put(Action.MOVING_RIGHT, false);
+        controlStates[1].put(Action.JUMPING, false);
+
+        controlStates[2].put(Action.MOVING_LEFT, false);
+        controlStates[2].put(Action.MOVING_RIGHT, false);
+        controlStates[2].put(Action.JUMPING, false);
+
+        controlStates[3].put(Action.MOVING_LEFT, false);
+        controlStates[3].put(Action.MOVING_RIGHT, false);
+        controlStates[3].put(Action.JUMPING, false);
     }
 
     @Override
     protected void process(Entity e)
     {
-        Controller controller = cm.get(e);
+        PlayerController playerController = cm.get(e);
         final int playerArrNum = pm.get(e).playerNum - 1;
 
-        controller.setAction(Action.MOVING_LEFT,
-                controlStates[playerArrNum].get(Action.MOVING_LEFT).state);
-        controller.setAction(Action.MOVING_RIGHT,
-                controlStates[playerArrNum].get(Action.MOVING_RIGHT).state);
-        controller.setAction(Action.JUMPING,
-                controlStates[playerArrNum].get(Action.JUMPING).state);
+        playerController.setAction(Action.MOVING_LEFT,
+                controlStates[playerArrNum].get(Action.MOVING_LEFT));
+        playerController.setAction(Action.MOVING_RIGHT,
+                controlStates[playerArrNum].get(Action.MOVING_RIGHT));
+        playerController.setAction(Action.JUMPING,
+                controlStates[playerArrNum].get(Action.JUMPING));
     }
 
     @Override
@@ -79,31 +107,10 @@ public class InputSystem extends EntityProcessingSystem
 
     private void updateControlState(int keycode, boolean state)
     {
-        for (HashMap controlState : controlStates)
-        {
-            if (updatePlayerControlState(controlState, keycode, state))
-                return;
-        }
-    }
+        final PlayerAction playerAction = keyMaps.get(keycode);
 
-    private boolean updatePlayerControlState(HashMap controlState, int keycode, boolean state)
-    {
-        final Iterator<Map.Entry<Action, Control>> iterator =
-                controlState.entrySet().iterator();
-
-        while (iterator.hasNext())
-        {
-            final Map.Entry<Action, Control> control = iterator.next();
-
-            if (control.getValue().key == keycode)
-            {
-                control.getValue().state = state;
-
-                return true;
-            }
-        }
-
-        return false;
+        if (playerAction != null)
+            controlStates[playerAction.playerNum - 1].put(playerAction.action, state);
     }
 
     @Override
@@ -142,15 +149,71 @@ public class InputSystem extends EntityProcessingSystem
         return false;
     }
 
-    private class Control
+    @Override
+    public void connected(Controller controller)
     {
-        public int key;
-        public boolean state;
+        System.out.println("CONTROLLER CONNECTED!");
+    }
 
-        public Control(int key, boolean state)
+    @Override
+    public void disconnected(Controller controller)
+    {
+
+    }
+
+    @Override
+    public boolean buttonDown(Controller controller, int buttonCode)
+    {
+        System.out.println("Button down!");
+
+        return false;
+    }
+
+    @Override
+    public boolean buttonUp(Controller controller, int buttonCode)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean axisMoved(Controller controller, int axisCode, float value)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean povMoved(Controller controller, int povCode, PovDirection value)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean xSliderMoved(Controller controller, int sliderCode, boolean value)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean ySliderMoved(Controller controller, int sliderCode, boolean value)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value)
+    {
+        return false;
+    }
+
+    private class PlayerAction
+    {
+        public int playerNum;
+        public Action action;
+
+        public PlayerAction(int playerNum, Action action)
         {
-            this.key = key;
-            this.state = state;
+            this.playerNum = playerNum;
+            this.action = action;
         }
     }
 }
