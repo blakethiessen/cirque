@@ -56,12 +56,11 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), x, y));
-        e.addComponent(new PlayerController());
+        e.addComponent(new Player());
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
         e.addComponent(new Animate("idle"));
-        e.addComponent(new Player());
         e.addComponent(new External());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
@@ -76,12 +75,11 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), x, y));
-        e.addComponent(new PlayerController());
+        e.addComponent(new Player());
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
         e.addComponent(new Animate("idle"));
-        e.addComponent(new Player());
         e.addComponent(new Internal());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);

@@ -8,18 +8,14 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.Platformer;
-import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.DynamicPhysics;
-import com.oak.projectoak.utils.DebugDisplay;
 
 // Updates draw component position with dynamic physics component position.
 public class DynamicPhysicsSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
-    @Mapper ComponentMapper<Player> pm;
 
     public DynamicPhysicsSystem()
     {
@@ -34,8 +30,6 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
 
         Body body = physics.body;
         Vector2 position = body.getPosition();
-
-        Player player = pm.get(e);
 
         render.x = Constants.ConvertMetersToPixels(position.x);
         render.y = Constants.ConvertMetersToPixels(position.y);

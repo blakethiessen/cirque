@@ -10,8 +10,7 @@ import com.badlogic.gdx.controllers.*;
 import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.*;
-import com.oak.projectoak.components.PlayerController;
+import com.oak.projectoak.components.Player;
 
 import java.util.HashMap;
 
@@ -23,7 +22,6 @@ import java.util.HashMap;
 public class InputSystem extends EntityProcessingSystem
         implements InputProcessor, ControllerListener
 {
-    @Mapper ComponentMapper<PlayerController> cm;
     @Mapper ComponentMapper<Player> pm;
 
     private HashMap<Integer, PlayerAction> keyMaps;
@@ -31,7 +29,7 @@ public class InputSystem extends EntityProcessingSystem
 
     public InputSystem()
     {
-        super(Aspect.getAspectForAll(PlayerController.class, Player.class));
+        super(Aspect.getAspectForAll(Player.class, Player.class));
 
         keyMaps = new HashMap<Integer, PlayerAction>(Constants.NUM_OF_CONTROLS);
 
@@ -78,14 +76,14 @@ public class InputSystem extends EntityProcessingSystem
     @Override
     protected void process(Entity e)
     {
-        PlayerController playerController = cm.get(e);
+        Player player = pm.get(e);
         final int playerArrNum = pm.get(e).playerNum - 1;
 
-        playerController.setAction(Action.MOVING_LEFT,
+        player.setAction(Action.MOVING_LEFT,
                 controlStates[playerArrNum].get(Action.MOVING_LEFT));
-        playerController.setAction(Action.MOVING_RIGHT,
+        player.setAction(Action.MOVING_RIGHT,
                 controlStates[playerArrNum].get(Action.MOVING_RIGHT));
-        playerController.setAction(Action.JUMPING,
+        player.setAction(Action.JUMPING,
                 controlStates[playerArrNum].get(Action.JUMPING));
     }
 

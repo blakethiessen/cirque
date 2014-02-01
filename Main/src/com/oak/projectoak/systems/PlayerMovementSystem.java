@@ -15,7 +15,7 @@ import com.oak.projectoak.components.physics.DynamicPhysics;
 import java.util.TimerTask;
 
 /*
-    The PlayerMovementSystem moves players when the PlayerController
+    The PlayerMovementSystem moves players when the Player
     component is updated with the latest player actions.
  */
 
@@ -25,25 +25,25 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> rm;
     @Mapper ComponentMapper<Animate> am;
-    @Mapper ComponentMapper<PlayerController> cm;
+    @Mapper ComponentMapper<Player> cm;
 
     public PlayerMovementSystem()
     {
-        super(Aspect.getAspectForAll(PlayerController.class, Player.class));
+        super(Aspect.getAspectForAll(Player.class, Player.class));
     }
 
     @Override
     protected void process(Entity e)
     {
         // The following assumes runners always have the following components.
-        PlayerController playerController = cm.get(e);
+        Player player = cm.get(e);
         DynamicPhysics physics = dpm.get(e);
         Body body = physics.body;
         final Platformer platformer = pm.get(e);
         Render render = rm.get(e);
         Animate animate = am.get(e);
 
-        if (playerController.isActionOn(Action.MOVING_LEFT))
+        if (player.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprite
             render.flipped = true;
@@ -51,7 +51,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
 
             moveLaterally(body, platformer, -platformer.latMaxVel);
         }
-        else if (playerController.isActionOn(Action.MOVING_RIGHT))
+        else if (player.isActionOn(Action.MOVING_RIGHT))
         {
             render.flipped = false;
             animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
@@ -73,7 +73,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             }
         }
 
-        if (playerController.isActionOn(Action.JUMPING) && platformer.footContactCount > 0)
+        if (player.isActionOn(Action.JUMPING) && platformer.footContactCount > 0)
             if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.
