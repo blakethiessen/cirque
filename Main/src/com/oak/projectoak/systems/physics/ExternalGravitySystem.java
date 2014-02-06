@@ -47,7 +47,6 @@ public class ExternalGravitySystem extends EntityProcessingSystem
         body.setTransform(position, (float)rotation);
 
         external.radialPosition = (float)rotation;
-        System.out.println(external.radialPosition);
 
         render.rotation = (float)Math.toDegrees(rotation);
     }
