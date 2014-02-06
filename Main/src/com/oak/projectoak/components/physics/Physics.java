@@ -1,6 +1,7 @@
 package com.oak.projectoak.components.physics;
 
 import com.artemis.Component;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 /*
@@ -13,10 +14,10 @@ public class Physics extends Component
 {
     public Body body;
 
-    public Physics(Body body, float x, float y)
+    public Physics(Body body, Vector2 position)
     {
         this.body = body;
 
-        body.setTransform(x, y, 0);
+        body.setTransform(position.x, position.y, 0);
     }
 }

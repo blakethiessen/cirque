@@ -14,7 +14,6 @@ import com.oak.projectoak.input.InputManager;
 import com.oak.projectoak.physics.*;
 import com.oak.projectoak.systems.PlatformerSystem;
 import com.oak.projectoak.entity.EntityFactory;
-import com.oak.projectoak.entity.EntityFactory.EntityType;
 import com.oak.projectoak.systems.*;
 import com.oak.projectoak.systems.InputSystem;
 import com.oak.projectoak.systems.physics.*;
@@ -80,11 +79,11 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 10);
-        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, -10);
-        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
-        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
-        EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
+        EntityFactory.createExternalPlayer(world, 0, 1);
+        EntityFactory.createExternalPlayer(world, (float)Math.PI, 1);
+        EntityFactory.createInternalPlayer(world, (float)Math.PI / 2, 1);
+        EntityFactory.createInternalPlayer(world, (float)Math.PI * 3 / 2, 1);
+        EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
         for(Controller controller: Controllers.getControllers())
         {

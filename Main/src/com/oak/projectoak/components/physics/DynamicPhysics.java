@@ -12,9 +12,9 @@ public class DynamicPhysics extends Physics
 {
     public Vector2 curGravityVec;
 
-    public DynamicPhysics(Body body, float x, float y)
+    public DynamicPhysics(Body body, Vector2 position)
     {
-        super(body, x, y);
+        super(body, position);
 
         curGravityVec = Vector2.Zero;
     }

@@ -2,6 +2,7 @@ package com.oak.projectoak.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.AssetLoader;
 
 /*
@@ -12,8 +13,7 @@ import com.oak.projectoak.AssetLoader;
 
 public class Render extends Component
 {
-    public float x;
-    public float y;
+    public Vector2 position;
 
     public TextureRegion currentTexture;
 
@@ -29,12 +29,12 @@ public class Render extends Component
     public Layer layer;
     public boolean isVisible;
 
-    public Render(String textureName, Layer layer, float x, float y)
+    public Render(String textureName, Layer layer, Vector2 position)
     {
         currentTexture = AssetLoader.getTextureRegion(textureName);
 
-        this.x = x;
-        this.y = y;
+        this.position = position;
+
         this.layer = layer;
         this.flipped = false;
 
@@ -43,7 +43,7 @@ public class Render extends Component
 
     public Render(String textureName, Layer layer)
     {
-        this(textureName, layer, 0, 0);
+        this(textureName, layer, Vector2.Zero);
     }
 
     public enum Layer

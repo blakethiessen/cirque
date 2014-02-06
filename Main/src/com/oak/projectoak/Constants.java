@@ -39,6 +39,14 @@ public class Constants
             ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
             ConvertPixelsToMeters(Gdx.graphics.getHeight() / 2));
 
+    public static Vector2 ConvertRadialTo2DPosition(float radialPosition, float distanceFromEdge)
+    {
+        final float DISTANCE = ARENA_RADIUS + distanceFromEdge;
+
+        return new Vector2((float)(ARENA_CENTER.x + DISTANCE * Math.cos(radialPosition)),
+                           (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));
+    }
+
     // BOX2D CONSTANTS
     public static final float METERS_TO_PIXELS = 100;
     public static final float PIXELS_TO_METERS = 1 / METERS_TO_PIXELS;
