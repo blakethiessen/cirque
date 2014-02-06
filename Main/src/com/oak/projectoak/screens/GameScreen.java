@@ -80,8 +80,8 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 8);
-        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 0);
+        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 10);
+        EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, -10);
         EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
         EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
         EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);

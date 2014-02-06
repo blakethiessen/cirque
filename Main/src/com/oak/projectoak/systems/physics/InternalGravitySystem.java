@@ -15,6 +15,7 @@ public class InternalGravitySystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
+    @Mapper ComponentMapper<Internal> im;
 
     private final Vector2 arenaCenter;
 
@@ -29,6 +30,7 @@ public class InternalGravitySystem extends EntityProcessingSystem
     {
         Render render = dm.get(e);
         DynamicPhysics physics = dpm.get(e);
+        Internal internal = im.get(e);
 
         Body body = physics.body;
         Vector2 position = body.getPosition();
@@ -48,6 +50,9 @@ public class InternalGravitySystem extends EntityProcessingSystem
         // Set the player's feet towards the center of the circle.
         double rotation = Math.atan2(curGravityVector.x, -curGravityVector.y);
         body.setTransform(position, (float)rotation);
+
+        internal.radialPosition = (float)rotation;
+
         render.rotation = (float)Math.toDegrees(rotation);
     }
 }

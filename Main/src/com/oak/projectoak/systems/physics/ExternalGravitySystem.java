@@ -15,6 +15,7 @@ public class ExternalGravitySystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
+    @Mapper ComponentMapper<External> em;
 
     private final Vector2 arenaCenter;
 
@@ -29,6 +30,7 @@ public class ExternalGravitySystem extends EntityProcessingSystem
     {
         Render render = dm.get(e);
         DynamicPhysics physics = dpm.get(e);
+        External external = em.get(e);
 
         Body body = physics.body;
         Vector2 position = body.getPosition();
@@ -43,6 +45,10 @@ public class ExternalGravitySystem extends EntityProcessingSystem
         // Set the player's feet towards the center of the circle.
         double rotation = Math.atan2(curGravityVector.x, -curGravityVector.y);
         body.setTransform(position, (float)rotation);
+
+        external.radialPosition = (float)rotation;
+        System.out.println(external.radialPosition);
+
         render.rotation = (float)Math.toDegrees(rotation);
     }
 }

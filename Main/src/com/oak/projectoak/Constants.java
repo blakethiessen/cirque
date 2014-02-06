@@ -23,7 +23,7 @@ public class Constants
     public static final float DEFAULT_FRAME_DURATION = 1/30f;
 
     // PLAYER CONSTANTS
-    public static final float PLAYER_WIDTH = .5f;
+    public static final float PLAYER_WIDTH = .62f;
     public static final float PLAYER_HEIGHT = 1f;
 
     public static final int PLAYER_LAT_ACCEL = 6;
@@ -32,7 +32,7 @@ public class Constants
 
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
-    public static final int ARENA_RADIUS = 4;
+    public static final int ARENA_RADIUS = 5;
     public static final int ARENA_CIRCLE_VERTEX_COUNT = ARENA_RADIUS * 10;
 
     public static final Vector2 ARENA_CENTER = new Vector2(

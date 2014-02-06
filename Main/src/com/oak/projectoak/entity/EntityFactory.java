@@ -64,7 +64,7 @@ public class EntityFactory
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         final Render render = new Render("idle", Layer.ACTORS_3, x, y);
         e.addComponent(render);
-        e.addComponent(new Animate("shahan_idle/shahan_idle "));
+        e.addComponent(new Animate(Constants.SHAHAN_IDLE));
         e.addComponent(new External());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
@@ -84,7 +84,7 @@ public class EntityFactory
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         final Render render = new Render("idle", Layer.ACTORS_3, x, y);
         e.addComponent(render);
-        e.addComponent(new Animate("shahan_idle/shahan_idle "));
+        e.addComponent(new Animate(Constants.SHAHAN_IDLE));
         e.addComponent(new Internal());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
