@@ -10,8 +10,8 @@ import com.oak.projectoak.utils.ImagePacker;
 
 public class DesktopStarter
 {
-    public static final int FRAME_WIDTH = 1280;
-    public static final int FRAME_HEIGHT = 720;
+    public static final int FRAME_WIDTH = 1440;
+    public static final int FRAME_HEIGHT = 900;
 
     public static void main(String[] args)
     {
@@ -21,6 +21,7 @@ public class DesktopStarter
         cfg.height = FRAME_HEIGHT;
         cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
+        cfg.fullscreen = true;
 
         // Uncomment the line below when adding new sprites.
         ImagePacker.run();

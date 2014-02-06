@@ -10,7 +10,8 @@ public enum Action
     // Player actions
     MOVING_LEFT(0),
     MOVING_RIGHT(1),
-    JUMPING(2);
+    JUMPING(2),
+    ABILITY_1(3);
 
     private final int id;
 

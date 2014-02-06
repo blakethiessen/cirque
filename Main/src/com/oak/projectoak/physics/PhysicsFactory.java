@@ -53,4 +53,13 @@ public class PhysicsFactory
 
         return body;
     }
+
+    public static Body createStakeBody()
+    {
+        Body body = b2world.createBody(Box2DDefs.STAKE_BODY_DEF);
+
+        body.createFixture(Box2DDefs.STAKE_FIXTURE_DEF);
+
+        return body;
+    }
 }

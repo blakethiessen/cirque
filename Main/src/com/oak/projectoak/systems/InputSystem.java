@@ -7,6 +7,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.*;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
@@ -26,16 +27,19 @@ public class InputSystem extends EntityProcessingSystem
 
     private HashMap<Integer, PlayerAction> keyMaps;
     private HashMap<Action, Boolean>[] controlStates;
+    private OrthographicCamera camera;
 
-    public InputSystem()
+    public InputSystem(OrthographicCamera camera)
     {
         super(Aspect.getAspectForAll(Player.class, Player.class));
+        this.camera = camera;
 
         keyMaps = new HashMap<Integer, PlayerAction>(Constants.NUM_OF_CONTROLS);
 
         keyMaps.put(Constants.P1_LEFT_KEY, new PlayerAction(1, Action.MOVING_LEFT));
         keyMaps.put(Constants.P1_RIGHT_KEY, new PlayerAction(1, Action.MOVING_RIGHT));
         keyMaps.put(Constants.P1_JUMP_KEY, new PlayerAction(1, Action.JUMPING));
+        keyMaps.put(Constants.P1_ABILITY_1_KEY, new PlayerAction(1, Action.ABILITY_1));
 
         keyMaps.put(Constants.P2_LEFT_KEY, new PlayerAction(2, Action.MOVING_LEFT));
         keyMaps.put(Constants.P2_RIGHT_KEY, new PlayerAction(2, Action.MOVING_RIGHT));
@@ -54,23 +58,12 @@ public class InputSystem extends EntityProcessingSystem
         for (int i = 0; i < Constants.MAX_NUM_OF_PLAYERS; i++)
         {
             controlStates[i] = new HashMap<Action, Boolean>(Constants.NUM_OF_CONTROLS);
+
+            controlStates[i].put(Action.MOVING_LEFT, false);
+            controlStates[i].put(Action.MOVING_RIGHT, false);
+            controlStates[i].put(Action.JUMPING, false);
+            controlStates[i].put(Action.ABILITY_1, false);
         }
-
-        controlStates[0].put(Action.MOVING_LEFT, false);
-        controlStates[0].put(Action.MOVING_RIGHT, false);
-        controlStates[0].put(Action.JUMPING, false);
-
-        controlStates[1].put(Action.MOVING_LEFT, false);
-        controlStates[1].put(Action.MOVING_RIGHT, false);
-        controlStates[1].put(Action.JUMPING, false);
-
-        controlStates[2].put(Action.MOVING_LEFT, false);
-        controlStates[2].put(Action.MOVING_RIGHT, false);
-        controlStates[2].put(Action.JUMPING, false);
-
-        controlStates[3].put(Action.MOVING_LEFT, false);
-        controlStates[3].put(Action.MOVING_RIGHT, false);
-        controlStates[3].put(Action.JUMPING, false);
     }
 
     @Override
@@ -85,6 +78,8 @@ public class InputSystem extends EntityProcessingSystem
                 controlStates[playerArrNum].get(Action.MOVING_RIGHT));
         player.setAction(Action.JUMPING,
                 controlStates[playerArrNum].get(Action.JUMPING));
+        player.setAction(Action.ABILITY_1,
+                controlStates[playerArrNum].get(Action.ABILITY_1));
     }
 
     @Override
@@ -144,6 +139,8 @@ public class InputSystem extends EntityProcessingSystem
     @Override
     public boolean scrolled(int amount)
     {
+        camera.zoom = camera.zoom + amount;
+
         return false;
     }
 

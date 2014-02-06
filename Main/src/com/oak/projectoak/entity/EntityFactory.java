@@ -35,6 +35,8 @@ public class EntityFactory
                 return createFloor(world, x, y);
             case CIRCLE:
                 return createArenaCircle(world, x, y);
+            case STAKE:
+                return createStake(world, x, y);
             default:
                 Gdx.app.error("Unsupported Entity", "Entity of type " + type.toString() +
                         " has not been linked to a create method.");
@@ -48,7 +50,8 @@ public class EntityFactory
         EXTERNAL_PLAYER,
         INTERNAL_PLAYER,
         FLOOR,
-        CIRCLE
+        CIRCLE,
+        STAKE
     }
 
     private static Entity createExternalPlayer(World world, float x, float y)
@@ -59,8 +62,9 @@ public class EntityFactory
         e.addComponent(new Player());
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
-        e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
-        e.addComponent(new Animate("idle"));
+        final Render render = new Render("idle", Layer.ACTORS_3, x, y);
+        e.addComponent(render);
+        e.addComponent(new Animate("shahan_idle/shahan_idle "));
         e.addComponent(new External());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
@@ -78,8 +82,9 @@ public class EntityFactory
         e.addComponent(new Player());
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
-        e.addComponent(new Render("idle", Layer.ACTORS_3, x, y));
-        e.addComponent(new Animate("idle"));
+        final Render render = new Render("idle", Layer.ACTORS_3, x, y);
+        e.addComponent(render);
+        e.addComponent(new Animate("shahan_idle/shahan_idle "));
         e.addComponent(new Internal());
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
@@ -105,6 +110,18 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), x, y));
+//        e.addComponent(new Render("circle", Layer.ACTORS_2, x, y));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    private static Entity createStake(World world, float x, float y)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new Physics(PhysicsFactory.createStakeBody(), x, y));
 
         e.addToWorld();
 

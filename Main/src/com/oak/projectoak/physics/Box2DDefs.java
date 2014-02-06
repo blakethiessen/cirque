@@ -1,6 +1,5 @@
 package com.oak.projectoak.physics;
 
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -15,37 +14,37 @@ import com.oak.projectoak.Constants;
  */
 public class Box2DDefs
 {
-    // Shared constants
-    private static final float PLAYER_WIDTH = .36f;
-    private static final float PLAYER_HEIGHT = .76f;
     // Foot is just wide enough to cover most of the bottom, but doesn't register
     // as collision when sliding down walls.
-    private static final float PLAYER_FOOT_HALF_WIDTH = PLAYER_WIDTH / 20 * 9;
+    private static final float PLAYER_FOOT_HALF_WIDTH = Constants.PLAYER_WIDTH / 20 * 9;
     private static final float PLAYER_FOOT_HALF_HEIGHT = .02f;
 
     // Shapes
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();
     private static final PolygonShape PLAYER_FOOT_SHAPE = createPlayerFootShape();
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
-    private static final Shape CIRCLE_SHAPE = createCircle();
+    private static final ChainShape CIRCLE_SHAPE = createCircle();
+    private static final PolygonShape STAKE_SHAPE = createStake();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
     public static final FixtureDef PLAYER_FOOT_SENSOR = createPlayerFootSensor();
     public static final FixtureDef FLOOR_FIXTURE_DEF = createFloorFixtureDef();
     public static final FixtureDef CIRCLE_FIXTURE_DEF = createCircleSegmentFixtureDef();
+    public static final FixtureDef STAKE_FIXTURE_DEF = createStakeFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
     public static final BodyDef FLOOR_BODY_DEF = createFloorBodyDef();
     public static final BodyDef CIRCLE_BODY_DEF = createCircleBodyDef();
+    public static final BodyDef STAKE_BODY_DEF = createStakeBodyDef();
 
     // Shape constructors
     private static PolygonShape createPlayerTorsoShape()
     {
         PolygonShape shape = new PolygonShape();
 
-        shape.setAsBox(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2, new Vector2(PLAYER_WIDTH / 2, PLAYER_HEIGHT / 2), 0);
+        shape.setAsBox(Constants.PLAYER_WIDTH / 2, Constants.PLAYER_HEIGHT / 2, new Vector2(Constants.PLAYER_WIDTH / 2, Constants.PLAYER_HEIGHT / 2), 0);
 
         return shape;
     }
@@ -55,7 +54,7 @@ public class Box2DDefs
         PolygonShape shape = new PolygonShape();
         // This foot shape may have issues with walking up slanted terrain.
         shape.setAsBox(PLAYER_FOOT_HALF_WIDTH, PLAYER_FOOT_HALF_HEIGHT,
-                new Vector2(PLAYER_WIDTH / 2, -PLAYER_FOOT_HALF_HEIGHT), 0);
+                new Vector2(Constants.PLAYER_WIDTH / 2, -PLAYER_FOOT_HALF_HEIGHT), 0);
 
         return shape;
     }
@@ -68,7 +67,7 @@ public class Box2DDefs
         return shape;
     }
 
-    private static Shape createCircle()
+    private static ChainShape createCircle()
     {
         Vector2[] edges = new Vector2[Constants.ARENA_CIRCLE_VERTEX_COUNT];
 
@@ -82,6 +81,14 @@ public class Box2DDefs
 
         ChainShape shape = new ChainShape();
         shape.createLoop(edges);
+
+        return shape;
+    }
+
+    private static PolygonShape createStake()
+    {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1, 1);
 
         return shape;
     }
@@ -129,6 +136,17 @@ public class Box2DDefs
         return fixtureDef;
     }
 
+    private static FixtureDef createStakeFixtureDef()
+    {
+        FixtureDef fixtureDef = new FixtureDef();
+
+        fixtureDef.shape = STAKE_SHAPE;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 1f;
+
+        return fixtureDef;
+    }
+
     // Body Def constructors
     private static BodyDef createPlayerBodyDef()
     {
@@ -148,6 +166,14 @@ public class Box2DDefs
     }
 
     private static BodyDef createCircleBodyDef()
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.StaticBody;
+
+        return bodyDef;
+    }
+
+    private static BodyDef createStakeBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;

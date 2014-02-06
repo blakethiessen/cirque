@@ -8,6 +8,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.components.Platformer;
+import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.physics.userdata.UserData;
 

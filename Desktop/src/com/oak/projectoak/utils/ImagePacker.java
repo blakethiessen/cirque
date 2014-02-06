@@ -18,6 +18,8 @@ public class ImagePacker
         settings.filterMin = Texture.TextureFilter.Linear;
         settings.filterMag = Texture.TextureFilter.Linear;
         settings.pot = false;
+        settings.stripWhitespaceX = true;
+        settings.stripWhitespaceY = true;
         TexturePacker2.process(
                 settings, "textures-original", "textures", "pack");
     }

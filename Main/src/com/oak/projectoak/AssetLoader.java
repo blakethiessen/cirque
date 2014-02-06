@@ -68,24 +68,6 @@ public class AssetLoader
             }
         }
 
-        // Sort each of the animations so they have the correct frame ordering. TODO: Is this necessary?
-        for (Array<AtlasRegion> animationSet : tempAnimationList)
-        {
-            animationSet.sort(new Comparator<AtlasRegion>()
-            {
-                @Override
-                public int compare(AtlasRegion a1, AtlasRegion a2)
-                {
-                    // Two atlasRegions should never have the same index,
-                    // thus we never should need to return 0.
-                    if (a1.index > a2.index)
-                        return -1;
-                    else
-                        return 1;
-                }
-            });
-        }
-
         // Setup maps TODO: If we set the size here, and then add backgrounds, doesn't work?
         textureMap = new HashMap<String, TextureRegion>(tempTextureList.size);
         for (AtlasRegion textureRegion : tempTextureList)
@@ -98,6 +80,9 @@ public class AssetLoader
         {
             animationMap.put(animationSet.first().name, new Animation(Constants.DEFAULT_FRAME_DURATION, animationSet));
         }
+
+        // Add extras
+        textureMap.put("circle", new TextureRegion(new Texture("textures/circle.png")));
     }
 
     public static TextureRegion getTextureRegion(String textureRegion)

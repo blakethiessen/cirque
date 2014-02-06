@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
@@ -29,7 +30,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
 
     public PlayerMovementSystem()
     {
-        super(Aspect.getAspectForAll(Player.class, Player.class));
+        super(Aspect.getAspectForAll(Player.class));
     }
 
     @Override
@@ -47,14 +48,14 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         {
             // Flip the sprite
             render.flipped = true;
-            animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
+            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, -platformer.latMaxVel);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
             render.flipped = false;
-            animate.animation = AssetLoader.getAnimation("run"); // TODO: How to make this more efficient?
+            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, platformer.latMaxVel);
         }
@@ -62,7 +63,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         {
             float xBodyVel = body.getLinearVelocity().x;
 
-            animate.animation = AssetLoader.getAnimation("idle");
+            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_IDLE);;
 
             if (xBodyVel != 0)
             {

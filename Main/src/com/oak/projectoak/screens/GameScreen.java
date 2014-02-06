@@ -38,7 +38,7 @@ public class GameScreen implements Screen
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = 1.5f;
+        camera.zoom = Constants.INITIAL_CAMERA_ZOOM;
 
         // Setup Entity world
         world = new World();
@@ -60,13 +60,14 @@ public class GameScreen implements Screen
 
         world.setSystem(platformerSystem);
 
-        InputSystem input = new InputSystem();
+        InputSystem input = new InputSystem(camera);
         inputManager.addInputProcessor(input);
         world.setSystem(input);
 
         world.setSystem(new CameraSystem(camera, true));
 
         world.setSystem(new PlayerMovementSystem());
+        world.setSystem(new AbilitySystem());
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());
@@ -81,8 +82,8 @@ public class GameScreen implements Screen
 
         EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 8);
         EntityFactory.createEntity(EntityType.EXTERNAL_PLAYER, world, 6, 0);
-        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 6);
-        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, 6, 2);
+        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
+        EntityFactory.createEntity(EntityType.INTERNAL_PLAYER, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
         EntityFactory.createEntity(EntityType.CIRCLE, world, Constants.ARENA_CENTER.x, Constants.ARENA_CENTER.y);
 
         for(Controller controller: Controllers.getControllers())

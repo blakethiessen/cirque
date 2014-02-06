@@ -86,6 +86,10 @@ public class RenderSystem extends EntitySystem
                     render.currentTexture.flip(true, false);
             }
 
+//            render.r = (float)Math.random();
+//            render.b = (float)Math.random();
+//            render.g = (float)Math.random();
+
             batch.setColor(render.r, render.g, render.b, render.a);
 
             batch.draw(render.currentTexture, render.x, render.y, 0, 0,
