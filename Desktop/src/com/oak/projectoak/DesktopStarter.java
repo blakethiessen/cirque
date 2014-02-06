@@ -1,5 +1,6 @@
 package com.oak.projectoak;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.oak.projectoak.utils.ImagePacker;
@@ -10,15 +11,12 @@ import com.oak.projectoak.utils.ImagePacker;
 
 public class DesktopStarter
 {
-    public static final int FRAME_WIDTH = 1440;
-    public static final int FRAME_HEIGHT = 900;
-
     public static void main(String[] args)
     {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Project Oak";
-        cfg.width = FRAME_WIDTH;
-        cfg.height = FRAME_HEIGHT;
+        cfg.width = Gdx.graphics.getWidth();
+        cfg.height = Gdx.graphics.getHeight();
         cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
         cfg.fullscreen = true;

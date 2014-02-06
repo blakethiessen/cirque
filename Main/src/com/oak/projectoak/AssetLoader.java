@@ -80,9 +80,6 @@ public class AssetLoader
         {
             animationMap.put(animationSet.first().name, new Animation(Constants.DEFAULT_FRAME_DURATION, animationSet));
         }
-
-        // Add extras
-        textureMap.put("circle", new TextureRegion(new Texture("textures/circle.png")));
     }
 
     public static TextureRegion getTextureRegion(String textureRegion)
