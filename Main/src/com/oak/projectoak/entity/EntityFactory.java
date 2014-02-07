@@ -3,14 +3,12 @@ package com.oak.projectoak.entity;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
+import com.oak.projectoak.components.physics.CirclePosition;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.Render.Layer;
-import com.oak.projectoak.components.physics.External;
-import com.oak.projectoak.components.physics.Internal;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
 
@@ -21,7 +19,7 @@ import com.oak.projectoak.physics.PhysicsFactory;
 
 public class EntityFactory
 {
-    public static Entity createExternalPlayer(World world, float radialPosition, float heightFromEdge)
+    public static Entity createPlayer(World world, float radialPosition, float heightFromEdge)
     {
         Entity e = world.createEntity();
 
@@ -35,29 +33,7 @@ public class EntityFactory
         final Render render = new Render("idle", Layer.ACTORS_3, twoDPosition);
         e.addComponent(render);
         e.addComponent(new Animate(Constants.SHAHAN_IDLE));
-        e.addComponent(new External());
-
-        world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
-
-        e.addToWorld();
-
-        return e;
-    }
-
-    public static Entity createInternalPlayer(World world, float radialPosition, float heightFromEdge)
-    {
-        Entity e = world.createEntity();
-
-        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, -heightFromEdge);
-
-        e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
-        e.addComponent(new Player());
-        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
-                Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
-        final Render render = new Render("idle", Layer.ACTORS_3, twoDPosition);
-        e.addComponent(render);
-        e.addComponent(new Animate(Constants.SHAHAN_IDLE));
-        e.addComponent(new Internal());
+        e.addComponent(new CirclePosition(radialPosition, heightFromEdge));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 

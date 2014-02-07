@@ -51,8 +51,7 @@ public class GameScreen implements Screen
 
         // Setup systems
         world.setSystem(new DynamicPhysicsSystem());
-        world.setSystem(new ExternalGravitySystem(Constants.ARENA_CENTER));
-        world.setSystem(new InternalGravitySystem(Constants.ARENA_CENTER));
+        world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
         PlatformerSystem platformerSystem = new PlatformerSystem();
         b2world.setContactListener(platformerSystem);
@@ -66,6 +65,7 @@ public class GameScreen implements Screen
         world.setSystem(new CameraSystem(camera, true));
 
         world.setSystem(new PlayerMovementSystem());
+        world.setSystem(new AbilityCreationSystem(world));
         world.setSystem(new AbilitySystem());
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
@@ -79,10 +79,10 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createExternalPlayer(world, 0, 1);
-        EntityFactory.createExternalPlayer(world, (float)Math.PI, 1);
-        EntityFactory.createInternalPlayer(world, (float)Math.PI / 2, 1);
-        EntityFactory.createInternalPlayer(world, (float)Math.PI * 3 / 2, 1);
+        EntityFactory.createPlayer(world, 0, 1);
+        EntityFactory.createPlayer(world, (float) Math.PI, 1);
+        EntityFactory.createPlayer(world, (float)Math.PI / 2, -1);
+        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, -1);
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
         for(Controller controller: Controllers.getControllers())
