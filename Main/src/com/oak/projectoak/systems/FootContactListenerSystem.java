@@ -3,68 +3,77 @@ package com.oak.projectoak.systems;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
-import com.artemis.utils.ImmutableBag;
+import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.components.Platformer;
-import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.DynamicPhysics;
+import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.UserData;
 
 import java.util.HashSet;
-import java.util.Set;
 
-public class PlatformerSystem extends EntitySystem implements ContactListener
+public class FootContactListenerSystem extends EntityProcessingSystem
+        implements BaseContactListener
 {
+    @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Platformer> plm;
-    @Mapper ComponentMapper<DynamicPhysics> phm;
 
-    private Set<Entity> footContactEntities = new HashSet<Entity>();
+    private HashSet<Entity> footContactEntities;
+    private int previousActiveEntityCount;
 
-    public PlatformerSystem()
+    public FootContactListenerSystem()
     {
         super(Aspect.getAspectForAll(Platformer.class, DynamicPhysics.class));
+
+        footContactEntities = new HashSet<Entity>();
+        previousActiveEntityCount = 0;
     }
 
     @Override
-    protected void processEntities(ImmutableBag<Entity> entityImmutableBag)
+    protected void process(Entity e)
     {
-        for (int i = 0; i < entityImmutableBag.size(); i++)
-        {
-            footContactEntities.add(entityImmutableBag.get(i));
-        }
+        footContactEntities.add(e);
     }
 
     @Override
     protected boolean checkProcessing()
     {
-        //TODO: Set this to true only when new entities are added (that have foot contacts?)
-        return true;
+        final int activeEntityCount = world.getEntityManager().getActiveEntityCount();
+        if (activeEntityCount != previousActiveEntityCount)
+        {
+            previousActiveEntityCount = activeEntityCount;
+            return true;
+        }
+
+        return false;
     }
 
     @Override
-    public void beginContact(Contact contact)
+    public boolean beginContact(Contact contact)
     {
         UserData udA = (UserData)contact.getFixtureA().getUserData();
         UserData udB = (UserData)contact.getFixtureB().getUserData();
-        // TODO: Figure out if every body/fixture should have userData.
-        // Then throw exception here instead of null check.
+
         for (Entity e : footContactEntities)
         {
-            DynamicPhysics p = phm.get(e);
+            DynamicPhysics p = dpm.get(e);
             final Fixture footFixture = p.body.getFixtureList().get(1);
             if ((udA != null && footFixture.getUserData() == udA) ||
-                (udB != null && footFixture.getUserData() == udB))
+                    (udB != null && footFixture.getUserData() == udB))
             {
                 Platformer plat = plm.get(e);
                 plat.footContactCount++;
+
+                return true;
             }
         }
+
+        return false;
     }
 
     @Override
-    public void endContact(Contact contact)
+    public boolean endContact(Contact contact)
     {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
@@ -75,22 +84,19 @@ public class PlatformerSystem extends EntitySystem implements ContactListener
             Object udB = fixtureB.getUserData();
             for (Entity e : footContactEntities)
             {
-                DynamicPhysics p = phm.get(e);
+                DynamicPhysics p = dpm.get(e);
                 final Fixture footFixture = p.body.getFixtureList().get(1);
                 if ((udA != null && footFixture.getUserData() == udA) ||
-                    (udB != null && footFixture.getUserData() == udB))
+                        (udB != null && footFixture.getUserData() == udB))
                 {
                     Platformer plat = plm.get(e);
                     plat.footContactCount--;
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {}
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {}
-
 }

@@ -6,6 +6,7 @@ import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
+import com.oak.projectoak.components.abilities.Stake;
 import com.oak.projectoak.components.physics.CirclePosition;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.Render.Layer;
@@ -24,7 +25,6 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
-        System.out.println(twoDPosition.toString());
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
         e.addComponent(new Player());
@@ -73,6 +73,7 @@ public class EntityFactory
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
 
+        e.addComponent(new Stake());
         e.addComponent(new Physics(PhysicsFactory.createStakeBody(), twoDPosition));
 
         e.addToWorld();

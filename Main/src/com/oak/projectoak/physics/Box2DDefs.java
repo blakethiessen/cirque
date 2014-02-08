@@ -88,7 +88,12 @@ public class Box2DDefs
     private static PolygonShape createStake()
     {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(.3f, .3f);
+        shape.set(new float[]
+                {
+                        0, 0,
+                        .5f, 1,
+                        1, 0
+                });
 
         return shape;
     }

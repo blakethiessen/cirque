@@ -12,7 +12,8 @@ import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.input.InputManager;
 import com.oak.projectoak.physics.*;
-import com.oak.projectoak.systems.PlatformerSystem;
+import com.oak.projectoak.systems.FootContactListenerSystem;
+import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.systems.*;
 import com.oak.projectoak.systems.InputSystem;
@@ -46,6 +47,14 @@ public class GameScreen implements Screen
         com.badlogic.gdx.physics.box2d.World b2world =
                 new com.badlogic.gdx.physics.box2d.World(Constants.GRAVITY, true);
 
+        // Box2D Collisions setup
+        GFContactListener contactListener = new GFContactListener();
+
+        final FootContactListenerSystem footContactListenerSystem = new FootContactListenerSystem();
+        contactListener.addContactListener(footContactListenerSystem);
+
+        b2world.setContactListener(contactListener);
+
         // Setup input manager
         final InputManager inputManager = new InputManager(world);
 
@@ -53,17 +62,13 @@ public class GameScreen implements Screen
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
-        PlatformerSystem platformerSystem = new PlatformerSystem();
-        b2world.setContactListener(platformerSystem);
-
-        world.setSystem(platformerSystem);
-
         InputSystem input = new InputSystem(camera);
         inputManager.addInputProcessor(input);
         world.setSystem(input);
 
         world.setSystem(new CameraSystem(camera, true));
 
+        world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());
         world.setSystem(new AbilityCreationSystem(world));
         world.setSystem(new AbilitySystem());
@@ -114,13 +119,13 @@ public class GameScreen implements Screen
     @Override
     public void show()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void hide()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
