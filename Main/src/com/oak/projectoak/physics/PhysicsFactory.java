@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.FootSensorUD;
-import com.oak.projectoak.physics.userdata.StakeUD;
+import com.oak.projectoak.physics.userdata.TrapUD;
 import com.oak.projectoak.physics.userdata.UserData;
 
 /*
@@ -60,7 +60,7 @@ public class PhysicsFactory
         Body body = b2world.createBody(Box2DDefs.STAKE_BODY_DEF);
 
         body.createFixture(Box2DDefs.STAKE_FIXTURE_DEF);
-        body.setUserData(new StakeUD());
+        body.setUserData(new TrapUD());
 
         return body;
     }

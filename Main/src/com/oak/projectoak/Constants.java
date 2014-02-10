@@ -73,13 +73,17 @@ public class Constants
     public static final int P2_LEFT_KEY = Input.Keys.LEFT;
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
     public static final int P2_JUMP_KEY = Input.Keys.UP;
+    public static final Integer P2_ABILITY_1_KEY = Input.Keys.SLASH;
+
 
     // Currently for debug
     public static final int P3_LEFT_KEY = Input.Keys.F;
     public static final int P3_RIGHT_KEY = Input.Keys.H;
     public static final int P3_JUMP_KEY = Input.Keys.T;
+    public static final Integer P3_ABILITY_1_KEY = Input.Keys.R;
 
     public static final int P4_LEFT_KEY = Input.Keys.J;
     public static final int P4_RIGHT_KEY = Input.Keys.L;
     public static final int P4_JUMP_KEY = Input.Keys.I;
+    public static final Integer P4_ABILITY_1_KEY = Input.Keys.U;
 }

@@ -1,16 +1,15 @@
 package com.oak.projectoak.systems;
 
-import com.apple.laf.AquaButtonBorder;
+//import com.apple.laf.AquaButtonBorder;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.oak.projectoak.components.Ability;
-import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.PlayerUD;
-import com.oak.projectoak.physics.userdata.StakeUD;
+import com.oak.projectoak.physics.userdata.TrapUD;
 
 public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
@@ -37,7 +36,7 @@ public class AbilitySystem extends EntityProcessingSystem
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
 
-        if (userDataA instanceof StakeUD)
+        if (userDataA instanceof TrapUD)
         {
             if (userDataB instanceof PlayerUD)
             {
@@ -48,7 +47,7 @@ public class AbilitySystem extends EntityProcessingSystem
                 return true;
             }
         }
-        else if (userDataB instanceof StakeUD)
+        else if (userDataB instanceof TrapUD)
         {
             if (userDataA instanceof PlayerUD)
             {
