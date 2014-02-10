@@ -51,6 +51,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, -platformer.latMaxVel);
+            increaseEnergy(player);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
@@ -58,6 +59,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
 
             moveLaterally(body, platformer, platformer.latMaxVel);
+            increaseEnergy(player);
         }
         else
         {
@@ -90,6 +92,13 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                     }
                 }, 500);
             }
+    }
+
+    private void increaseEnergy(Player player) {
+        if (player.energyAmt <= 1f)
+        {
+            player.energyAmt += .01f;
+        }
     }
 
     private void moveLaterally(Body body, Platformer platformer, float acceleration)

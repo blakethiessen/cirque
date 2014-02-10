@@ -31,11 +31,12 @@ public class AbilityCreationSystem extends EntityProcessingSystem
         Player player = pm.get(e);
         CirclePosition circlePosition = cpm.get(e);
 
-        if (player.isActionOn(Action.ABILITY_1))
+        if (player.isActionOn(Action.ABILITY_1) && player.energyAmt >= 0.25f)
         {
             System.out.println(circlePosition.radialPosition);
             EntityFactory.createStake(world,
                     circlePosition.radialPosition, -circlePosition.distanceFromEdge);
+            player.energyAmt -= .25f;
         }
     }
 }

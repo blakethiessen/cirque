@@ -18,6 +18,8 @@ public class Player extends Component
     public float mouseX;
     public float mouseY;
 
+    public float energyAmt;
+
     public Player()
     {
         playerNum = ++Constants.curPlayersActive;
@@ -25,6 +27,8 @@ public class Player extends Component
         actionMask = 0;
         this.mouseX = 0f;
         this.mouseY = 0f;
+
+        energyAmt = .25f;
     }
 
     public void setAction(Action action, boolean state)
