@@ -46,8 +46,10 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                     {
 //                        trapInside = true;
                     }
+
+
                 }
-            });
+            }, 0, 0, 10, 10);
             EntityFactory.createStake(world,
                     circlePosition.radialPosition, -circlePosition.distanceFromEdge);
             player.energyAmt -= .25f;
