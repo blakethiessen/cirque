@@ -53,12 +53,18 @@ public class GameScreen implements Screen
         final FootContactListenerSystem footContactListenerSystem = new FootContactListenerSystem();
         contactListener.addContactListener(footContactListenerSystem);
 
+        final DestructionSystem destructionSystem = new DestructionSystem(b2world, footContactListenerSystem);
+
+        final AbilitySystem abilitySystem = new AbilitySystem(b2world, destructionSystem);
+        contactListener.addContactListener(abilitySystem);
+
         b2world.setContactListener(contactListener);
 
         // Setup input manager
         final InputManager inputManager = new InputManager(world);
 
         // Setup systems
+        world.setSystem(destructionSystem);
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
@@ -71,7 +77,7 @@ public class GameScreen implements Screen
         world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());
         world.setSystem(new AbilityCreationSystem(world));
-        world.setSystem(new AbilitySystem());
+        world.setSystem(abilitySystem);
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());

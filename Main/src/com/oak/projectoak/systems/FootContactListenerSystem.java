@@ -49,6 +49,11 @@ public class FootContactListenerSystem extends EntityProcessingSystem
         return false;
     }
 
+    public void removeIdenticalEntity(Entity e)
+    {
+        footContactEntities.remove(e);
+    }
+
     @Override
     public boolean beginContact(Contact contact)
     {
@@ -58,14 +63,17 @@ public class FootContactListenerSystem extends EntityProcessingSystem
         for (Entity e : footContactEntities)
         {
             DynamicPhysics p = dpm.get(e);
-            final Fixture footFixture = p.body.getFixtureList().get(1);
-            if ((udA != null && footFixture.getUserData() == udA) ||
-                    (udB != null && footFixture.getUserData() == udB))
+            if (p != null)
             {
-                Platformer plat = plm.get(e);
-                plat.footContactCount++;
+                final Fixture footFixture = p.body.getFixtureList().get(1);
+                if ((udA != null && footFixture.getUserData() == udA) ||
+                        (udB != null && footFixture.getUserData() == udB))
+                {
+                    Platformer plat = plm.get(e);
+                    plat.footContactCount++;
 
-                return true;
+                    return true;
+                }
             }
         }
 
@@ -85,14 +93,19 @@ public class FootContactListenerSystem extends EntityProcessingSystem
             for (Entity e : footContactEntities)
             {
                 DynamicPhysics p = dpm.get(e);
-                final Fixture footFixture = p.body.getFixtureList().get(1);
-                if ((udA != null && footFixture.getUserData() == udA) ||
-                        (udB != null && footFixture.getUserData() == udB))
-                {
-                    Platformer plat = plm.get(e);
-                    plat.footContactCount--;
 
-                    return true;
+                // Remove entity on the next update.
+                if (p != null)
+                {
+                    final Fixture footFixture = p.body.getFixtureList().get(1);
+                    if ((udA != null && footFixture.getUserData() == udA) ||
+                            (udB != null && footFixture.getUserData() == udB))
+                    {
+                        Platformer plat = plm.get(e);
+                        plat.footContactCount--;
+
+                        return true;
+                    }
                 }
             }
         }

@@ -32,7 +32,8 @@ public class GFContactListener implements ContactListener
     {
         for (BaseContactListener contactListener : contactListeners)
         {
-            contactListener.beginContact(contact);
+            if (contactListener.beginContact(contact))
+                return;
         }
     }
 
@@ -41,7 +42,8 @@ public class GFContactListener implements ContactListener
     {
         for (BaseContactListener contactListener : contactListeners)
         {
-            contactListener.endContact(contact);
+            if (contactListener.endContact(contact))
+                return;
         }
     }
 

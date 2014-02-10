@@ -4,7 +4,7 @@ import com.artemis.Entity;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.oak.projectoak.physics.userdata.EntityUD;
+import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.FootSensorUD;
 import com.oak.projectoak.physics.userdata.StakeUD;
 import com.oak.projectoak.physics.userdata.UserData;
@@ -28,7 +28,7 @@ public class PhysicsFactory
         Body body = b2world.createBody(Box2DDefs.PLAYER_BODY_DEF);
 
         body.createFixture(Box2DDefs.PLAYER_TORSO);
-        UserData runnerUD = new EntityUD(e);
+        UserData runnerUD = new PlayerUD(e);
         body.setUserData(runnerUD);
 
         Fixture sensorFixture = body.createFixture(Box2DDefs.PLAYER_FOOT_SENSOR);
