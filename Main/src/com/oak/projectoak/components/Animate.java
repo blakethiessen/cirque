@@ -11,11 +11,48 @@ import com.oak.projectoak.AssetLoader;
 
 public class Animate extends Component
 {
-    public Animation animation;
+    private Animation animation;
     public float stateTime = 0;
+    public boolean playFullAnimation;
 
     public Animate(String initialAnimation)
     {
         animation = AssetLoader.getAnimation(initialAnimation);
+        playFullAnimation = false;
+    }
+
+    public void setAnimation(String animationString, boolean playFull)
+    {
+        if (!playFullAnimation)
+        {
+            final Animation newAnimation = AssetLoader.getAnimation(animationString);
+            if (animation != newAnimation)
+            {
+                this.animation = newAnimation;
+                stateTime = 0;
+                playFullAnimation = playFull;
+            }
+        }
+    }
+
+    public void setAnimation(String animation)
+    {
+        setAnimation(animation, false);
+    }
+
+    public Animation getAnimation()
+    {
+        return animation;
+    }
+
+    public void setToStaticTexture()
+    {
+        animation = null;
+    }
+
+    public void resetAnimationIfDone()
+    {
+        if (animation.isAnimationFinished(stateTime))
+            playFullAnimation = false;
     }
 }

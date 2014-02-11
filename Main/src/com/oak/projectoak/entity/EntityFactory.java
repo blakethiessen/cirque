@@ -30,9 +30,9 @@ public class EntityFactory
         e.addComponent(new Player());
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
-        final Render render = new Render("idle", Layer.ACTORS_3, twoDPosition);
-        e.addComponent(render);
-        e.addComponent(new Animate(Constants.SHAHAN_IDLE));
+        e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
+        e.addComponent(new Animate(Constants.PIRATE_IDLE));
+        e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
         e.addComponent(new CirclePosition(radialPosition, heightFromEdge));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);

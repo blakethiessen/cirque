@@ -26,11 +26,12 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> rm;
     @Mapper ComponentMapper<Animate> am;
+    @Mapper ComponentMapper<PlayerAnimation> pam;
     @Mapper ComponentMapper<Player> cm;
 
     public PlayerMovementSystem()
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Aspect.getAspectForAll(PlayerAnimation.class));
     }
 
     @Override
@@ -43,12 +44,15 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         final Platformer platformer = pm.get(e);
         Render render = rm.get(e);
         Animate animate = am.get(e);
+        PlayerAnimation playerAnimation = pam.get(e);
 
         if (player.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprite
             render.flipped = true;
-            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
+
+            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+                animate.setAnimation(playerAnimation.walk);
 
             moveLaterally(body, platformer, -platformer.latMaxVel);
             increaseEnergy(player);
@@ -56,7 +60,9 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
             render.flipped = false;
-            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_WALK_ANIMATION); // TODO: How to make this more efficient?
+
+            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+                animate.setAnimation(playerAnimation.walk);
 
             moveLaterally(body, platformer, platformer.latMaxVel);
             increaseEnergy(player);
@@ -65,7 +71,9 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         {
             float xBodyVel = body.getLinearVelocity().x;
 
-            animate.animation = AssetLoader.getAnimation(Constants.SHAHAN_IDLE);;
+            // If we're on the floor...
+            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+                animate.setAnimation(playerAnimation.idle);
 
             if (xBodyVel != 0)
             {
@@ -82,6 +90,9 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 // Apply jump force in the opposite direction of gravity.
                 body.applyForceToCenter(physics.curGravityVec.scl(-platformer.jumpAccel), true);
                 platformer.jumpTimeoutOver = false;
+
+                animate.setToStaticTexture();
+                render.currentTexture = AssetLoader.getTextureRegion(playerAnimation.jump);
 
                 platformer.jumpTimeout.schedule(new TimerTask()
                 {

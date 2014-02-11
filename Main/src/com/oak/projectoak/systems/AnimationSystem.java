@@ -31,13 +31,16 @@ public class AnimationSystem extends EntityProcessingSystem
         Render render = rm.get(e);
 
         // If the animation isn't set, we're rendering static images.
-        if (animate.animation != null)
+        if (animate.getAnimation() != null)
         {
-            // TODO: Is this the optimal way to display the animation?
             render.currentTexture =
-                    animate.animation.getKeyFrame(animate.stateTime, true);
+                    animate.getAnimation().getKeyFrame(animate.stateTime, true);
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
+
+            System.out.println(animate.stateTime);
+
+            animate.resetAnimationIfDone();
         }
     }
 }

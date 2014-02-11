@@ -6,8 +6,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Constants
 {
-    public static final String SHAHAN_WALK_ANIMATION = "shahan/walk/walk";
+    // Animations
+    public static final String SHAHAN_WALK = "shahan/walk/walk";
     public static final String SHAHAN_IDLE = "shahan/idle/idle";
+    public static final String PIRATE_IDLE = "pirate/idle/idle";
+    public static final String PIRATE_WALK = "pirate/walk/walk";
+    public static final String PIRATE_JUMP = "pirate/jump/jump";
+    public static final String PIRATE_LAY_TRAP = "pirate/lay_trap/lay_trap";
+    public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
+
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
