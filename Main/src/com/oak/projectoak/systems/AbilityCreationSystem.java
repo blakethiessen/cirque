@@ -1,18 +1,20 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.*;
+import com.artemis.Aspect;
+import com.artemis.ComponentMapper;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.QueryCallback;
+import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Action;
-import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.PlayerAnimation;
 import com.oak.projectoak.components.physics.CirclePosition;
 import com.oak.projectoak.entity.EntityFactory;
-import com.oak.projectoak.physics.userdata.TrapUD;
+import com.oak.projectoak.physics.querycallbacks.TrapIntersectingQueryCallback;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
@@ -43,23 +45,18 @@ public class AbilityCreationSystem extends EntityProcessingSystem
             Animate animate = am.get(e);
             PlayerAnimation playerAnimation = pam.get(e);
 
-//            boolean trapInside = false;
-//            b2world.QueryAABB(new QueryCallback() {
-//                @Override
-//                public boolean reportFixture(Fixture fixture) {
-//                    if (fixture.getBody().getUserData() instanceof TrapUD)
-//                    {
-////                        trapInside = true;
-//                    }
-//                    return false;
-//
-//                }
-//            }, 0, 0, 10, 10);
+            final TrapIntersectingQueryCallback trapCallback = new TrapIntersectingQueryCallback();
+            Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(circlePosition.radialPosition, -circlePosition.distanceFromEdge);
 
-            animate.setAnimation(playerAnimation.layTrap, true);
-            EntityFactory.createStake(world,
-                    circlePosition.radialPosition, -circlePosition.distanceFromEdge);
-            player.energyAmt -= .25f;
+            b2world.QueryAABB(trapCallback, twoDPosition.x, twoDPosition.y, twoDPosition.x + 1, twoDPosition.y + 1);
+
+            if (!trapCallback.isTrapIntersecting())
+            {
+                animate.setAnimation(playerAnimation.layTrap, true);
+                EntityFactory.createStake(world,
+                        circlePosition.radialPosition, -circlePosition.distanceFromEdge);
+                player.energyAmt -= .25f;
+            }
         }
     }
 }

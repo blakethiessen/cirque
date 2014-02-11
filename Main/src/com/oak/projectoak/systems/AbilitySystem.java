@@ -24,6 +24,12 @@ public class AbilitySystem extends EntityProcessingSystem
     }
 
     @Override
+    protected boolean checkProcessing()
+    {
+        return false;
+    }
+
+    @Override
     protected void process(Entity e)
     {
 

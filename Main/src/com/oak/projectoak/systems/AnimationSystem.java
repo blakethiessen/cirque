@@ -38,8 +38,6 @@ public class AnimationSystem extends EntityProcessingSystem
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
 
-            System.out.println(animate.stateTime);
-
             animate.resetAnimationIfDone();
         }
     }
