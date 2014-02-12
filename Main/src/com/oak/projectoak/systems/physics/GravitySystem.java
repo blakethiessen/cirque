@@ -54,7 +54,10 @@ public class GravitySystem extends EntityProcessingSystem
         double rotation = Math.atan2(curGravityVector.x, -curGravityVector.y);
         body.setTransform(position, (float)rotation);
 
-        circlePosition.radialPosition = (float)(rotation + Math.PI / 2);
+        if (circlePosition.distanceFromEdge > 0)
+            circlePosition.radialPosition = (float)(rotation + Math.PI / 2);
+        else
+            circlePosition.radialPosition = (float)(rotation - Math.PI / 2);
 
         render.rotation = (float)Math.toDegrees(rotation);
     }

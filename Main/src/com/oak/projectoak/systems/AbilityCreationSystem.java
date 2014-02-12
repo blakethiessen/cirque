@@ -48,7 +48,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
             final TrapIntersectingQueryCallback trapCallback = new TrapIntersectingQueryCallback();
             Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(circlePosition.radialPosition, -circlePosition.distanceFromEdge);
 
-            b2world.QueryAABB(trapCallback, twoDPosition.x, twoDPosition.y, twoDPosition.x + 1, twoDPosition.y + 1);
+            b2world.QueryAABB(trapCallback, twoDPosition.x, twoDPosition.y, twoDPosition.x + .5f, twoDPosition.y + .5f);
 
             if (!trapCallback.isTrapIntersecting())
             {

@@ -90,9 +90,9 @@ public class Box2DDefs
         PolygonShape shape = new PolygonShape();
         shape.set(new float[]
                 {
-                        0, 0,
-                        .5f, 1,
-                        1, 0
+                    0, 0,
+                    .5f, 1,
+                    1, 0
                 });
 
         return shape;
