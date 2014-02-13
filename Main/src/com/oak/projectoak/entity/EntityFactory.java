@@ -6,10 +6,10 @@ import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
-import com.oak.projectoak.components.abilities.Stake;
-import com.oak.projectoak.components.physics.CirclePosition;
-import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.Render.Layer;
+import com.oak.projectoak.components.abilities.Stake;
+import com.oak.projectoak.components.physics.CircleTransform;
+import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
 
@@ -33,7 +33,7 @@ public class EntityFactory
         e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
         e.addComponent(new Animate(Constants.PIRATE_IDLE));
         e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-        e.addComponent(new CirclePosition(radialPosition, heightFromEdge));
+        e.addComponent(new CircleTransform(radialPosition, heightFromEdge));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 
@@ -67,14 +67,17 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createStake(World world, float radialPosition, float heightFromEdge)
+    public static Entity createStake(World world, float radialPosition, float heightFromEdge, float rotation)
     {
         Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
 
+        // Adjust to position at center
+        twoDPosition.set(twoDPosition.x - Constants.STAKE_WIDTH / 2, twoDPosition.y - Constants.STAKE_WIDTH / 2);
+
         e.addComponent(new Stake());
-        e.addComponent(new Physics(PhysicsFactory.createStakeBody(), twoDPosition));
+        e.addComponent(new Physics(PhysicsFactory.createStakeBody(rotation), twoDPosition));
 
         e.addToWorld();
 

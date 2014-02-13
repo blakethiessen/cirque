@@ -10,14 +10,15 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.input.InputManager;
-import com.oak.projectoak.physics.*;
-import com.oak.projectoak.systems.FootContactListenerSystem;
-import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.entity.EntityFactory;
+import com.oak.projectoak.input.InputManager;
+import com.oak.projectoak.physics.PhysicsFactory;
+import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.systems.*;
-import com.oak.projectoak.systems.InputSystem;
-import com.oak.projectoak.systems.physics.*;
+import com.oak.projectoak.systems.physics.DynamicPhysicsSystem;
+import com.oak.projectoak.systems.physics.GravitySystem;
+import com.oak.projectoak.systems.physics.PhysicsDebugSystem;
+import com.oak.projectoak.systems.physics.PhysicsStepSystem;
 
 /*
     The GameScreen is screen that contains the actual game.
@@ -28,11 +29,10 @@ import com.oak.projectoak.systems.physics.*;
 public class GameScreen implements Screen
 {
     private World world;
-    private final OrthographicCamera camera;
 
     public GameScreen()
     {
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
 
         // Setup asset loading
         AssetLoader.initialize();
