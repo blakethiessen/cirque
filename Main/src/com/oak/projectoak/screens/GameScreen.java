@@ -15,10 +15,7 @@ import com.oak.projectoak.input.InputManager;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.systems.*;
-import com.oak.projectoak.systems.physics.DynamicPhysicsSystem;
-import com.oak.projectoak.systems.physics.GravitySystem;
-import com.oak.projectoak.systems.physics.PhysicsDebugSystem;
-import com.oak.projectoak.systems.physics.PhysicsStepSystem;
+import com.oak.projectoak.systems.physics.*;
 
 /*
     The GameScreen is screen that contains the actual game.
@@ -73,6 +70,7 @@ public class GameScreen implements Screen
         world.setSystem(input);
 
         world.setSystem(new CameraSystem(camera, true));
+        world.setSystem(new ArenaRotationSystem());
 
         world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());

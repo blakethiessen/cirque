@@ -21,7 +21,7 @@ public class Constants
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
-    public static final float INITIAL_CAMERA_ZOOM = 1.5f;
+    public static final float INITIAL_CAMERA_ZOOM = 2f;
 
     public class Groups
     {
@@ -44,8 +44,10 @@ public class Constants
 
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
-    public static final int ARENA_RADIUS = 5;
-    public static final int ARENA_CIRCLE_VERTEX_COUNT = ARENA_RADIUS * 10;
+    public static final float ARENA_INNER_RADIUS = 5;
+    public static final float ARENA_EDGE_WIDTH = .2f;
+    public static final float ARENA_OUTER_RADIUS = Constants.ARENA_INNER_RADIUS + Constants.ARENA_EDGE_WIDTH;
+    public static final int ARENA_CIRCLE_VERTEX_COUNT = (int)ARENA_INNER_RADIUS * 10;
 
     public static final Vector2 ARENA_CENTER = new Vector2(
             ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
@@ -55,9 +57,7 @@ public class Constants
 
     public static Vector2 ConvertRadialTo2DPosition(float radialPosition, boolean onOutsideEdge)
     {
-        float DISTANCE = ARENA_RADIUS;
-
-        DISTANCE += onOutsideEdge ? Constants.SPAWNING_DISTANCE_FROM_EDGE : -Constants.SPAWNING_DISTANCE_FROM_EDGE;
+        float DISTANCE = onOutsideEdge ? Constants.ARENA_OUTER_RADIUS : Constants.ARENA_INNER_RADIUS;
 
         return new Vector2((float)(ARENA_CENTER.x + DISTANCE * Math.cos(radialPosition)),
                            (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));

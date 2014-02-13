@@ -50,7 +50,8 @@ public class PhysicsFactory
     {
         Body body = b2world.createBody(Box2DDefs.CIRCLE_BODY_DEF);
 
-        body.createFixture(Box2DDefs.CIRCLE_FIXTURE_DEF);
+        body.createFixture(Box2DDefs.INNER_CIRCLE_FIXTURE_DEF);
+        body.createFixture(Box2DDefs.OUTER_CIRCLE_FIXTURE_DEF);
 
         return body;
     }

@@ -61,6 +61,7 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), position));
+        e.addComponent(new Arena());
 //        e.addComponent(new Render("circle", Layer.ACTORS_2, radialPosition, heightFromEdge));
 
         e.addToWorld();

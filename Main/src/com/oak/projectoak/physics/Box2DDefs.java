@@ -23,14 +23,16 @@ public class Box2DDefs
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();
     private static final PolygonShape PLAYER_FOOT_SHAPE = createPlayerFootShape();
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
-    private static final ChainShape CIRCLE_SHAPE = createCircle();
+    private static final ChainShape INNER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_INNER_RADIUS);
+    private static final ChainShape OUTER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_OUTER_RADIUS);
     private static final PolygonShape STAKE_SHAPE = createStake();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
     public static final FixtureDef PLAYER_FOOT_SENSOR = createPlayerFootSensor();
     public static final FixtureDef FLOOR_FIXTURE_DEF = createFloorFixtureDef();
-    public static final FixtureDef CIRCLE_FIXTURE_DEF = createCircleSegmentFixtureDef();
+    public static final FixtureDef INNER_CIRCLE_FIXTURE_DEF = createInnerCircleFixtureDef();
+    public static final FixtureDef OUTER_CIRCLE_FIXTURE_DEF = createOuterCircleFixtureDef();
     public static final FixtureDef STAKE_FIXTURE_DEF = createStakeFixtureDef();
 
     // BodyDefs
@@ -67,7 +69,7 @@ public class Box2DDefs
         return shape;
     }
 
-    private static ChainShape createCircle()
+    private static ChainShape createCircleShape(float circleRadius)
     {
         Vector2[] edges = new Vector2[Constants.ARENA_CIRCLE_VERTEX_COUNT];
 
@@ -75,8 +77,8 @@ public class Box2DDefs
 
         for (int i = 0; i < Constants.ARENA_CIRCLE_VERTEX_COUNT; i ++)
         {
-            edges[i] = new Vector2((float)(Constants.ARENA_RADIUS * Math.cos(angle * i)),
-                    (float)(Constants.ARENA_RADIUS * Math.sin(angle * i)));
+            edges[i] = new Vector2((float)(circleRadius * Math.cos(angle * i)),
+                    (float)(circleRadius * Math.sin(angle * i)));
         }
 
         ChainShape shape = new ChainShape();
@@ -130,11 +132,22 @@ public class Box2DDefs
         return fixtureDef;
     }
 
-    private static FixtureDef createCircleSegmentFixtureDef()
+    private static FixtureDef createInnerCircleFixtureDef()
     {
         FixtureDef fixtureDef = new FixtureDef();
 
-        fixtureDef.shape = CIRCLE_SHAPE;
+        fixtureDef.shape = INNER_CIRCLE_SHAPE;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 1f;
+
+        return fixtureDef;
+    }
+
+    private static FixtureDef createOuterCircleFixtureDef()
+    {
+        FixtureDef fixtureDef = new FixtureDef();
+
+        fixtureDef.shape = OUTER_CIRCLE_SHAPE;
         fixtureDef.density = 1;
         fixtureDef.friction = 1f;
 
@@ -173,7 +186,7 @@ public class Box2DDefs
     private static BodyDef createCircleBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.StaticBody;
+        bodyDef.type = BodyType.KinematicBody;
 
         return bodyDef;
     }
