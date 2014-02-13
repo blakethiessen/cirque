@@ -9,20 +9,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Render;
-import com.oak.projectoak.components.physics.CircleTransform;
+import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
 public class GravitySystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> dm;
-    @Mapper ComponentMapper<CircleTransform> ctm;
+    @Mapper ComponentMapper<ArenaTransform> ctm;
 
     private final Vector2 arenaCenter;
 
     public GravitySystem(Vector2 arenaCenter)
     {
-        super(Aspect.getAspectForAll(CircleTransform.class, DynamicPhysics.class, Render.class));
+        super(Aspect.getAspectForAll(ArenaTransform.class, DynamicPhysics.class, Render.class));
         this.arenaCenter = arenaCenter;
     }
 
@@ -31,7 +31,7 @@ public class GravitySystem extends EntityProcessingSystem
     {
         Render render = dm.get(e);
         DynamicPhysics physics = dpm.get(e);
-        CircleTransform circleTransform = ctm.get(e);
+        ArenaTransform arenaTransform = ctm.get(e);
 
         Body body = physics.body;
         Vector2 position = body.getPosition();
@@ -40,7 +40,7 @@ public class GravitySystem extends EntityProcessingSystem
         Vector2 curGravityVector = arenaCenter.cpy();
         curGravityVector.sub(position);
 
-        if (!circleTransform.onOutsideEdge)
+        if (!arenaTransform.onOutsideEdge)
         {
             // Key difference between internal and external
             // gravity system, gravity needs to be flipped.
@@ -53,17 +53,17 @@ public class GravitySystem extends EntityProcessingSystem
 
         // Set the player's feet towards the center of the circle.
         double rotation;
-        if (circleTransform.onOutsideEdge)
+        if (arenaTransform.onOutsideEdge)
             rotation = Math.atan2(curGravityVector.x, -curGravityVector.y) - Constants.ROTATIONAL_OFFSET;
         else
             rotation = Math.atan2(curGravityVector.x, -curGravityVector.y) + Constants.ROTATIONAL_OFFSET;
 
         body.setTransform(position, (float)rotation);
 
-        if (circleTransform.onOutsideEdge)
-            circleTransform.radialPosition = (float)(rotation + Math.PI / 2);
+        if (arenaTransform.onOutsideEdge)
+            arenaTransform.radialPosition = (float)(rotation + Math.PI / 2);
         else
-            circleTransform.radialPosition = (float)(rotation - Math.PI / 2);
+            arenaTransform.radialPosition = (float)(rotation - Math.PI / 2);
 
         render.rotation = (float)Math.toDegrees(rotation);
     }

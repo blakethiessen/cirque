@@ -9,7 +9,7 @@ import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.Render.Layer;
 import com.oak.projectoak.components.abilities.Stake;
-import com.oak.projectoak.components.physics.CircleTransform;
+import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
@@ -34,7 +34,7 @@ public class EntityFactory
         e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
         e.addComponent(new Animate(Constants.PIRATE_IDLE));
         e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-        e.addComponent(new CircleTransform(radialPosition, onOutsideEdge));
+        e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 

@@ -6,21 +6,18 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Action;
-import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.PlayerAnimation;
-import com.oak.projectoak.components.physics.CircleTransform;
+import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
-import com.oak.projectoak.physics.querycallbacks.TrapIntersectingQueryCallback;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<CircleTransform> cpm;
+    @Mapper ComponentMapper<ArenaTransform> cpm;
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
     @Mapper ComponentMapper<DynamicPhysics> dpm;
@@ -43,27 +40,21 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
         if (player.isActionOn(Action.ABILITY_1) && player.energyAmt >= 0.25f)
         {
-            CircleTransform circleTransform = cpm.get(e);
+            ArenaTransform arenaTransform = cpm.get(e);
             Animate animate = am.get(e);
             PlayerAnimation playerAnimation = pam.get(e);
             DynamicPhysics dynamicPhysics = dpm.get(e);
 
-            final TrapIntersectingQueryCallback trapCallback = new TrapIntersectingQueryCallback();
+            animate.setAnimation(playerAnimation.layTrap, true);
 
-            Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(circleTransform.radialPosition, !circleTransform.onOutsideEdge);
+            EntityFactory.createStake(world, arenaTransform.radialPosition,
+                    !arenaTransform.onOutsideEdge,
+                    (float)(dynamicPhysics.body.getAngle() + Math.PI));
 
-            b2world.QueryAABB(trapCallback, twoDPosition.x, twoDPosition.y, twoDPosition.x + .5f, twoDPosition.y + .5f);
+            player.energyAmt -= .25f;
 
-            if (!trapCallback.isTrapIntersecting())
-            {
-                animate.setAnimation(playerAnimation.layTrap, true);
-
-                EntityFactory.createStake(world, circleTransform.radialPosition,
-                        !circleTransform.onOutsideEdge,
-                        (float)(dynamicPhysics.body.getAngle() + Math.PI));
-
-                player.energyAmt -= .25f;
-            }
+            player.setAction(Action.ABILITY_1, false);
         }
     }
+
 }

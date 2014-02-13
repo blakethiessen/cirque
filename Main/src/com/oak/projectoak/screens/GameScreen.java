@@ -80,6 +80,7 @@ public class GameScreen implements Screen
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());
         world.setSystem(new RenderSystem(camera));
+        world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setManager(new GroupManager());
 

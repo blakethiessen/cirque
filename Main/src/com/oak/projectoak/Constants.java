@@ -53,8 +53,6 @@ public class Constants
             ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
             ConvertPixelsToMeters(Gdx.graphics.getHeight() / 2));
 
-    private static final float SPAWNING_DISTANCE_FROM_EDGE = .1f;
-
     public static Vector2 ConvertRadialTo2DPosition(float radialPosition, boolean onOutsideEdge)
     {
         float DISTANCE = onOutsideEdge ? Constants.ARENA_OUTER_RADIUS : Constants.ARENA_INNER_RADIUS;
