@@ -5,11 +5,11 @@ import com.artemis.Component;
 public class CircleTransform extends Component
 {
     public float radialPosition;
-    public float distanceFromEdge;
+    public boolean onOutsideEdge;
 
-    public CircleTransform(float radialPosition, float distanceFromEdge)
+    public CircleTransform(float radialPosition, boolean onOutsideEdge)
     {
         this.radialPosition = radialPosition;
-        this.distanceFromEdge = distanceFromEdge;
+        this.onOutsideEdge = onOutsideEdge;
     }
 }

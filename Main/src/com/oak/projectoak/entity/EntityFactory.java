@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.Render.Layer;
@@ -20,11 +21,11 @@ import com.oak.projectoak.physics.PhysicsFactory;
 
 public class EntityFactory
 {
-    public static Entity createPlayer(World world, float radialPosition, float heightFromEdge)
+    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge)
     {
         Entity e = world.createEntity();
 
-        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
         e.addComponent(new Player());
@@ -33,7 +34,7 @@ public class EntityFactory
         e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
         e.addComponent(new Animate(Constants.PIRATE_IDLE));
         e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-        e.addComponent(new CircleTransform(radialPosition, heightFromEdge));
+        e.addComponent(new CircleTransform(radialPosition, onOutsideEdge));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 
@@ -42,11 +43,11 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createFloor(World world, float radialPosition, float heightFromEdge)
+    public static Entity createFloor(World world, float radialPosition, boolean onOutsideEdge)
     {
         Entity e = world.createEntity();
 
-        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         e.addComponent(new Physics(PhysicsFactory.createFloorBody(), twoDPosition));
 
@@ -67,17 +68,25 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createStake(World world, float radialPosition, float heightFromEdge, float rotation)
+    public static Entity createStake(World world, float radialPosition, boolean onOutsideEdge, float rotationInRadians)
     {
         Entity e = world.createEntity();
 
-        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, heightFromEdge);
+        if (onOutsideEdge)
+            radialPosition += Constants.RADIAL_TRAP_OFFSET;
+        else
+            radialPosition -= Constants.RADIAL_TRAP_OFFSET;
 
-        // Adjust to position at center
-        twoDPosition.set(twoDPosition.x - Constants.STAKE_WIDTH / 2, twoDPosition.y - Constants.STAKE_WIDTH / 2);
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
+
+        twoDPosition.set(twoDPosition.x, twoDPosition.y);
 
         e.addComponent(new Stake());
-        e.addComponent(new Physics(PhysicsFactory.createStakeBody(rotation), twoDPosition));
+
+        final Physics physics = new Physics(PhysicsFactory.createStakeBody(), twoDPosition);
+        final Body body = physics.body;
+        body.setTransform(body.getPosition(), rotationInRadians);
+        e.addComponent(physics);
 
         e.addToWorld();
 

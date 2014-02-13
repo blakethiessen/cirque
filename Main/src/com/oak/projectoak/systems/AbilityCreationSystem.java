@@ -7,15 +7,13 @@ import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.PlayerAnimation;
-import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.CircleTransform;
-import com.oak.projectoak.components.physics.Physics;
+import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.physics.querycallbacks.TrapIntersectingQueryCallback;
 
@@ -25,7 +23,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<CircleTransform> cpm;
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
-    @Mapper ComponentMapper<Render> rm;
+    @Mapper ComponentMapper<DynamicPhysics> dpm;
 
     private World world;
     private final com.badlogic.gdx.physics.box2d.World b2world;
@@ -48,21 +46,21 @@ public class AbilityCreationSystem extends EntityProcessingSystem
             CircleTransform circleTransform = cpm.get(e);
             Animate animate = am.get(e);
             PlayerAnimation playerAnimation = pam.get(e);
-            Render render = rm.get(e);
+            DynamicPhysics dynamicPhysics = dpm.get(e);
 
             final TrapIntersectingQueryCallback trapCallback = new TrapIntersectingQueryCallback();
-            Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(circleTransform.radialPosition, -circleTransform.distanceFromEdge);
+
+            Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(circleTransform.radialPosition, !circleTransform.onOutsideEdge);
 
             b2world.QueryAABB(trapCallback, twoDPosition.x, twoDPosition.y, twoDPosition.x + .5f, twoDPosition.y + .5f);
 
             if (!trapCallback.isTrapIntersecting())
             {
                 animate.setAnimation(playerAnimation.layTrap, true);
-                final Entity stake = EntityFactory.createStake(world,
-                        circleTransform.radialPosition, -circleTransform.distanceFromEdge, render.rotation);
 
-                final Body body = stake.getComponent(Physics.class).body;
-                body.setTransform(body.getPosition(), render.rotation);
+                EntityFactory.createStake(world, circleTransform.radialPosition,
+                        !circleTransform.onOutsideEdge,
+                        (float)(dynamicPhysics.body.getAngle() + Math.PI));
 
                 player.energyAmt -= .25f;
             }

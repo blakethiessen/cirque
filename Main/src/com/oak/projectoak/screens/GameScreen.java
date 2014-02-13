@@ -90,10 +90,10 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createPlayer(world, 0, 1);
-        EntityFactory.createPlayer(world, (float) Math.PI, 1);
-        EntityFactory.createPlayer(world, (float)Math.PI / 2, -1);
-        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, -1);
+        EntityFactory.createPlayer(world, 0, true);
+        EntityFactory.createPlayer(world, (float) Math.PI, true);
+        EntityFactory.createPlayer(world, (float)Math.PI / 2, false);
+        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, false);
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
         for(Controller controller: Controllers.getControllers())

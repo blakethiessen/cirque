@@ -14,6 +14,8 @@ public class Constants
     public static final String PIRATE_JUMP = "pirate/jump/jump";
     public static final String PIRATE_LAY_TRAP = "pirate/lay_trap/lay_trap";
     public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
+    public static final float RADIAL_TRAP_OFFSET = .16f;
+    public static final float ROTATIONAL_OFFSET = .04f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
@@ -49,9 +51,13 @@ public class Constants
             ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
             ConvertPixelsToMeters(Gdx.graphics.getHeight() / 2));
 
-    public static Vector2 ConvertRadialTo2DPosition(float radialPosition, float distanceFromEdge)
+    private static final float SPAWNING_DISTANCE_FROM_EDGE = .1f;
+
+    public static Vector2 ConvertRadialTo2DPosition(float radialPosition, boolean onOutsideEdge)
     {
-        final float DISTANCE = ARENA_RADIUS + distanceFromEdge;
+        float DISTANCE = ARENA_RADIUS;
+
+        DISTANCE += onOutsideEdge ? Constants.SPAWNING_DISTANCE_FROM_EDGE : -Constants.SPAWNING_DISTANCE_FROM_EDGE;
 
         return new Vector2((float)(ARENA_CENTER.x + DISTANCE * Math.cos(radialPosition)),
                            (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));
