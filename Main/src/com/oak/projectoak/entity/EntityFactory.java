@@ -21,14 +21,14 @@ import com.oak.projectoak.physics.PhysicsFactory;
 
 public class EntityFactory
 {
-    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge)
+    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum)
     {
         Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
-        e.addComponent(new Player());
+        e.addComponent(new Player(teamNum));
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));

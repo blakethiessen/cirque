@@ -22,8 +22,12 @@ public class Player extends Component
 
     public boolean ability1JustUsed;
 
-    public Player()
+    public int teamNum;
+
+    public Player(int teamNum)
     {
+        this.teamNum = teamNum;
+
         playerNum = ++Constants.curPlayersActive;
 
         actionMask = 0;

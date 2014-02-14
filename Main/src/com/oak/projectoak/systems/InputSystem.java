@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import gamemodemanagers.GameModeManager;
 
 import java.util.HashMap;
 
@@ -30,11 +31,13 @@ public class InputSystem extends EntityProcessingSystem
     private HashMap<Integer, PlayerAction> keyMaps;
     private HashMap<Action, Boolean>[] controlStates;
     private OrthographicCamera camera;
+    private GameModeManager gameModeManager;
 
-    public InputSystem(OrthographicCamera camera)
+    public InputSystem(OrthographicCamera camera, GameModeManager gameModeManager)
     {
         super(Aspect.getAspectForAll(Player.class, Player.class));
         this.camera = camera;
+        this.gameModeManager = gameModeManager;
 
         keyMaps = new HashMap<Integer, PlayerAction>(Constants.NUM_OF_CONTROLS);
 
@@ -69,6 +72,12 @@ public class InputSystem extends EntityProcessingSystem
             controlStates[i].put(Action.JUMPING, false);
             controlStates[i].put(Action.ABILITY_1, false);
         }
+    }
+
+    @Override
+    protected boolean checkProcessing()
+    {
+        return !gameModeManager.isGameOver();
     }
 
     @Override
