@@ -108,8 +108,10 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     private void increaseEnergy(Player player) {
         if (player.energyAmt <= 1f)
         {
-            player.energyAmt += .01f;
+            player.energyAmt += Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
         }
+
+        System.out.println(player.playerNum + ": " + player.energyAmt);
     }
 
     private void moveLaterally(Body body, Platformer platformer, float acceleration)

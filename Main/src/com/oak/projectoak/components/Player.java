@@ -20,6 +20,8 @@ public class Player extends Component
 
     public float energyAmt;
 
+    public boolean ability1JustUsed;
+
     public Player()
     {
         playerNum = ++Constants.curPlayersActive;
@@ -29,6 +31,8 @@ public class Player extends Component
         this.mouseY = 0f;
 
         energyAmt = .25f;
+
+        ability1JustUsed = false;
     }
 
     public void setAction(Action action, boolean state)

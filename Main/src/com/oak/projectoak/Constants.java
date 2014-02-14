@@ -16,6 +16,7 @@ public class Constants
     public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
     public static final float RADIAL_TRAP_OFFSET = .16f;
     public static final float ROTATIONAL_OFFSET = .04f;
+    public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
