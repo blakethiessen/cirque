@@ -17,6 +17,7 @@ public class Constants
     public static final float RADIAL_TRAP_OFFSET = .16f;
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
+    public static final int RESPAWN_TIME_MS = 3000;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

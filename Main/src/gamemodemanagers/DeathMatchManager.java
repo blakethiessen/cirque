@@ -11,9 +11,11 @@ public class DeathMatchManager extends GameModeManager
         teamDeaths = new int[numOfTeams];
     }
 
-    public void addDeath(int teamNum)
+    public void addKillStatistic(int teamNum)
     {
         if (++teamDeaths[teamNum] >= maxDeaths)
+        {
             winner = teamNum;
+        }
     }
 }

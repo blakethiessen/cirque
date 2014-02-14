@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.ability;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

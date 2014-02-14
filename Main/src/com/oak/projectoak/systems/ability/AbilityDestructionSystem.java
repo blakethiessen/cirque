@@ -1,27 +1,23 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.ability;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.physics.box2d.World;
-import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 
 import java.util.ArrayList;
 
-public class DestructionSystem extends VoidEntitySystem
+public class AbilityDestructionSystem extends VoidEntitySystem
 {
     @Mapper ComponentMapper<Physics> pm;
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
 
-    private ArrayList<Entity> entitiesToDestroy;
     private final World b2world;
-    private FootContactListenerSystem footContactListenerSystem;
+    private ArrayList<Entity> entitiesToDestroy;
 
-    public DestructionSystem(World b2world, FootContactListenerSystem footContactListenerSystem)
+    public AbilityDestructionSystem(World b2world)
     {
-        this.footContactListenerSystem = footContactListenerSystem;
         entitiesToDestroy = new ArrayList<Entity>();
         this.b2world = b2world;
     }
@@ -46,13 +42,9 @@ public class DestructionSystem extends VoidEntitySystem
 
             if (pm.has(e))
                 b2world.destroyBody(pm.get(e).body);
-            else if (dpm.has(e))
-                b2world.destroyBody(dpm.get(e).body);
 
-            e.deleteFromWorld();
+            world.deleteEntity(e);
             entitiesToDestroy.remove(e);
-
-            footContactListenerSystem.removeIdenticalEntity(e);
         }
     }
 }

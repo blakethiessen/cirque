@@ -15,6 +15,9 @@ import com.oak.projectoak.input.InputManager;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.systems.*;
+import com.oak.projectoak.systems.ability.AbilityCreationSystem;
+import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
+import com.oak.projectoak.systems.ability.AbilitySystem;
 import com.oak.projectoak.systems.physics.*;
 import gamemodemanagers.DeathMatchManager;
 
@@ -54,9 +57,10 @@ public class GameScreen implements Screen
         final FootContactListenerSystem footContactListenerSystem = new FootContactListenerSystem();
         contactListener.addContactListener(footContactListenerSystem);
 
-        final DestructionSystem destructionSystem = new DestructionSystem(b2world, footContactListenerSystem);
+        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_MS);
+        final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
-        final AbilitySystem abilitySystem = new AbilitySystem(b2world, destructionSystem, deathMatchManager);
+        final AbilitySystem abilitySystem = new AbilitySystem(b2world, playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
         contactListener.addContactListener(abilitySystem);
 
         b2world.setContactListener(contactListener);
@@ -65,7 +69,8 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager(world);
 
         // Setup systems
-        world.setSystem(destructionSystem);
+        world.setSystem(playerDestructionSystem);
+        world.setSystem(abilityDestructionSystem);
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 

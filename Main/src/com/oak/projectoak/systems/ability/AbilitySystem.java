@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.ability;
 
 import com.artemis.Aspect;
 import com.artemis.Entity;
@@ -10,20 +10,22 @@ import com.oak.projectoak.components.Player;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.TrapUD;
+import com.oak.projectoak.systems.PlayerDestructionSystem;
 import gamemodemanagers.DeathMatchManager;
 
 public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
 {
-    private World b2world;
-    private DestructionSystem destructionSystem;
+    private PlayerDestructionSystem playerDestructionSystem;
+    private AbilityDestructionSystem abilityDestructionSystem;
     private DeathMatchManager dmManager;
 
-    public AbilitySystem(World b2world, DestructionSystem destructionSystem, DeathMatchManager dmManager)
+    public AbilitySystem(World b2world, PlayerDestructionSystem playerDestructionSystem,
+                         AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
     {
         super(Aspect.getAspectForAll(Ability.class));
-        this.b2world = b2world;
-        this.destructionSystem = destructionSystem;
+        this.playerDestructionSystem = playerDestructionSystem;
+        this.abilityDestructionSystem = abilityDestructionSystem;
         this.dmManager = dmManager;
     }
 
@@ -66,8 +68,8 @@ public class AbilitySystem extends EntityProcessingSystem
     {
         final Entity entity = userData.entity;
 
-        dmManager.addDeath(entity.getComponent(Player.class).teamNum);
-        destructionSystem.destroyEntity(entity);
+        dmManager.addKillStatistic(entity.getComponent(Player.class).teamNum);
+        playerDestructionSystem.destroyEntity(entity);
 
         return true;
     }

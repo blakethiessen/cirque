@@ -47,6 +47,11 @@ public class Player extends Component
             actionMask &= ~(1 << action.getId());
     }
 
+    public void resetActions()
+    {
+        actionMask = 0;
+    }
+
     public boolean isActionOn(Action action)
     {
         return (actionMask & (1L << action.getId())) != 0;

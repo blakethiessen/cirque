@@ -5,7 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
@@ -63,7 +64,7 @@ public class FootContactListenerSystem extends EntityProcessingSystem
         for (Entity e : footContactEntities)
         {
             DynamicPhysics p = dpm.get(e);
-            if (p != null)
+            if (p != null && p.body != null && p.body.getFixtureList().size > 1)
             {
                 final Fixture footFixture = p.body.getFixtureList().get(1);
                 if ((udA != null && footFixture.getUserData() == udA) ||
@@ -95,7 +96,7 @@ public class FootContactListenerSystem extends EntityProcessingSystem
                 DynamicPhysics p = dpm.get(e);
 
                 // Remove entity on the next update.
-                if (p != null)
+                if (p != null && p.body != null && p.body.getFixtureList().size > 1)
                 {
                     final Fixture footFixture = p.body.getFixtureList().get(1);
                     if ((udA != null && footFixture.getUserData() == udA) ||
