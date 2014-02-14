@@ -45,7 +45,7 @@ public class GameScreen implements Screen
         world = new World();
 
         // Setup appropriate game setting
-        DeathMatchManager deathMatchManager = new DeathMatchManager(4, 2);
+        DeathMatchManager deathMatchManager = new DeathMatchManager(world, 4, 2);
 
         // Setup physics
         com.badlogic.gdx.physics.box2d.World b2world =
@@ -90,6 +90,7 @@ public class GameScreen implements Screen
         world.setSystem(new AnimationSystem());
         world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new RenderSystem(camera));
+        world.setSystem(new TextRenderSystem());
         world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setManager(new GroupManager());

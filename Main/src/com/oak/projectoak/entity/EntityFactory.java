@@ -21,6 +21,17 @@ import com.oak.projectoak.physics.PhysicsFactory;
 
 public class EntityFactory
 {
+    public static Entity createText(World world, String text, Vector2 position)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new TextRender(text, position));
+
+        e.addToWorld();
+
+        return e;
+    }
+
     public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum)
     {
         Entity e = world.createEntity();

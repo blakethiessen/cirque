@@ -9,7 +9,6 @@ import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.oak.projectoak.components.Render;
-import com.oak.projectoak.utils.DebugDisplay;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +94,6 @@ public class RenderSystem extends EntitySystem
     @Override
     protected void end()
     {
-        DebugDisplay.draw(batch, camera);
         batch.end();
     }
 
