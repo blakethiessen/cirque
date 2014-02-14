@@ -8,6 +8,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.entity.EntityFactory;
@@ -89,6 +90,7 @@ public class GameScreen implements Screen
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());
         world.setSystem(new PlayerInvulnerableFlashingSystem());
+        world.setSystem(new UIEnergyUpdateSystem());
         world.setSystem(new RenderSystem(camera));
         world.setSystem(new TextRenderSystem());
         world.setSystem(new GraphicsDebugSystem(camera));
@@ -100,10 +102,10 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
-        EntityFactory.createPlayer(world, 0, true, 0);
-        EntityFactory.createPlayer(world, (float) Math.PI, true, 1);
-        EntityFactory.createPlayer(world, (float)Math.PI / 2, false, 0);
-        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, false, 1);
+        EntityFactory.createPlayer(world, 0, true, 0, new Vector2(10, 200));
+        EntityFactory.createPlayer(world, (float) Math.PI, true, 1, new Vector2(10, 180));
+        EntityFactory.createPlayer(world, (float)Math.PI / 2, false, 0, new Vector2(10, 160));
+        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
         for(Controller controller: Controllers.getControllers())

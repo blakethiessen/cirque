@@ -32,7 +32,7 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum)
+    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 energyDisplayPosition)
     {
         Entity e = world.createEntity();
 
@@ -46,6 +46,7 @@ public class EntityFactory
         e.addComponent(new Animate(Constants.PIRATE_IDLE));
         e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
+        e.addComponent(new TextRender("", energyDisplayPosition));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 
