@@ -24,6 +24,9 @@ public class Player extends Component
 
     public int teamNum;
 
+    public boolean invulnerable;
+    public boolean wasInvulnerableLastFrame;
+
     public Player(int teamNum)
     {
         this.teamNum = teamNum;
@@ -37,6 +40,9 @@ public class Player extends Component
         energyAmt = .25f;
 
         ability1JustUsed = false;
+
+        invulnerable = false;
+        wasInvulnerableLastFrame = false;
     }
 
     public void setAction(Action action, boolean state)

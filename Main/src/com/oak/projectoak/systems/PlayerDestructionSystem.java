@@ -85,7 +85,20 @@ public class PlayerDestructionSystem extends VoidEntitySystem
 
                 dpm.get(e).body = runnerBody;
                 platm.get(e).footContactCount = 0;
-                playm.get(e).resetActions();
+                final Player player = playm.get(e);
+                player.resetActions();
+                player.invulnerable = true;
+
+                Timer timer = new Timer();
+
+                timer.schedule(new TimerTask()
+                {
+                    @Override
+                    public void run()
+                    {
+                        player.invulnerable = false;
+                    }
+                }, Constants.RESPAWN_INVULNERABLE_PERIOD);
 
                 e.enable();
             }

@@ -60,7 +60,7 @@ public class GameScreen implements Screen
         final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_MS);
         final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
-        final AbilitySystem abilitySystem = new AbilitySystem(b2world, playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
+        final AbilitySystem abilitySystem = new AbilitySystem(playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
         contactListener.addContactListener(abilitySystem);
 
         b2world.setContactListener(contactListener);
@@ -88,6 +88,7 @@ public class GameScreen implements Screen
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());
+        world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new RenderSystem(camera));
         world.setSystem(new GraphicsDebugSystem(camera));
 

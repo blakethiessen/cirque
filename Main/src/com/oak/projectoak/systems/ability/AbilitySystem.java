@@ -1,10 +1,11 @@
 package com.oak.projectoak.systems.ability;
 
 import com.artemis.Aspect;
+import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.World;
 import com.oak.projectoak.components.Ability;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
@@ -16,11 +17,13 @@ import gamemodemanagers.DeathMatchManager;
 public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
 {
+    @Mapper ComponentMapper<Player> pm;
+
     private PlayerDestructionSystem playerDestructionSystem;
     private AbilityDestructionSystem abilityDestructionSystem;
     private DeathMatchManager dmManager;
 
-    public AbilitySystem(World b2world, PlayerDestructionSystem playerDestructionSystem,
+    public AbilitySystem(PlayerDestructionSystem playerDestructionSystem,
                          AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
     {
         super(Aspect.getAspectForAll(Ability.class));
@@ -51,27 +54,32 @@ public class AbilitySystem extends EntityProcessingSystem
         {
             if (userDataB instanceof PlayerUD)
             {
-                return killPlayer((PlayerUD) userDataB);
+                killPlayer((PlayerUD) userDataB);
+
+                return true;
             }
         }
         else if (userDataB instanceof TrapUD)
         {
             if (userDataA instanceof PlayerUD)
             {
-                return killPlayer((PlayerUD) userDataA);
+                killPlayer((PlayerUD)userDataA);
+
+                return true;
             }
         }
         return false;
     }
 
-    private boolean killPlayer(PlayerUD userData)
+    private void killPlayer(PlayerUD userData)
     {
-        final Entity entity = userData.entity;
+        Entity entity = userData.entity;
 
-        dmManager.addKillStatistic(entity.getComponent(Player.class).teamNum);
-        playerDestructionSystem.destroyEntity(entity);
-
-        return true;
+        if (!pm.get(entity).invulnerable)
+        {
+            dmManager.addKillStatistic(entity.getComponent(Player.class).teamNum);
+            playerDestructionSystem.destroyEntity(entity);
+        }
     }
 
     @Override
