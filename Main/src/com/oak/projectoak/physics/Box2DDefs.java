@@ -93,7 +93,7 @@ public class Box2DDefs
         shape.set(new float[]
                 {
                     0, 0,
-                    Constants.STAKE_WIDTH / 2, Constants.STAKE_WIDTH,
+                    Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT,
                     Constants.STAKE_WIDTH, 0
                 });
 

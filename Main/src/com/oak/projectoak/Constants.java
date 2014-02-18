@@ -49,8 +49,9 @@ public class Constants
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
-    public static final float STAKE_WIDTH = .7f;
-    public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 7f;
+    public static final float STAKE_WIDTH = .1f;
+    public static final float STAKE_HEIGHT = .4f;
+    public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 4f;
 
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
