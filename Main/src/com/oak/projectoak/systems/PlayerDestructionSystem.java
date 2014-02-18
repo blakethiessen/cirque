@@ -12,6 +12,7 @@ import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.physics.PhysicsFactory;
+import com.oak.projectoak.systems.physics.ArenaRotationSystem;
 import gamemodemanagers.GameModeManager;
 
 import java.util.ArrayList;
@@ -26,13 +27,15 @@ public class PlayerDestructionSystem extends VoidEntitySystem
     @Mapper ComponentMapper<ArenaTransform> am;
 
     private final GameModeManager deathMatchManager;
+    private final ArenaRotationSystem arenaRotationSystem;
     private final int respawnTime;
     private final ArrayList<Entity> entitiesToDestroy;
     private final World b2world;
 
-    public PlayerDestructionSystem(World b2world, GameModeManager gameModeManager, int respawnTime)
+    public PlayerDestructionSystem(World b2world, GameModeManager gameModeManager, int respawnTime, ArenaRotationSystem arenaRotationSystem)
     {
         this.deathMatchManager = gameModeManager;
+        this.arenaRotationSystem = arenaRotationSystem;
         entitiesToDestroy = new ArrayList<Entity>();
         this.b2world = b2world;
         this.respawnTime = respawnTime;
@@ -65,6 +68,8 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 setupPlayerRespawnTimer(e);
 
             entitiesToDestroy.remove(e);
+
+            arenaRotationSystem.increaseArenaRotationalVelocity();
         }
     }
 

@@ -76,7 +76,6 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             final float bodyEdgeVelocity = getBodyEdgeVelocity(body);
             if (bodyEdgeVelocity != 0)
             {
-                System.out.println("stopping");
                 moveAlongArenaEdge(body, -bodyEdgeVelocity);
             }
         }

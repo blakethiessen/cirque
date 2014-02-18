@@ -19,6 +19,11 @@ public class Constants
     public static final int RESPAWN_TIME_MS = 3000;
     public static final long RESPAWN_INVULNERABLE_PERIOD = 3000;
 
+    public static final int DEATHMATCH_NUM_TEAMS = 2;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 4;
+
+    public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
+
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;

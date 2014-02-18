@@ -47,7 +47,7 @@ public class GameScreen implements Screen
         world = new World();
 
         // Setup appropriate game setting
-        DeathMatchManager deathMatchManager = new DeathMatchManager(world, 4, 2);
+        DeathMatchManager deathMatchManager = new DeathMatchManager(world, Constants.DEATHMATCH_NUM_TEAMS, Constants.DEATHMATCH_KILLS_TO_WIN);
 
         // Setup physics
         com.badlogic.gdx.physics.box2d.World b2world =
@@ -59,7 +59,9 @@ public class GameScreen implements Screen
         final FootContactListenerSystem footContactListenerSystem = new FootContactListenerSystem();
         contactListener.addContactListener(footContactListenerSystem);
 
-        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_MS);
+        final ArenaRotationSystem arenaRotationSystem = new ArenaRotationSystem();
+
+        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_MS, arenaRotationSystem);
         final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
         final AbilitySystem abilitySystem = new AbilitySystem(playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
@@ -81,7 +83,7 @@ public class GameScreen implements Screen
         world.setSystem(input);
 
         world.setSystem(new CameraSystem(camera, true));
-        world.setSystem(new ArenaRotationSystem());
+        world.setSystem(arenaRotationSystem);
 
         world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());
@@ -103,11 +105,12 @@ public class GameScreen implements Screen
 
         PhysicsFactory.setWorld(b2world);
 
+        EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
+
         EntityFactory.createPlayer(world, 0, true, 0, new Vector2(10, 200));
         EntityFactory.createPlayer(world, (float) Math.PI, true, 1, new Vector2(10, 180));
         EntityFactory.createPlayer(world, (float)Math.PI / 2, false, 0, new Vector2(10, 160));
-        EntityFactory.createPlayer(world, (float)Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
-        EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
+        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
 
         for(Controller controller: Controllers.getControllers())
         {
