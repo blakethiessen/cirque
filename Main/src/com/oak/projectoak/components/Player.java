@@ -20,6 +20,8 @@ public class Player extends Component
 
     public float energyAmt;
 
+    public float lastCircularMovePosition;
+
     public boolean ability1JustUsed;
 
     public int teamNum;

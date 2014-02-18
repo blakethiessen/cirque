@@ -7,6 +7,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.oak.projectoak.components.Ability;
+import com.oak.projectoak.components.Arena;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.PlayerUD;
@@ -18,6 +19,7 @@ public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
 {
     @Mapper ComponentMapper<Player> pm;
+    @Mapper ComponentMapper<Arena> am;
 
     private PlayerDestructionSystem playerDestructionSystem;
     private AbilityDestructionSystem abilityDestructionSystem;

@@ -40,7 +40,7 @@ public class Constants
 
     public static final int PLAYER_LAT_ACCEL = 6;
     public static final int PLAYER_LAT_MAX_VEL = 4;
-    public static final int PLAYER_JUMP_ACCEL = 30;
+    public static final int PLAYER_JUMP_ACCEL = 20;
 
     // ABILITY CONSTANTS
     public static final float STAKE_WIDTH = 1f;

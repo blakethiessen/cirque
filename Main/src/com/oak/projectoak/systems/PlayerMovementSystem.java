@@ -54,7 +54,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.walk);
 
-            moveLaterally(body, platformer, -platformer.latMaxVel);
+            moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
             increaseEnergy(player);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
@@ -64,23 +64,20 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.walk);
 
-            moveLaterally(body, platformer, platformer.latMaxVel);
+            moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, platformer.latAccel);
             increaseEnergy(player);
         }
         else
         {
-            float xBodyVel = body.getLinearVelocity().x;
-
             // If we're on the floor...
             if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.idle);
 
-            if (xBodyVel != 0)
+            final float bodyEdgeVelocity = getBodyEdgeVelocity(body);
+            if (bodyEdgeVelocity != 0)
             {
-                if (platformer.latMaxVel < xBodyVel)
-                    body.applyForceToCenter(-platformer.latMaxVel, 0, true);
-                else
-                    body.applyForceToCenter(-xBodyVel, 0, true);
+                System.out.println("stopping");
+                moveAlongArenaEdge(body, -bodyEdgeVelocity);
             }
         }
 
@@ -105,23 +102,32 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             }
     }
 
-    private void increaseEnergy(Player player) {
+    private void increaseEnergy(Player player)
+    {
         if (player.energyAmt <= 1f)
-        {
             player.energyAmt += Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
-        }
-
-        System.out.println(player.playerNum + ": " + player.energyAmt);
+        else
+            player.energyAmt = 1f;
     }
 
-    private void moveLaterally(Body body, Platformer platformer, float acceleration)
+    private void moveAlongArenaEdgeWithSpeedLimit(Body body, float latMaxVel, float acceleration)
     {
-        if (body.getLinearVelocity().len2() < Math.pow(platformer.latMaxVel, 2))
+        if (Math.abs(getBodyEdgeVelocity(body)) < latMaxVel)
         {
-            Vector2 moveVec = new Vector2(acceleration, 0);
-            moveVec.rotate((float)Math.toDegrees(body.getAngle()));
-
-            body.applyForceToCenter(moveVec, true);
+            moveAlongArenaEdge(body, acceleration);
         }
+    }
+
+    private float getBodyEdgeVelocity(Body body)
+    {
+        return body.getLinearVelocity().rotate((float)Math.toDegrees(-body.getAngle())).x;
+    }
+
+    private void moveAlongArenaEdge(Body body, float acceleration)
+    {
+        Vector2 moveVec = new Vector2(acceleration, 0);
+        moveVec.rotate((float)Math.toDegrees(body.getAngle()));
+
+        body.applyForceToCenter(moveVec, true);
     }
 }

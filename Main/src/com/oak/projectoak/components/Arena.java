@@ -4,5 +4,7 @@ import com.artemis.Component;
 
 public class Arena extends Component
 {
+    public float rotationVelocity;
 
+    public Arena() {}
 }

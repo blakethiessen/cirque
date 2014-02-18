@@ -11,6 +11,7 @@ import com.oak.projectoak.components.physics.Physics;
 public class ArenaRotationSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Physics> pm;
+    @Mapper ComponentMapper<Arena> am;
 
     public ArenaRotationSystem()
     {
@@ -22,6 +23,6 @@ public class ArenaRotationSystem extends EntityProcessingSystem
     {
         Physics physics = pm.get(e);
 
-        physics.body.setAngularVelocity(.1f);
+        physics.body.setAngularVelocity(am.get(e).rotationVelocity);
     }
 }

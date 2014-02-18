@@ -31,10 +31,11 @@ import gamemodemanagers.DeathMatchManager;
 public class GameScreen implements Screen
 {
     private World world;
+    private OrthographicCamera camera;
 
     public GameScreen()
     {
-        OrthographicCamera camera = new OrthographicCamera();
+        camera = new OrthographicCamera();
 
         // Setup asset loading
         AssetLoader.initialize();
@@ -131,7 +132,6 @@ public class GameScreen implements Screen
     @Override
 	public void resize(int width, int height)
     {
-
 	}
 
     @Override
