@@ -3,7 +3,6 @@ package com.oak.projectoak.components;
 import com.artemis.Component;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 /*
     The Platformer component is attached to
@@ -32,5 +31,10 @@ public class Platformer extends Component
         this.jumpTimeoutOver = true;
 
         jumpTimeout = new Timer();
+    }
+
+    public boolean isOnGround()
+    {
+        return footContactCount > 0;
     }
 }

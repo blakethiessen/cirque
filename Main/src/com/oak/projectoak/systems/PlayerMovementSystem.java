@@ -51,7 +51,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             // Flip the sprite
             render.flipped = true;
 
-            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+            if (platformer.isOnGround() && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
@@ -61,7 +61,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         {
             render.flipped = false;
 
-            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+            if (platformer.isOnGround() && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, platformer.latAccel);
@@ -70,7 +70,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         else
         {
             // If we're on the floor...
-            if (platformer.footContactCount > 0 && platformer.jumpTimeoutOver)
+            if (platformer.isOnGround() && platformer.jumpTimeoutOver)
                 animate.setAnimation(playerAnimation.idle);
 
             final float bodyEdgeVelocity = getBodyEdgeVelocity(body);
@@ -80,7 +80,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             }
         }
 
-        if (player.isActionOn(Action.JUMPING) && platformer.footContactCount > 0)
+        if (player.isActionOn(Action.JUMPING) && platformer.isOnGround())
             if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.
