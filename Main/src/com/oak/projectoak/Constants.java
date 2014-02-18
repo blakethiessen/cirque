@@ -14,7 +14,6 @@ public class Constants
     public static final String PIRATE_JUMP = "pirate/jump/jump";
     public static final String PIRATE_LAY_TRAP = "pirate/lay_trap/lay_trap";
     public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
-    public static final float RADIAL_TRAP_OFFSET = .16f;
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
     public static final int RESPAWN_TIME_MS = 3000;
@@ -40,10 +39,13 @@ public class Constants
 
     public static final int PLAYER_LAT_ACCEL = 6;
     public static final int PLAYER_LAT_MAX_VEL = 4;
-    public static final int PLAYER_JUMP_ACCEL = 20;
+
+    public static final int INNER_PLAYER_JUMP_ACCEL = 20;
+    public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
-    public static final float STAKE_WIDTH = 1f;
+    public static final float STAKE_WIDTH = .7f;
+    public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 7f;
 
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;

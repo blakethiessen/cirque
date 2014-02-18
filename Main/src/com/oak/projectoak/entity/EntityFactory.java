@@ -41,7 +41,8 @@ public class EntityFactory
         e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
         e.addComponent(new Player(teamNum));
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
-                Constants.PLAYER_LAT_MAX_VEL, Constants.PLAYER_JUMP_ACCEL));
+                Constants.PLAYER_LAT_MAX_VEL,
+                onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
         e.addComponent(new Animate(Constants.PIRATE_IDLE));
         e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
@@ -86,9 +87,9 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         if (onOutsideEdge)
-            radialPosition += Constants.RADIAL_TRAP_OFFSET;
+            radialPosition += Constants.STAKE_SPAWN_OFFSET;
         else
-            radialPosition -= Constants.RADIAL_TRAP_OFFSET;
+            radialPosition -= Constants.STAKE_SPAWN_OFFSET;
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
