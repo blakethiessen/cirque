@@ -129,6 +129,10 @@ public class InputSystem extends EntityProcessingSystem
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        System.out.println("x: " + Constants.ConvertPixelsToMeters(screenX) + " y: " + Constants.ConvertPixelsToMeters(screenY));
+        double rotation = Math.atan2(screenX, -screenY);
+
+        System.out.println(rotation);
         return false;
     }
 

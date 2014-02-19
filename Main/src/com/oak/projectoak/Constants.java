@@ -15,7 +15,7 @@ public class Constants
     public static final String PIRATE_LAY_TRAP = "pirate/lay_trap/lay_trap";
     public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
     public static final float ROTATIONAL_OFFSET = .04f;
-    public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
+    public static final float STARTING_ENERGY_ALLOTMENT_PER_FRAME = .001f;
     public static final int RESPAWN_TIME_MS = 3000;
     public static final long RESPAWN_INVULNERABLE_PERIOD = 3000;
 

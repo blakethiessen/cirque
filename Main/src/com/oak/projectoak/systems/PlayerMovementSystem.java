@@ -11,6 +11,7 @@ import com.oak.projectoak.Action;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
+import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
 import java.util.TimerTask;
@@ -28,6 +29,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
     @Mapper ComponentMapper<Player> cm;
+    @Mapper ComponentMapper<ArenaTransform> atm;
 
     public PlayerMovementSystem()
     {
@@ -46,6 +48,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         Animate animate = am.get(e);
         PlayerAnimation playerAnimation = pam.get(e);
 
+        final ArenaTransform arenaTransform = atm.get(e);
         if (player.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprite
@@ -55,7 +58,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
-            increaseEnergy(player);
+            increaseEnergy(player, arenaTransform);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
@@ -65,7 +68,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, platformer.latAccel);
-            increaseEnergy(player);
+            increaseEnergy(player, arenaTransform);
         }
         else
         {
@@ -99,14 +102,26 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                     }
                 }, 500);
             }
+
+        if (getBodyEdgeVelocity(body) < 0 && player.isMovingRight ||
+                getBodyEdgeVelocity(body) > 0 && !player.isMovingRight)
+        {
+            player.energyIncreasePerFrame = Constants.STARTING_ENERGY_ALLOTMENT_PER_FRAME;
+            player.lastLateralChangePosition = arenaTransform.radialPosition;
+            player.isMovingRight = !player.isMovingRight;
+        }
     }
 
-    private void increaseEnergy(Player player)
+    private void increaseEnergy(Player player, ArenaTransform arenaTransform)
     {
         if (player.energyAmt <= 1f)
-            player.energyAmt += Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
+            player.energyAmt += player.energyIncreasePerFrame;
         else
             player.energyAmt = 1f;
+
+        if (player.isMovingRight && player.lastLateralChangePosition >= arenaTransform.radialPosition)
+            player.energyIncreasePerFrame *=2;
+
     }
 
     private void moveAlongArenaEdgeWithSpeedLimit(Body body, float latMaxVel, float acceleration)
