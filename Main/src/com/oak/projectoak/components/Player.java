@@ -28,6 +28,9 @@ public class Player extends Component
 
     public boolean invulnerable;
     public boolean wasInvulnerableLastFrame;
+    public float energyIncreasePerFrame;
+    public float lastLateralChangePosition;
+    public boolean isMovingRight;
 
     public Player(int teamNum)
     {
@@ -45,6 +48,9 @@ public class Player extends Component
 
         invulnerable = false;
         wasInvulnerableLastFrame = false;
+        energyIncreasePerFrame = Constants.STARTING_ENERGY_ALLOTMENT_PER_FRAME;
+        lastLateralChangePosition = 0f;
+        isMovingRight = true;
     }
 
     public void setAction(Action action, boolean state)
