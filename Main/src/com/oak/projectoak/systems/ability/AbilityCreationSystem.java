@@ -6,7 +6,9 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
+import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.Player;
@@ -14,9 +16,6 @@ import com.oak.projectoak.components.PlayerAnimation;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
@@ -45,7 +44,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
         {
             Platformer platformer = platm.get(e);
 
-            if (!player.ability1JustUsed && platformer.isOnGround() && player.energyAmt >= 0.25f)
+            if (!player.ability1JustUsed && platformer.isOnGround() && player.energyAmt >= Constants.STAKE_ENERGY_COST)
             {
                 final ArenaTransform arenaTransform = cpm.get(e);
                 Animate animate = am.get(e);
@@ -54,19 +53,18 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
                 animate.setAnimation(playerAnimation.layTrap, true);
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask()
+                Timer.schedule(new Timer.Task()
                 {
                     @Override
                     public void run()
                     {
                         EntityFactory.createStake(world, arenaTransform.radialPosition,
                                 !arenaTransform.onOutsideEdge,
-                                (float) (dynamicPhysics.body.getAngle() + Math.PI));
+                                (float)(dynamicPhysics.body.getAngle() + Math.PI));
                     }
-                }, 150);
+                }, Constants.STAKE_SPAWN_DELAY);
 
-                player.energyAmt -= .25f;
+                player.energyAmt -= Constants.STAKE_ENERGY_COST;
 
                 player.ability1JustUsed = true;
             }

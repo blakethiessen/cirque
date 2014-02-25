@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
+import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Render;
 
@@ -33,8 +34,7 @@ public class AnimationSystem extends EntityProcessingSystem
         // If the animation isn't set, we're rendering static images.
         if (animate.getAnimation() != null)
         {
-            render.currentTexture =
-                    animate.getAnimation().getKeyFrame(animate.stateTime, true);
+            Constants.setSpriteTexture(render.sprite, animate.getAnimation().getKeyFrame(animate.stateTime, true));
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
 

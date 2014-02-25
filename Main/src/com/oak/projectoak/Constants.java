@@ -2,27 +2,55 @@ package com.oak.projectoak;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants
 {
     // Animations
-    public static final String SHAHAN_WALK = "shahan/walk/walk";
-    public static final String SHAHAN_IDLE = "shahan/idle/idle";
-    public static final String PIRATE_IDLE = "pirate/idle/idle";
-    public static final String PIRATE_WALK = "pirate/walk/walk";
-    public static final String PIRATE_JUMP = "pirate/jump/jump";
-    public static final String PIRATE_LAY_TRAP = "pirate/lay_trap/lay_trap";
-    public static final String PIRATE_SELF_DESTRUCT = "pirate/self_destruct/self_destruct";
+    public static final String SHAHAN_WALK = "characters/shahan/walk/walk";
+    public static final String SHAHAN_IDLE = "characters/shahan/idle/idle";
+    public static final String PIRATE_IDLE = "characters/pirate/idle/idle";
+    public static final String PIRATE_WALK = "characters/pirate/walk/walk";
+    public static final String PIRATE_JUMP = "characters/pirate/jump/jump";
+    public static final String PIRATE_LAY_TRAP = "characters/pirate/lay_trap/lay_trap";
+    public static final String PIRATE_SELF_DESTRUCT = "characters/pirate/self_destruct/self_destruct";
+    public static final String NINJA_IDLE = "characters/ninja/idle/idle";
+    public static final String NINJA_WALK = "characters/ninja/walk/walk";
+    public static final String NINJA_JUMP = "characters/ninja/jump/jump";
+    public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
+    public static final String NINJA_SELF_DESTRUCT = "characters/ninja/self_destruct/self_destruct";
+
+    public static final String PILLAR = "abilities/pillar";
+    public static final String SPIKE = "abilities/spike";
+
+    public static final String OUTER_RING = "arena/outerRing";
+
+    public static final String UI_ENERGY_METER_1_LEVEL = "energyMeter/gray_1_notches";
+    public static final String UI_ENERGY_METER_2_LEVEL = "energyMeter/gray_2_notches";
+    public static final String UI_ENERGY_METER_3_LEVEL = "energyMeter/gray_3_notches";
+
+    public static final String UI_ENERGY_METER_FILL = "energyMeter/energy";
+
+    public static final String UI_ENERGY_READY = "energyMeter/ready";
+
+    public static final String UI_PILLAR_METER = "energyMeter/abilityIcons/pillar";
+    public static final String UI_SPIKE_METER = "energyMeter/abilityIcons/spike";
+
+
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
-    public static final int RESPAWN_TIME_MS = 3000;
-    public static final long RESPAWN_INVULNERABLE_PERIOD = 3000;
+    public static final int RESPAWN_TIME_SEC = 3;
+    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 4;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
 
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
+    public static final float STAKE_SPAWN_DELAY = .15f;
+    public static final float STAKE_ENERGY_COST = .25f;
+    public static final float JUMP_TIMEOUT_DELAY = .3f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
@@ -72,6 +100,12 @@ public class Constants
                            (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));
     }
 
+    public static void setSpriteTexture(Sprite sprite, TextureRegion textureRegion)
+    {
+        sprite.setRegion(textureRegion);
+        sprite.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    }
+
     // BOX2D CONSTANTS
     public static final float METERS_TO_PIXELS = 100;
     public static final float PIXELS_TO_METERS = 1 / METERS_TO_PIXELS;
@@ -99,7 +133,6 @@ public class Constants
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
     public static final int P2_JUMP_KEY = Input.Keys.UP;
     public static final Integer P2_ABILITY_1_KEY = Input.Keys.SLASH;
-
 
     // Currently for debug
     public static final int P3_LEFT_KEY = Input.Keys.F;

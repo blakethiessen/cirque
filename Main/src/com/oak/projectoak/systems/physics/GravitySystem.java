@@ -8,28 +8,25 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
 public class GravitySystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<Render> dm;
     @Mapper ComponentMapper<ArenaTransform> ctm;
 
     private final Vector2 arenaCenter;
 
     public GravitySystem(Vector2 arenaCenter)
     {
-        super(Aspect.getAspectForAll(ArenaTransform.class, DynamicPhysics.class, Render.class));
+        super(Aspect.getAspectForAll(ArenaTransform.class, DynamicPhysics.class));
         this.arenaCenter = arenaCenter;
     }
 
     @Override
     protected void process(Entity e)
     {
-        Render render = dm.get(e);
         DynamicPhysics physics = dpm.get(e);
         ArenaTransform arenaTransform = ctm.get(e);
 
@@ -64,7 +61,5 @@ public class GravitySystem extends EntityProcessingSystem
             arenaTransform.radialPosition = (float)(rotation + Math.PI / 2);
         else
             arenaTransform.radialPosition = (float)(rotation - Math.PI / 2);
-
-        render.rotation = (float)Math.toDegrees(rotation);
     }
 }

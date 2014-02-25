@@ -8,10 +8,8 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.DynamicPhysics;
-import com.oak.projectoak.utils.DebugDisplay;
 
 // Updates draw component position with dynamic physics component position.
 public class DynamicPhysicsSystem extends EntityProcessingSystem
@@ -33,7 +31,9 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         Body body = physics.body;
         Vector2 position = body.getPosition();
 
-        render.position = position.cpy().scl(Constants.METERS_TO_PIXELS);
+        Vector2 scaledPosition = position.cpy().scl(Constants.METERS_TO_PIXELS);
+        render.sprite.setPosition(scaledPosition.x, scaledPosition.y);
+        render.sprite.setRotation((float)Math.toDegrees(body.getAngle()));
 
 //        DEBUGDISPLAY CODE
 //        Vector2 velocity = body.getLinearVelocity();

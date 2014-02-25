@@ -7,11 +7,11 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Arena;
-import com.oak.projectoak.components.physics.Physics;
+import com.oak.projectoak.components.physics.DynamicPhysics;
 
 public class ArenaRotationSystem extends EntityProcessingSystem
 {
-    @Mapper ComponentMapper<Physics> pm;
+    @Mapper ComponentMapper<DynamicPhysics> pm;
     @Mapper ComponentMapper<Arena> am;
 
     private boolean increaseRotationalVelocity;
@@ -23,18 +23,25 @@ public class ArenaRotationSystem extends EntityProcessingSystem
     }
 
     @Override
+    public boolean checkProcessing()
+    {
+        return increaseRotationalVelocity;
+    }
+
+    @Override
     protected void process(Entity e)
     {
-        Physics physics = pm.get(e);
+        DynamicPhysics physics = pm.get(e);
         Arena arena = am.get(e);
 
-        if (increaseRotationalVelocity)
-        {
-            arena.rotationVelocity += Constants.ROTATIONAL_VELOCITY_INCREASE_PER_KILL;
-            increaseRotationalVelocity = false;
-        }
-
+        arena.rotationVelocity += Constants.ROTATIONAL_VELOCITY_INCREASE_PER_KILL;
         physics.body.setAngularVelocity(am.get(e).rotationVelocity);
+    }
+
+    @Override
+    protected void end()
+    {
+        increaseRotationalVelocity = false;
     }
 
     public void increaseArenaRotationalVelocity()

@@ -6,6 +6,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.Player;
@@ -16,8 +17,6 @@ import com.oak.projectoak.systems.physics.ArenaRotationSystem;
 import gamemodemanagers.GameModeManager;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PlayerDestructionSystem extends VoidEntitySystem
 {
@@ -75,10 +74,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
 
     private void setupPlayerRespawnTimer(final Entity e)
     {
-
-        Timer timer = new Timer();
-
-        timer.schedule(new TimerTask()
+        Timer.schedule(new Timer.Task()
         {
             @Override
             public void run()
@@ -86,7 +82,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 Body runnerBody = PhysicsFactory.createRunnerBody(e);
                 ArenaTransform arenaTransform = am.get(e);
                 runnerBody.setTransform(Constants.ConvertRadialTo2DPosition(
-                        (float)(arenaTransform.radialPosition + Math.PI), arenaTransform.onOutsideEdge), 0);
+                        (float) (arenaTransform.radialPosition + Math.PI), arenaTransform.onOutsideEdge), 0);
 
                 dpm.get(e).body = runnerBody;
                 platm.get(e).footContactCount = 0;
@@ -94,16 +90,14 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 player.resetActions();
                 player.invulnerable = true;
 
-                Timer timer = new Timer();
-
-                timer.schedule(new TimerTask()
+                Timer.schedule(new Timer.Task()
                 {
                     @Override
                     public void run()
                     {
                         player.invulnerable = false;
                     }
-                }, Constants.RESPAWN_INVULNERABLE_PERIOD);
+                }, Constants.RESPAWN_INVULNERABLE_PERIOD_SEC);
 
                 e.enable();
             }

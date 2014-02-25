@@ -61,7 +61,7 @@ public class GameScreen implements Screen
 
         final ArenaRotationSystem arenaRotationSystem = new ArenaRotationSystem();
 
-        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_MS, arenaRotationSystem);
+        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_SEC, arenaRotationSystem);
         final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
         final AbilitySystem abilitySystem = new AbilitySystem(playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
@@ -75,7 +75,9 @@ public class GameScreen implements Screen
         // Setup systems
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
+
         world.setSystem(new DynamicPhysicsSystem());
+        world.setSystem(new RenderOffsetSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
         InputSystem input = new InputSystem(camera, deathMatchManager);
@@ -109,7 +111,7 @@ public class GameScreen implements Screen
 
         EntityFactory.createPlayer(world, 0, true, 0, new Vector2(10, 200));
         EntityFactory.createPlayer(world, (float) Math.PI, false, 1, new Vector2(10, 180));
-//        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, new Vector2(10, 160));
+        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, new Vector2(10, 160));
 //        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
 
         for(Controller controller: Controllers.getControllers())

@@ -73,21 +73,17 @@ public class RenderSystem extends EntitySystem
         {
             if (render.flipped)
             {
-                if (!render.currentTexture.isFlipX())
-                    render.currentTexture.flip(true, false);
+                if (!render.sprite.isFlipX())
+                    render.sprite.flip(true, false);
             }
             else
             {
-                if (render.currentTexture.isFlipX())
-                    render.currentTexture.flip(true, false);
+                if (render.sprite.isFlipX())
+                    render.sprite.flip(true, false);
             }
 
-            batch.setColor(render.r, render.g, render.b, render.a);
-
-            batch.draw(render.currentTexture, render.position.x, render.position.y, 0, 0,
-                    render.currentTexture.getRegionWidth(),
-                    render.currentTexture.getRegionHeight(),
-                    render.scaleX, render.scaleY, render.rotation);
+            render.sprite.draw(batch);
+//            batch.draw(render.sprite, render.sprite.getX(), render.sprite.getY());
         }
     }
 

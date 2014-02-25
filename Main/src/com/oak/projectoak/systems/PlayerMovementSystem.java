@@ -7,13 +7,12 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.DynamicPhysics;
-
-import java.util.TimerTask;
 
 /*
     The PlayerMovementSystem moves players when the Player
@@ -88,16 +87,16 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 platformer.jumpTimeoutOver = false;
 
                 animate.setToStaticTexture();
-                render.currentTexture = AssetLoader.getTextureRegion(playerAnimation.jump);
+                Constants.setSpriteTexture(render.sprite, AssetLoader.getTextureRegion(playerAnimation.jump));
 
-                platformer.jumpTimeout.schedule(new TimerTask()
+                Timer.schedule(new Timer.Task()
                 {
                     @Override
                     public void run()
                     {
                         platformer.jumpTimeoutOver = true;
                     }
-                }, 500);
+                }, Constants.JUMP_TIMEOUT_DELAY);
             }
     }
 

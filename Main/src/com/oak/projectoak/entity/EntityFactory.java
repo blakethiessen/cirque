@@ -3,6 +3,7 @@ package com.oak.projectoak.entity;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
@@ -32,6 +33,11 @@ public class EntityFactory
         return e;
     }
 
+    public static void safeCreatePlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 energyDisplayPosition)
+    {
+        createPlayer(world, radialPosition, onOutsideEdge, teamNum, energyDisplayPosition);
+    }
+
     public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 energyDisplayPosition)
     {
         Entity e = world.createEntity();
@@ -43,9 +49,18 @@ public class EntityFactory
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-        e.addComponent(new Render("idle", Layer.ACTORS_3, twoDPosition));
-        e.addComponent(new Animate(Constants.PIRATE_IDLE));
-        e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+        e.addComponent(new Render(Layer.ACTORS_3, twoDPosition));
+
+        if (teamNum == 0)
+        {
+            e.addComponent(new Animate(Constants.PIRATE_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+        }
+        else
+        {
+            e.addComponent(new Animate(Constants.NINJA_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+        }
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
         e.addComponent(new TextRender("", energyDisplayPosition));
 
@@ -73,9 +88,14 @@ public class EntityFactory
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), position));
+        e.addComponent(new DynamicPhysics(PhysicsFactory.createArenaCircleBody(), position));
         e.addComponent(new Arena());
-//        e.addComponent(new Render("circle", Layer.ACTORS_2, radialPosition, heightFromEdge));
+        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_INNER_RADIUS / 2, Constants.ARENA_INNER_RADIUS / 2)));
+        final Render render = new Render(Constants.OUTER_RING, Layer.ACTORS_2, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS));
+        final Sprite sprite = render.sprite;
+        sprite.setScale(2);
+
+        e.addComponent(render);
 
         e.addToWorld();
 

@@ -2,8 +2,6 @@ package com.oak.projectoak.components;
 
 import com.artemis.Component;
 
-import java.util.Timer;
-
 /*
     The Platformer component is attached to
     entities that can move around in a
@@ -19,7 +17,6 @@ public class Platformer extends Component
 
     public int footContactCount;
 
-    public Timer jumpTimeout;
     public boolean jumpTimeoutOver;
 
     public Platformer(float latAccel, float latMaxVel, float jumpAccel)
@@ -29,8 +26,6 @@ public class Platformer extends Component
         this.jumpAccel = jumpAccel;
         this.footContactCount = 0;
         this.jumpTimeoutOver = true;
-
-        jumpTimeout = new Timer();
     }
 
     public boolean isOnGround()

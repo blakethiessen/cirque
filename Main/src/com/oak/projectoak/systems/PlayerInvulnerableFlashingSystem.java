@@ -26,18 +26,14 @@ public class PlayerInvulnerableFlashingSystem extends EntityProcessingSystem
         if (player.invulnerable)
         {
             Render render = rm.get(e);
-            render.r = (float)Math.random();
-            render.g = (float)Math.random();
-            render.b = (float)Math.random();
+            render.sprite.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
 
             player.wasInvulnerableLastFrame = true;
         }
         else if (player.wasInvulnerableLastFrame)
         {
             Render render = rm.get(e);
-            render.r = 1;
-            render.g = 1;
-            render.b = 1;
+            render.sprite.setColor(1, 1, 1, 1);
 
             player.wasInvulnerableLastFrame = false;
         }
