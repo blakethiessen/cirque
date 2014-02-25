@@ -41,8 +41,8 @@ public class Constants
 
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
-    public static final int RESPAWN_TIME_MS = 3000;
-    public static final long RESPAWN_INVULNERABLE_PERIOD = 3000;
+    public static final int RESPAWN_TIME_SEC = 3;
+    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
     public static final int DEATHMATCH_KILLS_TO_WIN = 8;

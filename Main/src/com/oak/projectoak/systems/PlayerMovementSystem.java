@@ -105,7 +105,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         if (getBodyEdgeVelocity(body) < 0 && player.isMovingRight ||
                 getBodyEdgeVelocity(body) > 0 && !player.isMovingRight)
         {
-            player.energyIncreasePerFrame = Constants.STARTING_ENERGY_ALLOTMENT_PER_FRAME;
+            player.energyIncreasePerFrame = Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
             player.lastLateralChangePosition = arenaTransform.radialPosition;
             player.isMovingRight = !player.isMovingRight;
         }

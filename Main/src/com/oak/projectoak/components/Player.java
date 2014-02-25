@@ -48,7 +48,7 @@ public class Player extends Component
 
         invulnerable = false;
         wasInvulnerableLastFrame = false;
-        energyIncreasePerFrame = Constants.STARTING_ENERGY_ALLOTMENT_PER_FRAME;
+        energyIncreasePerFrame = Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
         lastLateralChangePosition = 0f;
         isMovingRight = true;
     }
