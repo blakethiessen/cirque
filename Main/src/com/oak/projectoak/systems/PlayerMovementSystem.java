@@ -50,7 +50,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         final ArenaTransform arenaTransform = atm.get(e);
         if (player.isActionOn(Action.MOVING_LEFT))
         {
-            // Flip the sprite
+            // Flip the sprites
             render.flipped = true;
 
             if (platformer.isOnGround() && platformer.jumpTimeoutOver)
@@ -90,7 +90,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 platformer.jumpTimeoutOver = false;
 
                 animate.setToStaticTexture();
-                Constants.setSpriteTexture(render.sprite, AssetLoader.getTextureRegion(playerAnimation.jump));
+                Constants.setSpriteTexture(render.sprites[0], AssetLoader.getTextureRegion(playerAnimation.jump));
 
                 Timer.schedule(new Timer.Task()
                 {

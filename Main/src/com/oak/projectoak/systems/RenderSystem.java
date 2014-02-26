@@ -73,17 +73,16 @@ public class RenderSystem extends EntitySystem
         {
             if (render.flipped)
             {
-                if (!render.sprite.isFlipX())
-                    render.sprite.flip(true, false);
+                if (!render.sprites[0].isFlipX())
+                    render.flipSprites(true, false);
             }
             else
             {
-                if (render.sprite.isFlipX())
-                    render.sprite.flip(true, false);
+                if (render.sprites[0].isFlipX())
+                    render.flipSprites(true, false);
             }
 
-            render.sprite.draw(batch);
-//            batch.draw(render.sprite, render.sprite.getX(), render.sprite.getY());
+            render.draw(batch);
         }
     }
 

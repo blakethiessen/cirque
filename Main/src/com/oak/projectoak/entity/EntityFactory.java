@@ -33,11 +33,6 @@ public class EntityFactory
         return e;
     }
 
-    public static void safeCreatePlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 energyDisplayPosition)
-    {
-        createPlayer(world, radialPosition, onOutsideEdge, teamNum, energyDisplayPosition);
-    }
-
     public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 energyDisplayPosition)
     {
         Entity e = world.createEntity();
@@ -49,7 +44,7 @@ public class EntityFactory
         e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-        e.addComponent(new Render(Layer.ACTORS_3, twoDPosition));
+        e.addComponent(new Render(Layer.ACTORS_3, twoDPosition, false));
 
         if (teamNum == 0)
         {
@@ -61,12 +56,20 @@ public class EntityFactory
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
         }
+
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
         e.addComponent(new TextRender("", energyDisplayPosition));
 
         world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
 
         e.addToWorld();
+
+        return e;
+    }
+
+    private static Entity createUIEnergyBubble(World world, Entity playerEntity, Vector2 screenPosition)
+    {
+        Entity e = world.createEntity();
 
         return e;
     }
@@ -91,8 +94,8 @@ public class EntityFactory
         e.addComponent(new DynamicPhysics(PhysicsFactory.createArenaCircleBody(), position));
         e.addComponent(new Arena());
         e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_INNER_RADIUS / 2, Constants.ARENA_INNER_RADIUS / 2)));
-        final Render render = new Render(Constants.OUTER_RING, Layer.ACTORS_2, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS));
-        final Sprite sprite = render.sprite;
+        final Render render = new Render(Constants.OUTER_RING, Layer.ACTORS_2, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true);
+        final Sprite sprite = render.sprites[0];
         sprite.setScale(2);
 
         e.addComponent(render);
@@ -131,7 +134,7 @@ public class EntityFactory
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new Render("background", Layer.BACKGROUND, Vector2.Zero));
+        e.addComponent(new Render("background", Layer.BACKGROUND, Vector2.Zero, true));
 
         e.addToWorld();
 

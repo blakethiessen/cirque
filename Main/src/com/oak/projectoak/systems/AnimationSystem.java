@@ -34,7 +34,7 @@ public class AnimationSystem extends EntityProcessingSystem
         // If the animation isn't set, we're rendering static images.
         if (animate.getAnimation() != null)
         {
-            Constants.setSpriteTexture(render.sprite, animate.getAnimation().getKeyFrame(animate.stateTime, true));
+            Constants.setSpriteTexture(render.sprites[0], animate.getAnimation().getKeyFrame(animate.stateTime, true));
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
 

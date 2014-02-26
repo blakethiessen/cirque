@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.RenderOffset;
 
@@ -23,8 +24,9 @@ public class RenderOffsetSystem extends EntityProcessingSystem
     protected void process(Entity e)
     {
         RenderOffset renderOffset = rom.get(e);
-        Sprite sprite = rm.get(e).sprite;
+        Render render = rm.get(e);
+        Sprite mainSprite = render.sprites[0];
 
-        sprite.setPosition(sprite.getX() - renderOffset.pxOffset.x, sprite.getY() - renderOffset.pxOffset.y);
+        render.setPosition(new Vector2(mainSprite.getX() - renderOffset.pxOffset.x, mainSprite.getY() - renderOffset.pxOffset.y));
     }
 }

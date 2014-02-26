@@ -2,8 +2,10 @@ package com.oak.projectoak.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Constants;
 
 /*
     The Render component is attached to
@@ -13,17 +15,45 @@ import com.oak.projectoak.AssetLoader;
 
 public class Render extends Component
 {
-    public Sprite sprite;
+    public Sprite[] sprites;
 
     public boolean flipped;
 
     public Layer layer;
     public boolean isVisible;
 
-    public Render(String textureName, Layer layer, Vector2 position)
+    public Render(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
-        sprite = new Sprite(AssetLoader.getTextureRegion(textureName));
-        sprite.setPosition(position.x, position.y);
+        sprites = new Sprite[textureNames.length];
+        for (int i = 0; i < sprites.length; i++)
+        {
+            sprites[i] = new Sprite(AssetLoader.getTextureRegion(textureNames[i]));
+            sprites[i].setPosition(position.x, position.y);
+        }
+
+        if (!rotationOriginAtCenter)
+        {
+            for (Sprite sprite : sprites)
+            {
+                sprite.setOrigin(0, 0);
+            }
+        }
+
+        this.layer = layer;
+        this.flipped = false;
+
+        this.isVisible = true;
+    }
+
+    public Render(String textureName, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
+    {
+        sprites = new Sprite[1];
+
+        sprites[0] = new Sprite(AssetLoader.getTextureRegion(textureName));
+        sprites[0].setPosition(position.x, position.y);
+
+        if (!rotationOriginAtCenter)
+            sprites[0].setOrigin(0, 0);
 
         this.layer = layer;
         this.flipped = false;
@@ -31,10 +61,14 @@ public class Render extends Component
         isVisible = true;
     }
 
-    public Render(Layer layer, Vector2 position)
+    public Render(Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
-        sprite = new Sprite();
-        sprite.setPosition(position.x, position.y);
+        sprites = new Sprite[1];
+        sprites[0] = new Sprite(AssetLoader.getAnimation(Constants.SHAHAN_IDLE).getKeyFrame(0));
+        sprites[0].setPosition(position.x, position.y);
+
+        if (!rotationOriginAtCenter)
+            sprites[0].setOrigin(0, 0);
 
         this.layer = layer;
         this.flipped = false;
@@ -42,9 +76,30 @@ public class Render extends Component
         isVisible = true;
     }
 
-    public Render(String textureName, Layer layer)
+    public void draw(SpriteBatch batch)
     {
-        this(textureName, layer, Vector2.Zero);
+        for (Sprite sprite : sprites)
+        {
+            sprite.draw(batch);
+        }
+    }
+
+    public void setPosition(Vector2 position)
+    {
+        for (Sprite sprite : sprites)
+            sprite.setPosition(position.x, position.y);
+    }
+
+    public void setRotation(float angle)
+    {
+        for (Sprite sprite : sprites)
+            sprite.setRotation(angle);
+    }
+
+    public void flipSprites(boolean xFlip, boolean yFlip)
+    {
+        for (Sprite sprite : sprites)
+            sprite.flip(xFlip, yFlip);
     }
 
     public enum Layer

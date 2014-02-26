@@ -32,8 +32,8 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         Vector2 position = body.getPosition();
 
         Vector2 scaledPosition = position.cpy().scl(Constants.METERS_TO_PIXELS);
-        render.sprite.setPosition(scaledPosition.x, scaledPosition.y);
-        render.sprite.setRotation((float)Math.toDegrees(body.getAngle()));
+        render.setPosition(new Vector2(scaledPosition.x, scaledPosition.y));
+        render.setRotation((float)Math.toDegrees(body.getAngle()));
 
 //        DEBUGDISPLAY CODE
 //        Vector2 velocity = body.getLinearVelocity();

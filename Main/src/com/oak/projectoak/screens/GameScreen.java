@@ -31,11 +31,10 @@ import gamemodemanagers.DeathMatchManager;
 public class GameScreen implements Screen
 {
     private World world;
-    private OrthographicCamera camera;
 
     public GameScreen()
     {
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
 
         // Setup asset loading
         AssetLoader.initialize();
@@ -111,7 +110,7 @@ public class GameScreen implements Screen
 
         EntityFactory.createPlayer(world, 0, true, 0, new Vector2(10, 200));
         EntityFactory.createPlayer(world, (float) Math.PI, false, 1, new Vector2(10, 180));
-        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, new Vector2(10, 160));
+//        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, new Vector2(10, 160));
 //        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
 
         for(Controller controller: Controllers.getControllers())
