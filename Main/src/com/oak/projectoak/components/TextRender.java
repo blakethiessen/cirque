@@ -26,6 +26,6 @@ public class TextRender extends Component
 
     public TextRender(String text, Vector2 position)
     {
-        this(text, position, 1, 1, 1, 1);
+        this(text, position, 0, 0, 0, 1);
     }
 }
