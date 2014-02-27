@@ -21,6 +21,12 @@ public class Constants
     public static final String NINJA_JUMP = "characters/ninja/jump/jump";
     public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
     public static final String NINJA_SELF_DESTRUCT = "characters/ninja/self_destruct/self_destruct";
+    
+    public static final String GANGSTA_IDLE = "characters/gangsta/idle/idle";
+    public static final String GANGSTA_WALK = "characters/gangsta/walk/walk";
+    public static final String GANGSTA_JUMP = "characters/gangsta/jump/jump";
+    public static final String GANGSTA_LAY_TRAP = "characters/gangsta/lay_trap/lay_trap";
+    public static final String GANGSTA_SELF_DESTRUCT = "characters/gangsta/self_destruct/self_destruct";
 
     public static final String PILLAR = "abilities/pillar/pillar";
     public static final String SPIKE = "abilities/spike/spike";

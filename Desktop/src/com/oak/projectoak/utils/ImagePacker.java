@@ -20,6 +20,8 @@ public class ImagePacker
         settings.pot = false;
         settings.stripWhitespaceX = true;
         settings.stripWhitespaceY = true;
+        settings.maxHeight = 1400;
+        settings.maxWidth = 1400;
         TexturePacker2.process(
                 settings, "textures-original", "textures/pack1", "pack1");
 

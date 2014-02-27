@@ -17,6 +17,8 @@ import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.physics.PhysicsFactory;
 
+import java.util.Random;
+
 /*
     The EntityFactory is where all entities
     are composed of their components.
@@ -47,15 +49,21 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
 
-        if (teamNum == 0)
+        int randNum = new Random().nextInt(3);
+        if (randNum == 0)
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
         }
-        else
+        else if (randNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+        }
+        else if (randNum == 2)
+        {
+            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
@@ -134,12 +142,10 @@ public class EntityFactory
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createArenaCircleBody(), position));
         e.addComponent(new Arena());
-        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_INNER_RADIUS / 2, Constants.ARENA_INNER_RADIUS / 2)));
-//        final Render render = new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true);
-//        final Sprite sprite = render.sprites[0];
-//        sprite.setScale(2);
-//
-//        e.addComponent(render);
+        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
+
+//        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true));
+        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
 
         e.addToWorld();
 
