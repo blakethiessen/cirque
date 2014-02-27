@@ -105,7 +105,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
         if (getBodyEdgeVelocity(body) < 0 && player.isMovingRight ||
                 getBodyEdgeVelocity(body) > 0 && !player.isMovingRight)
         {
-            player.energyIncreasePerFrame = Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
+            player.energyIncreaseMultiplier = Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
             player.lastLateralChangePosition = arenaTransform.radialPosition;
             player.isMovingRight = !player.isMovingRight;
         }
@@ -113,14 +113,16 @@ public class PlayerMovementSystem extends EntityProcessingSystem
 
     private void increaseEnergy(Player player, ArenaTransform arenaTransform)
     {
-        if (player.energyAmt <= 1f)
-            player.energyAmt += player.energyIncreasePerFrame;
-        else
-            player.energyAmt = 1f;
+//        if (player.isMovingRight && player.lastLateralChangePosition >= arenaTransform.radialPosition)
+//            player.energyIncreaseMultiplier *=2;
 
-        if (player.isMovingRight && player.lastLateralChangePosition >= arenaTransform.radialPosition)
-            player.energyIncreasePerFrame *=2;
-
+        for (AbilityCreation ability : player.abilities)
+        {
+            if (ability.energyAmt <= 1f)
+                ability.energyAmt += ability.energyIncreasePerFrame * player.energyIncreaseMultiplier;
+            else
+                ability.energyAmt = 1f;
+        }
     }
 
     private void moveAlongArenaEdgeWithSpeedLimit(Body body, float latMaxVel, float acceleration)

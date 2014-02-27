@@ -6,13 +6,11 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.Animate;
-import com.oak.projectoak.components.Platformer;
-import com.oak.projectoak.components.Player;
-import com.oak.projectoak.components.PlayerAnimation;
+import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
@@ -39,38 +37,55 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     protected void process(Entity e)
     {
         final Player player = playm.get(e);
+        Platformer platformer = platm.get(e);
 
-        if (player.isActionOn(Action.ABILITY_1))
+        AbilityCreation[] abilities = player.abilities;
+
+        for (int i = Action.ABILITY_1.getId(); i <= Action.ABILITY_3.getId(); i++)
         {
-            Platformer platformer = platm.get(e);
+            final int adjustedIndex = i - Action.ABILITY_1.getId();
 
-            if (!player.ability1JustUsed && platformer.isOnGround() && player.energyAmt >= Constants.STAKE_ENERGY_COST)
+            if (player.isActionOn(i))
             {
-                final ArenaTransform arenaTransform = cpm.get(e);
-                Animate animate = am.get(e);
-                final PlayerAnimation playerAnimation = pam.get(e);
-                final DynamicPhysics dynamicPhysics = dpm.get(e);
+                final AbilityCreation curAbility = abilities[adjustedIndex];
 
-                animate.setAnimation(playerAnimation.layTrap, true);
-
-                Timer.schedule(new Timer.Task()
+                if (!curAbility.justUsed && platformer.isOnGround() && curAbility.enoughEnergyForUse())
                 {
-                    @Override
-                    public void run()
+                    final ArenaTransform arenaTransform = cpm.get(e);
+                    Animate animate = am.get(e);
+                    final PlayerAnimation playerAnimation = pam.get(e);
+                    final DynamicPhysics dynamicPhysics = dpm.get(e);
+
+                    animate.setAnimation(playerAnimation.layTrap, true);
+
+                    Timer.schedule(new Timer.Task()
                     {
-                        EntityFactory.createStake(world, arenaTransform.radialPosition,
-                                !arenaTransform.onOutsideEdge,
-                                (float)(dynamicPhysics.body.getAngle() + Math.PI));
-                    }
-                }, Constants.STAKE_SPAWN_DELAY);
+                        @Override
+                        public void run()
+                        {
+                            switch (curAbility.abilityType)
+                            {
+                                case STAKE:
+                                    EntityFactory.createStake(world, arenaTransform.radialPosition,
+                                            !arenaTransform.onOutsideEdge,
+                                            (float)(dynamicPhysics.body.getAngle() + Math.PI));
+                                    break;
+                                case PILLAR:
+                                    // TODO
+                                    break;
+                                default:
+                                    Gdx.app.error("Invalid ability creation", "No implementation for ability.");
+                            }
+                        }
+                    }, Constants.ABILITY_CREATION_DELAY);
 
-                player.energyAmt -= Constants.STAKE_ENERGY_COST;
-
-                player.ability1JustUsed = true;
+                    curAbility.energyAmt -= curAbility.energyCostPerUse;
+                    curAbility.justUsed = true;
+                }
             }
+            else
+                abilities[adjustedIndex].justUsed = false;
         }
-        else
-            player.ability1JustUsed = false;
     }
 
 }

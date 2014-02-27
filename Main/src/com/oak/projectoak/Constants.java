@@ -38,6 +38,7 @@ public class Constants
     public static final String UI_PILLAR_METER = "energyMeter/abilityIcons/pillar";
     public static final String UI_SPIKE_METER = "energyMeter/abilityIcons/spike";
 
+    public static final int ENERGY_METER_WIDTH = 70;
 
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
@@ -48,7 +49,7 @@ public class Constants
     public static final int DEATHMATCH_KILLS_TO_WIN = 8;
 
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
-    public static final float STAKE_SPAWN_DELAY = .15f;
+    public static final float ABILITY_CREATION_DELAY = .15f;
     public static final float STAKE_ENERGY_COST = .25f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
 
@@ -65,6 +66,12 @@ public class Constants
 
     // ANIMATION CONSTANTS
     public static final float DEFAULT_FRAME_DURATION = 1/30f;
+
+    public static final int UI_PADDING = 50;
+    public static final Vector2 P1_UI_POSITION = new Vector2(UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - ENERGY_METER_WIDTH);
+    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - ENERGY_METER_WIDTH);
+    public static final Vector2 P3_UI_POSITION = new Vector2(UI_PADDING, UI_PADDING);
+    public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, UI_PADDING);
 
     // PLAYER CONSTANTS
     public static final float PLAYER_WIDTH = .62f;

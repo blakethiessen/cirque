@@ -8,7 +8,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
+import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.entity.EntityFactory;
@@ -96,7 +96,7 @@ public class GameScreen implements Screen
         world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new UIEnergyUpdateSystem());
         world.setSystem(new RenderSystem(camera));
-        world.setSystem(new TextRenderSystem());
+        world.setSystem(new UIRenderSystem(camera));
         world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setManager(new GroupManager());
@@ -108,8 +108,8 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
-        EntityFactory.createPlayer(world, 0, true, 0, new Vector2(10, 200));
-        EntityFactory.createPlayer(world, (float) Math.PI, false, 1, new Vector2(10, 180));
+        EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
+        EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 //        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, new Vector2(10, 160));
 //        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, new Vector2(10, 140));
 

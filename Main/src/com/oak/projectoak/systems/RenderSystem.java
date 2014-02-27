@@ -9,6 +9,7 @@ import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.oak.projectoak.components.Render;
+import com.oak.projectoak.components.UI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +31,7 @@ public class RenderSystem extends EntitySystem
 
     public RenderSystem(OrthographicCamera camera)
     {
-        super(Aspect.getAspectForAll(Render.class));
+        super(Aspect.getAspectForAll(Render.class).exclude(UI.class));
         this.camera = camera;
     }
 

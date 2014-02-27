@@ -18,23 +18,23 @@ public class Player extends Component
     public float mouseX;
     public float mouseY;
 
-    public float energyAmt;
+    public AbilityCreation[] abilities;
 
     public float lastCircularMovePosition;
-
-    public boolean ability1JustUsed;
 
     public int teamNum;
 
     public boolean invulnerable;
     public boolean wasInvulnerableLastFrame;
-    public float energyIncreasePerFrame;
+
+    public float energyIncreaseMultiplier;
     public float lastLateralChangePosition;
     public boolean isMovingRight;
 
-    public Player(int teamNum)
+    public Player(int teamNum, AbilityCreation[] abilityCreationComponents)
     {
         this.teamNum = teamNum;
+        this.abilities = abilityCreationComponents;
 
         playerNum = ++Constants.curPlayersActive;
 
@@ -42,13 +42,9 @@ public class Player extends Component
         this.mouseX = 0f;
         this.mouseY = 0f;
 
-        energyAmt = .25f;
-
-        ability1JustUsed = false;
-
         invulnerable = false;
         wasInvulnerableLastFrame = false;
-        energyIncreasePerFrame = Constants.ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
+        energyIncreaseMultiplier = 1;
         lastLateralChangePosition = 0f;
         isMovingRight = true;
     }
@@ -69,5 +65,10 @@ public class Player extends Component
     public boolean isActionOn(Action action)
     {
         return (actionMask & (1L << action.getId())) != 0;
+    }
+
+    public boolean isActionOn(int actionId)
+    {
+        return (actionMask & (1L << actionId)) != 0;
     }
 }

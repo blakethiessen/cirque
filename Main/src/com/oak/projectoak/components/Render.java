@@ -27,6 +27,7 @@ public class Render extends Component
         sprites = new Sprite[textureNames.length];
         for (int i = 0; i < sprites.length; i++)
         {
+            // TODO: May eventually have issues with needing to retrieve animations.
             sprites[i] = new Sprite(AssetLoader.getTextureRegion(textureNames[i]));
             sprites[i].setPosition(position.x, position.y);
         }
@@ -104,11 +105,11 @@ public class Render extends Component
 
     public enum Layer
     {
-        DEFAULT,
         BACKGROUND,
-        ACTORS_1,
-        ACTORS_2,
-        ACTORS_3,
+        PLAYERS,
+        ABILITIES,
+        ARENA,
+        UI,
         PARTICLES;
 
         public int getLayerId()

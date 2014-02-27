@@ -21,9 +21,9 @@ public class UIEnergyUpdateSystem extends EntityProcessingSystem
     @Override
     protected void process(Entity e)
     {
-        Player player = pm.get(e);
-        TextRender textRender = trm.get(e);
+//        Player player = pm.get(e);
+//        TextRender textRender = trm.get(e);
 
-        textRender.text = "Player " + player.playerNum + " energy: " + player.energyAmt;
+//        textRender.text = "Player " + player.playerNum + " energy: " + player.energyAmt;
     }
 }
