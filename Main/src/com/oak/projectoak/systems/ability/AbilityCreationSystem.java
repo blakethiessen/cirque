@@ -23,6 +23,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
     @Mapper ComponentMapper<DynamicPhysics> dpm;
+    @Mapper ComponentMapper<Render> rm;
 
     private World world;
 
@@ -38,6 +39,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     {
         final Player player = playm.get(e);
         Platformer platformer = platm.get(e);
+        final Render render = rm.get(e);
 
         AbilityCreation[] abilities = player.abilities;
 

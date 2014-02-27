@@ -107,7 +107,15 @@ public class EntityFactory
         AbilityCreation abilityCreationComponent = new AbilityCreation(abilityType);
         e.addComponent(abilityCreationComponent);
         e.addComponent(new UI());
-        e.addComponent(new Render(bubbleTextures, Layer.UI, screenPosition, true));
+        final Render render = new Render(bubbleTextures, Layer.UI, screenPosition, true);
+
+        final Sprite energyFillSprite = render.sprites[1];
+        float energyOffset = (render.sprites[2].getHeight() - energyFillSprite.getHeight()) / 2;
+
+        render.sprites[0].setPosition(energyFillSprite.getX() + energyOffset, energyFillSprite.getY() + energyOffset);
+        energyFillSprite.setPosition(energyFillSprite.getX() + energyOffset, energyFillSprite.getY() + energyOffset);
+
+        e.addComponent(render);
 
         e.addToWorld();
 
@@ -121,11 +129,11 @@ public class EntityFactory
         e.addComponent(new DynamicPhysics(PhysicsFactory.createArenaCircleBody(), position));
         e.addComponent(new Arena());
         e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_INNER_RADIUS / 2, Constants.ARENA_INNER_RADIUS / 2)));
-        final Render render = new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true);
-        final Sprite sprite = render.sprites[0];
-        sprite.setScale(2);
-
-        e.addComponent(render);
+//        final Render render = new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true);
+//        final Sprite sprite = render.sprites[0];
+//        sprite.setScale(2);
+//
+//        e.addComponent(render);
 
         e.addToWorld();
 
