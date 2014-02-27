@@ -27,10 +27,8 @@ public class UIEnergyUpdateSystem extends EntityProcessingSystem
 
         Sprite energyLevelSprite = render.sprites[1];
 
-        energyLevelSprite.setSize(energyLevelSprite.getWidth(), energyLevelSprite.getRegionHeight() * abilityCreation.energyAmt);
-//        energyLevelSprite.setRegionHeight((int)(energyLevelSprite.getHeight() * abilityCreation.energyAmt));
-//        energyLevelSprite.setRegion((int)energyLevelSprite.getX(), (int)energyLevelSprite.getY(), (int)energyLevelSprite.getRegionWidth(), (int)(energyLevelSprite.getHeight() * abilityCreation.energyAmt));
-//        energyLevelSprite.setRegionHeight((int)(energyLevelSprite.getHeight() * abilityCreation.energyAmt));
-//        energyLevelSprite.setRegionHeight((int)(energyLevelSprite.getHeight() * .5));
+        energyLevelSprite.setRegionHeight((int)(energyLevelSprite.getHeight() * abilityCreation.energyAmt));
+        energyLevelSprite.setScale(1 , -abilityCreation.energyAmt);
+        energyLevelSprite.setY(render.sprites[0].getY() - ((1 - abilityCreation.energyAmt) * energyLevelSprite.getHeight()) / 2);
     }
 }
