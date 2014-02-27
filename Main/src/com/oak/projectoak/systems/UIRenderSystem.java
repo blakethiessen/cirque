@@ -5,7 +5,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.UI;
@@ -18,13 +17,11 @@ public class UIRenderSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Render> sm;
 
-    private OrthographicCamera camera;
     private SpriteBatch batch;
 
-    public UIRenderSystem(OrthographicCamera camera)
+    public UIRenderSystem()
     {
         super(Aspect.getAspectForAll(Render.class, UI.class));
-        this.camera = camera;
     }
 
     @Override
@@ -36,7 +33,6 @@ public class UIRenderSystem extends EntityProcessingSystem
     @Override
     protected void begin()
     {
-//        batch.setProjectionMatrix(camera.combined);
         batch.begin();
     }
 

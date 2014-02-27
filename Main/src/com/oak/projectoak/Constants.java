@@ -33,7 +33,7 @@ public class Constants
 
     public static final String UI_ENERGY_METER_FILL = "energyMeter/energy";
 
-    public static final String UI_ENERGY_READY = "energyMeter/ready";
+    public static final String UI_ENERGY_READY = "energyMeter/ready/ability_ready";
 
     public static final String UI_PILLAR_METER = "energyMeter/abilityIcons/pillar";
     public static final String UI_SPIKE_METER = "energyMeter/abilityIcons/spike";
@@ -41,7 +41,7 @@ public class Constants
     public static final int ENERGY_METER_WIDTH = 70;
 
     public static final float ROTATIONAL_OFFSET = .04f;
-    public static final float ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
+    public static final float TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
     public static final int RESPAWN_TIME_SEC = 3;
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
@@ -50,9 +50,10 @@ public class Constants
 
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float STAKE_ENERGY_COST = .33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
+    public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

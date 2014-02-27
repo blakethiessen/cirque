@@ -12,8 +12,11 @@ import com.oak.projectoak.AssetLoader;
 public class Animate extends Component
 {
     private Animation animation;
+
+    public int animationArrayLocation;
+
     public float stateTime = 0;
-    public boolean playFullAnimation;
+    public boolean playWithNoInterrupts;
 
     public boolean playOnce;
 
@@ -21,25 +24,35 @@ public class Animate extends Component
     {
         animation = AssetLoader.getAnimation(initialAnimation);
         this.playOnce = playOnce;
+        animationArrayLocation = 0;
+    }
+
+    public Animate(String initialAnimation, int animationArrayLocation)
+    {
+        animation = AssetLoader.getAnimation(initialAnimation);
+        playWithNoInterrupts = false;
+        playOnce = false;
+        this.animationArrayLocation = animationArrayLocation;
     }
 
     public Animate(String initialAnimation)
     {
         animation = AssetLoader.getAnimation(initialAnimation);
-        playFullAnimation = false;
+        playWithNoInterrupts = false;
         playOnce = false;
+        animationArrayLocation = 0;
     }
 
     public void setAnimation(String animationString, boolean playFull)
     {
-        if (!playFullAnimation)
+        if (!playWithNoInterrupts)
         {
             final Animation newAnimation = AssetLoader.getAnimation(animationString);
             if (animation != newAnimation)
             {
                 this.animation = newAnimation;
                 stateTime = 0;
-                playFullAnimation = playFull;
+                playWithNoInterrupts = playFull;
             }
         }
     }
@@ -63,7 +76,7 @@ public class Animate extends Component
     {
         if (animation.isAnimationFinished(stateTime))
         {
-            playFullAnimation = false;
+            playWithNoInterrupts = false;
 
             if (playOnce)
             {

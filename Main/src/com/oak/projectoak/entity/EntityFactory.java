@@ -85,8 +85,10 @@ public class EntityFactory
     // Returns abilityCreation component because that's all the player should need.
     private static AbilityCreation createAbilityCreator(World world, AbilityType abilityType, Vector2 screenPosition)
     {
-        String[] bubbleTextures = new String[3];
+        String[] bubbleTextures = new String[4];
         bubbleTextures[1] = Constants.UI_ENERGY_METER_FILL;
+        // 3rd layer is for animation.
+        bubbleTextures[3] = null;
 
         switch (abilityType)
         {
@@ -116,6 +118,10 @@ public class EntityFactory
         energyFillSprite.setPosition(energyFillSprite.getX() + energyOffset, energyFillSprite.getY() + energyOffset);
 
         e.addComponent(render);
+
+        final Animate animate = new Animate(Constants.UI_ENERGY_READY, 3);
+        animate.playOnce = true;
+        e.addComponent(animate);
 
         e.addToWorld();
 

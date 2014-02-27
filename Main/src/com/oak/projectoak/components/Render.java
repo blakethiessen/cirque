@@ -29,7 +29,12 @@ public class Render extends Component
         for (int i = 0; i < sprites.length; i++)
         {
             // TODO: May eventually have issues with needing to retrieve animations.
-            sprites[i] = new Sprite(AssetLoader.getTextureRegion(textureNames[i]));
+            final TextureRegion texture = getTexture(textureNames[i]);
+            if (texture != null)
+                sprites[i] = new Sprite(texture);
+            else
+                sprites[i] = new Sprite();
+
             sprites[i].setPosition(position.x, position.y);
         }
 
@@ -51,14 +56,7 @@ public class Render extends Component
     {
         sprites = new Sprite[1];
 
-        TextureRegion textureRegion = AssetLoader.getTextureRegion(textureName);
-
-        if (textureRegion == null)
-        {
-            textureRegion = AssetLoader.getAnimation(textureName).getKeyFrame(0);
-        }
-
-        sprites[0] = new Sprite(textureRegion);
+        sprites[0] = new Sprite(getTexture(textureName));
 
         sprites[0].setPosition(position.x, position.y);
 
@@ -69,6 +67,22 @@ public class Render extends Component
         this.flipped = false;
 
         isVisible = true;
+    }
+
+    private TextureRegion getTexture(String textureName)
+    {
+        if (textureName != null)
+        {
+            TextureRegion textureRegion = AssetLoader.getTextureRegion(textureName);
+
+            if (textureRegion == null)
+            {
+                textureRegion = AssetLoader.getAnimation(textureName).getKeyFrame(0);
+            }
+            return textureRegion;
+        }
+
+        return null;
     }
 
     public Render(Layer layer, Vector2 position, boolean rotationOriginAtCenter)
@@ -90,7 +104,8 @@ public class Render extends Component
     {
         for (Sprite sprite : sprites)
         {
-            sprite.draw(batch);
+            if (sprite.getTexture() != null)
+                sprite.draw(batch);
         }
     }
 

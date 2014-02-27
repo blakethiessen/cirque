@@ -86,13 +86,31 @@ public class AssetLoader
 
     public static TextureRegion getTextureRegion(String textureRegion)
     {
-        // TODO: Throw texture not found exception.
-        return textureMap.get(textureRegion);
+        try
+        {
+            return textureMap.get(textureRegion);
+        }
+        catch (NullPointerException e)
+        {
+            Gdx.app.error("Texture not found", "Texture: " + textureRegion + " was not in the textureMap.");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static Animation getAnimation(String animationName)
     {
-        // TODO: Throw animation not found exception.
-        return animationMap.get(animationName);
+        try
+        {
+            return animationMap.get(animationName);
+        }
+        catch (NullPointerException e)
+        {
+            Gdx.app.error("Animation not found", "Animation: " + animationName + " was not in the animationMap.");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

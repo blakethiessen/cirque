@@ -96,7 +96,7 @@ public class GameScreen implements Screen
         world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new UIEnergyUpdateSystem());
         world.setSystem(new RenderSystem(camera));
-        world.setSystem(new UIRenderSystem(camera));
+        world.setSystem(new UIRenderSystem());
         world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setManager(new GroupManager());
