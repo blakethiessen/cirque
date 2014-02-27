@@ -37,7 +37,6 @@ public class AnimationSystem extends EntityProcessingSystem
             Constants.setSpriteTexture(render.sprites[0], animate.getAnimation().getKeyFrame(animate.stateTime, true));
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
-
             animate.resetAnimationIfDone();
         }
     }

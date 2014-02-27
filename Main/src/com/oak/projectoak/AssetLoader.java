@@ -1,14 +1,12 @@
 package com.oak.projectoak;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Comparator;
 import java.util.HashMap;
 
 /*
@@ -17,53 +15,57 @@ import java.util.HashMap;
 
 public class AssetLoader
 {
-    private static TextureAtlas atlas;
-
     private static HashMap<String, TextureRegion> textureMap;
     private static HashMap<String, Animation> animationMap;
 
     public static void initialize()
     {
-        loadAtlasIntoMaps();
+        TextureAtlas[] textureAtlases = new TextureAtlas[2];
+
+        textureAtlases[0] = new TextureAtlas(Gdx.files.internal("textures/pack1/pack1.atlas"),
+                Gdx.files.internal("textures/pack1"));
+        textureAtlases[1] = new TextureAtlas(Gdx.files.internal("textures/pack2/pack2.atlas"),
+                Gdx.files.internal("textures/pack2"));
+
+        loadAtlasIntoMaps(textureAtlases);
 
 //        textureMap.put("background",
 //                new TextureRegion(new Texture("textures/background.png")));
     }
 
-    private static void loadAtlasIntoMaps()
+    private static void loadAtlasIntoMaps(TextureAtlas[] atlases)
     {
-        atlas = new TextureAtlas(
-                Gdx.files.internal("textures/pack.atlas"),
-                Gdx.files.internal("textures"));
-
         Array<AtlasRegion> tempTextureList = new Array<AtlasRegion>();
         Array<Array<AtlasRegion>> tempAnimationList = new Array<Array<AtlasRegion>>();
 
-        for (AtlasRegion atlasRegion : atlas.getRegions())
+        for (TextureAtlas atlas : atlases)
         {
-            // If this texture is not an animation:
-            if (atlasRegion.index == -1)
-                tempTextureList.add(atlasRegion);
-            else
+            for (AtlasRegion atlasRegion : atlas.getRegions())
             {
-                boolean animationAlreadyInList = false;
-
-                for (Array<AtlasRegion> animationSet : tempAnimationList)
+                // If this texture is not an animation:
+                if (atlasRegion.index == -1)
+                    tempTextureList.add(atlasRegion);
+                else
                 {
-                    if (animationSet.get(0).name.equals(atlasRegion.name))
+                    boolean animationAlreadyInList = false;
+
+                    for (Array<AtlasRegion> animationSet : tempAnimationList)
                     {
-                        animationSet.add(atlasRegion);
-                        animationAlreadyInList = true;
-                        break; // Break out of loop.
+                        if (animationSet.get(0).name.equals(atlasRegion.name))
+                        {
+                            animationSet.add(atlasRegion);
+                            animationAlreadyInList = true;
+                            break; // Break out of loop.
+                        }
                     }
-                }
 
-                if (!animationAlreadyInList)
-                {
-                    Array<AtlasRegion> newAnimation = new Array<AtlasRegion>();
-                    newAnimation.add(atlasRegion);
+                    if (!animationAlreadyInList)
+                    {
+                        Array<AtlasRegion> newAnimation = new Array<AtlasRegion>();
+                        newAnimation.add(atlasRegion);
 
-                    tempAnimationList.add(newAnimation);
+                        tempAnimationList.add(newAnimation);
+                    }
                 }
             }
         }

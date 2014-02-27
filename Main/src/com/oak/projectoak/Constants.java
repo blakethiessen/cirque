@@ -22,8 +22,8 @@ public class Constants
     public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
     public static final String NINJA_SELF_DESTRUCT = "characters/ninja/self_destruct/self_destruct";
 
-    public static final String PILLAR = "abilities/pillar";
-    public static final String SPIKE = "abilities/spike";
+    public static final String PILLAR = "abilities/pillar/pillar";
+    public static final String SPIKE = "abilities/spike/spike";
 
     public static final String OUTER_RING = "arena/outerRing";
 
@@ -50,7 +50,7 @@ public class Constants
 
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float STAKE_ENERGY_COST = .25f;
+    public static final float STAKE_ENERGY_COST = .33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
 
@@ -85,8 +85,8 @@ public class Constants
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
-    public static final float STAKE_WIDTH = .1f;
-    public static final float STAKE_HEIGHT = .4f;
+    public static final float STAKE_WIDTH = 1f;
+    public static final float STAKE_HEIGHT = 1.2f;
     public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 4f;
 
     // ARENA CONSTANTS

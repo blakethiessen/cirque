@@ -3,6 +3,7 @@ package com.oak.projectoak.components;
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
@@ -50,7 +51,15 @@ public class Render extends Component
     {
         sprites = new Sprite[1];
 
-        sprites[0] = new Sprite(AssetLoader.getTextureRegion(textureName));
+        TextureRegion textureRegion = AssetLoader.getTextureRegion(textureName);
+
+        if (textureRegion == null)
+        {
+            textureRegion = AssetLoader.getAnimation(textureName).getKeyFrame(0);
+        }
+
+        sprites[0] = new Sprite(textureRegion);
+
         sprites[0].setPosition(position.x, position.y);
 
         if (!rotationOriginAtCenter)

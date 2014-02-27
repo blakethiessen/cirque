@@ -15,10 +15,19 @@ public class Animate extends Component
     public float stateTime = 0;
     public boolean playFullAnimation;
 
+    public boolean playOnce;
+
+    public Animate(String initialAnimation, boolean playOnce)
+    {
+        animation = AssetLoader.getAnimation(initialAnimation);
+        this.playOnce = playOnce;
+    }
+
     public Animate(String initialAnimation)
     {
         animation = AssetLoader.getAnimation(initialAnimation);
         playFullAnimation = false;
+        playOnce = false;
     }
 
     public void setAnimation(String animationString, boolean playFull)
@@ -53,6 +62,13 @@ public class Animate extends Component
     public void resetAnimationIfDone()
     {
         if (animation.isAnimationFinished(stateTime))
+        {
             playFullAnimation = false;
+
+            if (playOnce)
+            {
+                setToStaticTexture();
+            }
+        }
     }
 }

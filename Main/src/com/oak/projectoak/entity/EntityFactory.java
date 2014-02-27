@@ -151,14 +151,18 @@ public class EntityFactory
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        twoDPosition.set(twoDPosition.x, twoDPosition.y);
-
         e.addComponent(new Stake());
 
         final Physics physics = new Physics(PhysicsFactory.createStakeBody(), twoDPosition);
         final Body body = physics.body;
         body.setTransform(body.getPosition(), rotationInRadians);
         e.addComponent(physics);
+
+        final Render render = new Render(Constants.SPIKE, Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false);
+        render.setRotation((float)Math.toDegrees(body.getAngle()));
+
+        e.addComponent(render);
+        e.addComponent(new Animate(Constants.SPIKE, true));
 
         e.addToWorld();
 

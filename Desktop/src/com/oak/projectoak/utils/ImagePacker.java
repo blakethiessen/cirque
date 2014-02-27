@@ -21,6 +21,12 @@ public class ImagePacker
         settings.stripWhitespaceX = true;
         settings.stripWhitespaceY = true;
         TexturePacker2.process(
-                settings, "textures-original", "textures", "pack");
+                settings, "textures-original", "textures/pack1", "pack1");
+
+        settings.stripWhitespaceX = false;
+        settings.stripWhitespaceY = false;
+
+        TexturePacker2.process(
+                settings, "textures-original-nostrip", "textures/pack2", "pack2");
     }
 }
