@@ -28,6 +28,8 @@ public class InputSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Player> pm;
 
+    public HashMap<Controller, Integer> controllerMap;
+
     private HashMap<Integer, PlayerAction> keyMaps;
     private HashMap<Action, Boolean>[] controlStates;
     private OrthographicCamera camera;
@@ -38,6 +40,8 @@ public class InputSystem extends EntityProcessingSystem
         super(Aspect.getAspectForAll(Player.class, Player.class));
         this.camera = camera;
         this.gameModeManager = gameModeManager;
+
+        this.controllerMap = new HashMap<Controller, Integer>(4);
 
         keyMaps = new HashMap<Integer, PlayerAction>(Constants.NUM_OF_CONTROLS);
 
@@ -171,13 +175,20 @@ public class InputSystem extends EntityProcessingSystem
     @Override
     public void disconnected(Controller controller)
     {
-
+        System.out.println("CONTROLLER DISCONNECTED!");
     }
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode)
     {
-        System.out.println("Button down!");
+        final int curPlayer = controllerMap.get(controller);
+
+        if (buttonCode == 0)
+            controlStates[curPlayer].put(Action.JUMPING, true);
+        else if (buttonCode == 2)
+            controlStates[curPlayer].put(Action.ABILITY_1, true);
+        else if (buttonCode == 3)
+            controlStates[curPlayer].put(Action.ABILITY_2, true);
 
         return false;
     }
@@ -185,12 +196,43 @@ public class InputSystem extends EntityProcessingSystem
     @Override
     public boolean buttonUp(Controller controller, int buttonCode)
     {
+        final int curPlayer = controllerMap.get(controller);
+
+        if (buttonCode == 0)
+            controlStates[curPlayer].put(Action.JUMPING, false);
+        else if (buttonCode == 2)
+            controlStates[curPlayer].put(Action.ABILITY_1, false);
+        else if (buttonCode == 3)
+            controlStates[curPlayer].put(Action.ABILITY_2, false);
+
         return false;
     }
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value)
     {
+        final int curPlayer = controllerMap.get(controller);
+        
+        if (axisCode == 1)
+        {
+            if (value < -.5f)
+                controlStates[curPlayer].put(Action.MOVING_LEFT, true);
+            else
+                controlStates[curPlayer].put(Action.MOVING_LEFT, false);
+
+            if (value > .5f)
+                controlStates[curPlayer].put(Action.MOVING_RIGHT, true);
+            else
+                controlStates[curPlayer].put(Action.MOVING_RIGHT, false);
+        }
+        if (axisCode == 0)
+        {
+            if (value < -.5f)
+                controlStates[curPlayer].put(Action.JUMPING, true);
+            else
+                controlStates[curPlayer].put(Action.JUMPING, false);
+        }
+
         return false;
     }
 

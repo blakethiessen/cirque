@@ -8,6 +8,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
@@ -81,6 +82,7 @@ public class GameScreen implements Screen
 
         InputSystem input = new InputSystem(camera, deathMatchManager);
         inputManager.addInputProcessor(input);
+        Controllers.addListener(input);
         world.setSystem(input);
 
         world.setSystem(new CameraSystem(camera, true));
@@ -113,9 +115,10 @@ public class GameScreen implements Screen
         EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
         EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 
-        for(Controller controller: Controllers.getControllers())
+        Array<Controller> controllers = Controllers.getControllers();
+        for(int i = 0; i < controllers.size; i++)
         {
-            Gdx.app.log("Controller", controller.getName());
+            input.controllerMap.put(controllers.get(i), i);
         }
     }
 
