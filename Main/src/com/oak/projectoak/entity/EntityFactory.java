@@ -114,19 +114,6 @@ public class EntityFactory
         return abilityCreationComponent;
     }
 
-    public static Entity createFloor(World world, float radialPosition, boolean onOutsideEdge)
-    {
-        Entity e = world.createEntity();
-
-        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
-
-        e.addComponent(new Physics(PhysicsFactory.createFloorBody(), twoDPosition));
-
-        e.addToWorld();
-
-        return e;
-    }
-
     public static Entity createArenaCircle(World world, Vector2 position)
     {
         Entity e = world.createEntity();
