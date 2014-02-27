@@ -52,6 +52,7 @@ public class Constants
     public static final float ABILITY_CREATION_DELAY = .15f;
     public static final float STAKE_ENERGY_COST = .25f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
+    public static final int STAKE_LIFETIME = 10;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

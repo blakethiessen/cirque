@@ -27,11 +27,14 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
     private World world;
 
-    public AbilityCreationSystem(World world)
+    private final AbilityDestructionSystem abilityDestructionSystem;
+
+    public AbilityCreationSystem(World world, AbilityDestructionSystem abilityDestructionSystem)
     {
         super(Aspect.getAspectForAll(Player.class));
 
         this.world = world;
+        this.abilityDestructionSystem = abilityDestructionSystem;
     }
 
     @Override
@@ -68,9 +71,9 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                             switch (curAbility.abilityType)
                             {
                                 case STAKE:
-                                    EntityFactory.createStake(world, arenaTransform.radialPosition,
+                                    scheduleEntityForDestruction(EntityFactory.createStake(world, arenaTransform.radialPosition,
                                             !arenaTransform.onOutsideEdge,
-                                            (float)(dynamicPhysics.body.getAngle() + Math.PI));
+                                            (float) (dynamicPhysics.body.getAngle() + Math.PI)));
                                     break;
                                 case PILLAR:
                                     // TODO
@@ -90,4 +93,15 @@ public class AbilityCreationSystem extends EntityProcessingSystem
         }
     }
 
+    private void scheduleEntityForDestruction(final Entity entity)
+    {
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+                abilityDestructionSystem.destroyEntity(entity);
+            }
+        }, Constants.STAKE_LIFETIME);
+    }
 }
