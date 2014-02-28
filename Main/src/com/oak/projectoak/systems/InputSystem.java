@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
-import gamemodemanagers.GameModeManager;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 import java.util.HashMap;
 

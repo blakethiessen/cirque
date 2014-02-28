@@ -14,7 +14,7 @@ import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.systems.physics.ArenaRotationSystem;
-import gamemodemanagers.GameModeManager;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 import java.util.ArrayList;
 

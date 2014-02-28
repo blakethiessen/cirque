@@ -84,33 +84,22 @@ public class AssetLoader
         }
     }
 
-    public static TextureRegion getTextureRegion(String textureRegion)
+    public static TextureRegion getTextureRegion(String textureRegionName)
     {
-        try
-        {
-            return textureMap.get(textureRegion);
-        }
-        catch (NullPointerException e)
-        {
-            Gdx.app.error("Texture not found", "Texture: " + textureRegion + " was not in the textureMap.");
-            e.printStackTrace();
-        }
+        final TextureRegion textureRegion = textureMap.get(textureRegionName);
 
-        return null;
+        if (textureRegion == null)
+            Gdx.app.error("Texture not found", "Texture: " + textureRegionName + " was not in the textureMap.");
+
+        return textureRegion;
     }
 
     public static Animation getAnimation(String animationName)
     {
-        try
-        {
-            return animationMap.get(animationName);
-        }
-        catch (NullPointerException e)
-        {
+        final Animation animation = animationMap.get(animationName);
+        if (animation == null)
             Gdx.app.error("Animation not found", "Animation: " + animationName + " was not in the animationMap.");
-            e.printStackTrace();
-        }
 
-        return null;
+        return animation;
     }
 }

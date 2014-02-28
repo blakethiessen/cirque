@@ -13,7 +13,7 @@ import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.TrapUD;
 import com.oak.projectoak.systems.PlayerDestructionSystem;
-import gamemodemanagers.DeathMatchManager;
+import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 
 public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener

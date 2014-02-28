@@ -1,4 +1,4 @@
-package gamemodemanagers;
+package com.oak.projectoak.gamemodemanagers;
 
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;

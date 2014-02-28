@@ -21,7 +21,7 @@ import com.oak.projectoak.systems.ability.AbilityCreationSystem;
 import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
 import com.oak.projectoak.systems.ability.AbilitySystem;
 import com.oak.projectoak.systems.physics.*;
-import gamemodemanagers.DeathMatchManager;
+import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 
 /*
     The GameScreen is screen that contains the actual game.

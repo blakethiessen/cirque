@@ -1,4 +1,4 @@
-package gamemodemanagers;
+package com.oak.projectoak.gamemodemanagers;
 
 public abstract class GameModeManager
 {
