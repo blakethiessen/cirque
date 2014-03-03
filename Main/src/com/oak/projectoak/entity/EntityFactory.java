@@ -170,7 +170,7 @@ public class EntityFactory
         body.setTransform(body.getPosition(), rotationInRadians);
         e.addComponent(physics);
 
-        final Render render = new Render(Constants.SPIKE, Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false);
+        final Render render = new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false);
         render.setRotation((float)Math.toDegrees(body.getAngle()));
 
         e.addComponent(render);

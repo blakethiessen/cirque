@@ -1,6 +1,5 @@
 package com.oak.projectoak;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.oak.projectoak.utils.ImagePacker;
@@ -26,8 +25,10 @@ public class DesktopStarter
         cfg.vSyncEnabled = true;
 //        cfg.fullscreen = true;
 
-        // Uncomment the line below when adding new sprites.
-        ImagePacker.run();
+        // Pass in the argument "nopack" to not run the image packer.
+        if (!(args.length > 0 && args[0].equals("nopack")))
+            ImagePacker.run();
+
         new LwjglApplication(new ProjectOak(), cfg);
     }
 }
