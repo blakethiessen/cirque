@@ -20,12 +20,15 @@ public class Box2DDefs
     private static final float PLAYER_FOOT_HALF_HEIGHT = .02f;
     
     // Shape vertice arrays
-    public static final float[] SPIKE_VERTICES = new float[]
+    public static final Vector2[] getSpikeVertices()
+    {
+        return new Vector2[]
             {
-                0, 0,
-                Constants.STAKE_WIDTH, 0,
-                Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT
+                new Vector2(0, 0),
+                new Vector2(Constants.STAKE_WIDTH, 0),
+                new Vector2(Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT)
             };
+    }
 
     // Shapes
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();

@@ -144,10 +144,9 @@ public class EntityFactory
 
         e.addComponent(new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position));
         e.addComponent(new ArenaRotation());
-        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
+//        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
 
-//        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true));
-        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
+//        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
 
         e.addToWorld();
 
@@ -172,13 +171,9 @@ public class EntityFactory
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         e.addComponent(new Stake());
-        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.SPIKE_VERTICES, trapRingBody, twoDPosition);
-        e.addComponent(trapPhysics);
+        e.addComponent(new TrapPhysics(Box2DDefs.getSpikeVertices(), trapRingBody, twoDPosition, radialPosition, onOutsideEdge));
 
-        final Render render = new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false);
-        render.setRotation((float)Math.toDegrees(trapPhysics.fixture.getBody().getAngle()));
-
-        e.addComponent(render);
+        e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
         e.addComponent(new Animate(Constants.SPIKE, true));
 
         e.addToWorld();
