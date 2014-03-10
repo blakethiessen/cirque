@@ -8,19 +8,16 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Render;
-import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.TrapPhysics;
 
 public class TrapPhysicsSystem extends EntityProcessingSystem
 {
-    private final DynamicPhysics trapRingPhysics;
     @Mapper ComponentMapper<Render> rm;
     @Mapper ComponentMapper<TrapPhysics> tpm;
 
-    public TrapPhysicsSystem(DynamicPhysics trapRingPhysics)
+    public TrapPhysicsSystem()
     {
         super(Aspect.getAspectForAll(TrapPhysics.class));
-        this.trapRingPhysics = trapRingPhysics;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class TrapPhysicsSystem extends EntityProcessingSystem
         final float angle = trapPhysics.fixture.getBody().getAngle();
         render.setRotation((float)Math.toDegrees(angle + trapPhysics.initialRotation));
         final Vector2 newPosition = Constants.ConvertRadialTo2DPosition(
-                trapPhysics.startingRadialPosition + trapRingPhysics.body.getAngle(), trapPhysics.onOutsideEdge);
+                trapPhysics.initialRadialPosition + angle, trapPhysics.onOutsideEdge);
         newPosition.scl(Constants.METERS_TO_PIXELS);
         render.setPosition(newPosition);
     }

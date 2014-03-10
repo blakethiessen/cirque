@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.input.InputManager;
@@ -82,7 +81,7 @@ public class GameScreen implements Screen
         final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER);
 
         world.setSystem(new DynamicPhysicsSystem());
-        world.setSystem(new TrapPhysicsSystem(trapRing.getComponent(DynamicPhysics.class)));
+        world.setSystem(new TrapPhysicsSystem());
         world.setSystem(new RenderOffsetSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
@@ -118,8 +117,8 @@ public class GameScreen implements Screen
 
         EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
         EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
-        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
-        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
+//        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
+//        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 
         Array<Controller> controllers = Controllers.getControllers();
         for(int i = 0; i < controllers.size; i++)

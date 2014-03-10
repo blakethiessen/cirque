@@ -12,34 +12,33 @@ import com.oak.projectoak.physics.PhysicsFactory;
 public class TrapPhysics extends Component
 {
     public Fixture fixture;
-    public float startingRadialPosition;
+    public final float initialRadialPosition;
 
     public boolean onOutsideEdge;
     public final float initialRotation;
 
     public TrapPhysics(Vector2[] shapeVertices, FixturePositioningBody trapRingBody, Vector2 position, float radialPosition, boolean onOutsideEdge)
     {
+        System.out.println(radialPosition);
         this.onOutsideEdge = onOutsideEdge;
-        this.startingRadialPosition = radialPosition;
+        this.initialRadialPosition = radialPosition - trapRingBody.getBody().getAngle();
 
         PolygonShape shape = new PolygonShape();
 
         Body body = trapRingBody.getBody();
-        final Vector2 newPos = body.getLocalPoint(position);
-
-        radialPosition = onOutsideEdge ? (float)(radialPosition - Math.PI / 2) : (float)(radialPosition + Math.PI / 2);
-        this.initialRotation = radialPosition;
+        final Vector2 localPosition = body.getLocalPoint(position);
 
         // Rotate the vertices
+        initialRotation = onOutsideEdge ? (float)(initialRadialPosition - Math.PI / 2) : (float)(initialRadialPosition + Math.PI / 2);
         for (int i = 1; i < shapeVertices.length; i++)
         {
-            shapeVertices[i].rotateRad(radialPosition);
+            shapeVertices[i].rotateRad(initialRotation);
         }
 
         // position the shape relative to the body.
         for (Vector2 vertex : shapeVertices)
         {
-            vertex.add(newPos);
+            vertex.add(localPosition);
         }
 
         shape.set(shapeVertices);
