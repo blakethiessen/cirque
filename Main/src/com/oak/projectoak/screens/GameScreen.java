@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.input.InputManager;
@@ -77,8 +78,11 @@ public class GameScreen implements Screen
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
+        PhysicsFactory.setWorld(b2world);
+        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER);
+
         world.setSystem(new DynamicPhysicsSystem());
-        world.setSystem(new TrapPhysicsSystem());
+        world.setSystem(new TrapPhysicsSystem(trapRing.getComponent(DynamicPhysics.class)));
         world.setSystem(new RenderOffsetSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
@@ -92,9 +96,6 @@ public class GameScreen implements Screen
 
         world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());
-
-        PhysicsFactory.setWorld(b2world);
-        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER);
 
         world.setSystem(new AbilityCreationSystem(world, abilityDestructionSystem, trapRing));
 
