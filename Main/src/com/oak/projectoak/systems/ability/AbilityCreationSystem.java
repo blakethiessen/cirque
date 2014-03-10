@@ -14,6 +14,7 @@ import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
+import com.oak.projectoak.physics.FixturePositioningBody;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
@@ -22,19 +23,19 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<ArenaTransform> cpm;
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<Render> rm;
 
     private World world;
 
     private final AbilityDestructionSystem abilityDestructionSystem;
+    private final FixturePositioningBody trapRingBody;
 
-    public AbilityCreationSystem(World world, AbilityDestructionSystem abilityDestructionSystem)
+    public AbilityCreationSystem(World world, AbilityDestructionSystem abilityDestructionSystem, Entity trapRing)
     {
         super(Aspect.getAspectForAll(Player.class));
 
         this.world = world;
         this.abilityDestructionSystem = abilityDestructionSystem;
+        trapRingBody = new FixturePositioningBody(trapRing.getComponent(DynamicPhysics.class).body);
     }
 
     @Override
@@ -42,7 +43,6 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     {
         final Player player = playm.get(e);
         Platformer platformer = platm.get(e);
-        final Render render = rm.get(e);
 
         AbilityCreation[] abilities = player.abilities;
 
@@ -59,7 +59,6 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                     final ArenaTransform arenaTransform = cpm.get(e);
                     Animate animate = am.get(e);
                     final PlayerAnimation playerAnimation = pam.get(e);
-                    final DynamicPhysics dynamicPhysics = dpm.get(e);
 
                     animate.setAnimation(playerAnimation.layTrap, true);
 
@@ -71,9 +70,9 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                             switch (curAbility.abilityType)
                             {
                                 case STAKE:
-                                    scheduleEntityForDestruction(EntityFactory.createStake(world, arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge,
-                                            (float) (dynamicPhysics.body.getAngle() + Math.PI)));
+                                    scheduleEntityForDestruction(EntityFactory.createStake(world, trapRingBody,
+                                            arenaTransform.radialPosition,
+                                            !arenaTransform.onOutsideEdge));
                                     break;
                                 case PILLAR:
                                     // TODO

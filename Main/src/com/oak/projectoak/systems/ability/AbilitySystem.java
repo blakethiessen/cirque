@@ -7,19 +7,19 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.oak.projectoak.components.Ability;
-import com.oak.projectoak.components.Arena;
+import com.oak.projectoak.components.ArenaRotation;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.TrapUD;
 import com.oak.projectoak.systems.PlayerDestructionSystem;
-import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 
 public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
 {
     @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<Arena> am;
+    @Mapper ComponentMapper<ArenaRotation> am;
 
     private PlayerDestructionSystem playerDestructionSystem;
     private AbilityDestructionSystem abilityDestructionSystem;
@@ -49,25 +49,31 @@ public class AbilitySystem extends EntityProcessingSystem
     @Override
     public boolean beginContact(Contact contact)
     {
-        final Object userDataA = contact.getFixtureA().getBody().getUserData();
-        final Object userDataB = contact.getFixtureB().getBody().getUserData();
+        final Object fixtureUDA = contact.getFixtureA().getUserData();
+        final Object bodyUDB = contact.getFixtureB().getBody().getUserData();
 
-        if (userDataA instanceof TrapUD)
+        if (fixtureUDA instanceof TrapUD)
         {
-            if (userDataB instanceof PlayerUD)
+            if (bodyUDB instanceof PlayerUD)
             {
-                killPlayer((PlayerUD) userDataB);
+                killPlayer((PlayerUD)bodyUDB);
 
                 return true;
             }
         }
-        else if (userDataB instanceof TrapUD)
+        else
         {
-            if (userDataA instanceof PlayerUD)
-            {
-                killPlayer((PlayerUD)userDataA);
+            final Object fixtureUDB = contact.getFixtureB().getUserData();
+            final Object bodyUDA = contact.getFixtureA().getBody().getUserData();
 
-                return true;
+            if (fixtureUDB instanceof TrapUD)
+            {
+                if (bodyUDA instanceof PlayerUD)
+                {
+                    killPlayer((PlayerUD)bodyUDA);
+
+                    return true;
+                }
             }
         }
         return false;

@@ -2,9 +2,9 @@ package com.oak.projectoak.components;
 
 import com.artemis.Component;
 
-public class Arena extends Component
+public class ArenaRotation extends Component
 {
     public float rotationVelocity;
 
-    public Arena() {}
+    public ArenaRotation() {}
 }

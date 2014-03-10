@@ -18,6 +18,14 @@ public class Box2DDefs
     // as collision when sliding down walls.
     private static final float PLAYER_FOOT_HALF_WIDTH = Constants.PLAYER_WIDTH / 20 * 9;
     private static final float PLAYER_FOOT_HALF_HEIGHT = .02f;
+    
+    // Shape vertice arrays
+    public static final float[] SPIKE_VERTICES = new float[]
+            {
+                0, 0,
+                Constants.STAKE_WIDTH, 0,
+                Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT
+            };
 
     // Shapes
     private static final PolygonShape PLAYER_TORSO_SHAPE = createPlayerTorsoShape();
@@ -25,21 +33,19 @@ public class Box2DDefs
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
     private static final ChainShape INNER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_INNER_RADIUS);
     private static final ChainShape OUTER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_OUTER_RADIUS);
-    private static final PolygonShape STAKE_SHAPE = createStake();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
     public static final FixtureDef PLAYER_FOOT_SENSOR = createPlayerFootSensor();
-    public static final FixtureDef FLOOR_FIXTURE_DEF = createFloorFixtureDef();
     public static final FixtureDef INNER_CIRCLE_FIXTURE_DEF = createInnerCircleFixtureDef();
     public static final FixtureDef OUTER_CIRCLE_FIXTURE_DEF = createOuterCircleFixtureDef();
     public static final FixtureDef STAKE_FIXTURE_DEF = createStakeFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
-    public static final BodyDef FLOOR_BODY_DEF = createFloorBodyDef();
-    public static final BodyDef CIRCLE_BODY_DEF = createCircleBodyDef();
-    public static final BodyDef STAKE_BODY_DEF = createStakeBodyDef();
+    public static final BodyDef ARENA_BODY_DEF = createArenaBodyDef();
+    public static final BodyDef TRAP_RING_BODY_DEF = createTrapRingBodyDef();
+    
 
     // Shape constructors
     private static PolygonShape createPlayerTorsoShape()
@@ -83,19 +89,6 @@ public class Box2DDefs
 
         ChainShape shape = new ChainShape();
         shape.createLoop(edges);
-
-        return shape;
-    }
-
-    private static PolygonShape createStake()
-    {
-        PolygonShape shape = new PolygonShape();
-        shape.set(new float[]
-                {
-                    0, 0,
-                    Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT,
-                    Constants.STAKE_WIDTH, 0
-                });
 
         return shape;
     }
@@ -158,8 +151,6 @@ public class Box2DDefs
     {
         FixtureDef fixtureDef = new FixtureDef();
 
-        fixtureDef.shape = STAKE_SHAPE;
-        fixtureDef.density = 1;
         fixtureDef.friction = 1f;
 
         return fixtureDef;
@@ -183,18 +174,18 @@ public class Box2DDefs
         return bodyDef;
     }
 
-    private static BodyDef createCircleBodyDef()
+    private static BodyDef createArenaBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.KinematicBody;
+        bodyDef.type = BodyType.StaticBody;
 
         return bodyDef;
     }
 
-    private static BodyDef createStakeBodyDef()
+    private static BodyDef createTrapRingBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.StaticBody;
+        bodyDef.type = BodyType.KinematicBody;
 
         return bodyDef;
     }

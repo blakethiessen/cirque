@@ -6,7 +6,6 @@ import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
@@ -15,6 +14,9 @@ import com.oak.projectoak.components.abilities.Stake;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
+import com.oak.projectoak.components.physics.TrapPhysics;
+import com.oak.projectoak.physics.Box2DDefs;
+import com.oak.projectoak.physics.FixturePositioningBody;
 import com.oak.projectoak.physics.PhysicsFactory;
 
 import java.util.Random;
@@ -136,12 +138,12 @@ public class EntityFactory
         return abilityCreationComponent;
     }
 
-    public static Entity createArenaCircle(World world, Vector2 position)
+    public static Entity createTrapRing(World world, Vector2 position)
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new DynamicPhysics(PhysicsFactory.createArenaCircleBody(), position));
-        e.addComponent(new Arena());
+        e.addComponent(new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position));
+        e.addComponent(new ArenaRotation());
         e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
 
 //        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position.cpy().sub(Constants.ARENA_INNER_RADIUS, Constants.ARENA_INNER_RADIUS), true));
@@ -152,26 +154,29 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createStake(World world, float radialPosition, boolean onOutsideEdge, float rotationInRadians)
+    public static Entity createArenaCircle(World world, Vector2 position)
     {
         Entity e = world.createEntity();
 
-        if (onOutsideEdge)
-            radialPosition += Constants.STAKE_SPAWN_OFFSET;
-        else
-            radialPosition -= Constants.STAKE_SPAWN_OFFSET;
+        e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), position));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    public static Entity createStake(World world, FixturePositioningBody trapRingBody, float radialPosition, boolean onOutsideEdge)
+    {
+        Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         e.addComponent(new Stake());
-
-        final Physics physics = new Physics(PhysicsFactory.createStakeBody(), twoDPosition);
-        final Body body = physics.body;
-        body.setTransform(body.getPosition(), rotationInRadians);
-        e.addComponent(physics);
+        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.SPIKE_VERTICES, trapRingBody, twoDPosition);
+        e.addComponent(trapPhysics);
 
         final Render render = new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false);
-        render.setRotation((float)Math.toDegrees(body.getAngle()));
+        render.setRotation((float)Math.toDegrees(trapPhysics.fixture.getBody().getAngle()));
 
         e.addComponent(render);
         e.addComponent(new Animate(Constants.SPIKE, true));

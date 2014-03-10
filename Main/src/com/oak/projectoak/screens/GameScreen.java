@@ -1,5 +1,6 @@
 package com.oak.projectoak.screens;
 
+import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
@@ -13,6 +14,7 @@ import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.entity.EntityFactory;
+import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.input.InputManager;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.physics.contactlisteners.GFContactListener;
@@ -21,7 +23,6 @@ import com.oak.projectoak.systems.ability.AbilityCreationSystem;
 import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
 import com.oak.projectoak.systems.ability.AbilitySystem;
 import com.oak.projectoak.systems.physics.*;
-import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 
 /*
     The GameScreen is screen that contains the actual game.
@@ -77,6 +78,7 @@ public class GameScreen implements Screen
         world.setSystem(abilityDestructionSystem);
 
         world.setSystem(new DynamicPhysicsSystem());
+        world.setSystem(new TrapPhysicsSystem());
         world.setSystem(new RenderOffsetSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
@@ -90,7 +92,12 @@ public class GameScreen implements Screen
 
         world.setSystem(footContactListenerSystem);
         world.setSystem(new PlayerMovementSystem());
-        world.setSystem(new AbilityCreationSystem(world, abilityDestructionSystem));
+
+        PhysicsFactory.setWorld(b2world);
+        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER);
+
+        world.setSystem(new AbilityCreationSystem(world, abilityDestructionSystem, trapRing));
+
         world.setSystem(abilitySystem);
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
@@ -105,8 +112,6 @@ public class GameScreen implements Screen
 
         world.setDelta(.01f);
         world.initialize();
-
-        PhysicsFactory.setWorld(b2world);
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 

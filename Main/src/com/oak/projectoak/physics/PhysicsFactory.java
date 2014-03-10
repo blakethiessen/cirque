@@ -1,9 +1,7 @@
 package com.oak.projectoak.physics;
 
 import com.artemis.Entity;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.physics.userdata.FootSensorUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.TrapUD;
@@ -37,18 +35,16 @@ public class PhysicsFactory
         return body;
     }
 
-    public static Body createFloorBody()
+    public static Body createTrapRingBody()
     {
-        Body body = b2world.createBody(Box2DDefs.FLOOR_BODY_DEF);
-
-        body.createFixture(Box2DDefs.FLOOR_FIXTURE_DEF);
+        Body body = b2world.createBody(Box2DDefs.TRAP_RING_BODY_DEF);
 
         return body;
     }
 
     public static Body createArenaCircleBody()
     {
-        Body body = b2world.createBody(Box2DDefs.CIRCLE_BODY_DEF);
+        Body body = b2world.createBody(Box2DDefs.ARENA_BODY_DEF);
 
         body.createFixture(Box2DDefs.INNER_CIRCLE_FIXTURE_DEF);
         body.createFixture(Box2DDefs.OUTER_CIRCLE_FIXTURE_DEF);
@@ -56,13 +52,13 @@ public class PhysicsFactory
         return body;
     }
 
-    public static Body createStakeBody()
+    public static Fixture createTrapFixture(FixtureDef fixtureDef, Body body, Shape shape)
     {
-        Body body = b2world.createBody(Box2DDefs.STAKE_BODY_DEF);
+        fixtureDef.shape = shape;
 
-        body.createFixture(Box2DDefs.STAKE_FIXTURE_DEF);
-        body.setUserData(new TrapUD());
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(new TrapUD());
 
-        return body;
+        return fixture;
     }
 }
