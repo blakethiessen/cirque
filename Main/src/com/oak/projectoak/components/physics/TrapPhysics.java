@@ -13,6 +13,7 @@ public class TrapPhysics extends Component
 {
     public Fixture fixture;
     public boolean onOutsideEdge;
+    public final float initialRotation;
 
     public TrapPhysics(Vector2[] shapeVertices, FixturePositioningBody trapRingBody, Vector2 position, float rotation, boolean onOutsideEdge)
     {
@@ -24,6 +25,7 @@ public class TrapPhysics extends Component
         final Vector2 newPos = body.getLocalPoint(position);
 
         rotation = onOutsideEdge ? (float)(rotation - Math.PI / 2) : (float)(rotation + Math.PI / 2);
+        this.initialRotation = rotation;
 
         // Rotate the vertices
         for (int i = 1; i < shapeVertices.length; i++)

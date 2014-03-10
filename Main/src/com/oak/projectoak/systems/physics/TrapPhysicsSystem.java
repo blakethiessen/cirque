@@ -24,14 +24,7 @@ public class TrapPhysicsSystem extends EntityProcessingSystem
         Render render = rm.get(e);
         TrapPhysics trapPhysics = tpm.get(e);
 
-//        Vector2 position = body.getPosition();
-//
-//        Vector2 scaledPosition = position.cpy().scl(Constants.METERS_TO_PIXELS);
-//        render.setPosition(new Vector2(scaledPosition.x, scaledPosition.y));
-        if (trapPhysics.onOutsideEdge)
-            render.setRotation((float)Math.toDegrees(trapPhysics.fixture.getBody().getAngle() - 90f));
-        else
-            render.setRotation((float)Math.toDegrees(trapPhysics.fixture.getBody().getAngle() + 90f));
-
+        final float angle = trapPhysics.fixture.getBody().getAngle();
+        render.setRotation((float)Math.toDegrees(angle + trapPhysics.initialRotation));
     }
 }
