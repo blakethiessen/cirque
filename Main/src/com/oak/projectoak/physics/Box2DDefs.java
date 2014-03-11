@@ -18,7 +18,7 @@ public class Box2DDefs
     // as collision when sliding down walls.
     private static final float PLAYER_FOOT_HALF_WIDTH = Constants.PLAYER_WIDTH / 20 * 9;
     private static final float PLAYER_FOOT_HALF_HEIGHT = .02f;
-    
+
     // Shape vertice arrays
     public static final Vector2[] getSpikeVertices()
     {
@@ -28,6 +28,17 @@ public class Box2DDefs
                 new Vector2(Constants.STAKE_WIDTH, 0),
                 new Vector2(Constants.STAKE_WIDTH / 2, Constants.STAKE_HEIGHT)
             };
+    }
+
+    public static final Vector2[] getPillarVertices()
+    {
+        return new Vector2[]
+                {
+                        new Vector2(0, 0),
+                        new Vector2(Constants.STAKE_WIDTH, 0),
+                        new Vector2(Constants.STAKE_WIDTH, Constants.STAKE_HEIGHT),
+                        new Vector2(0, Constants.STAKE_HEIGHT)
+                };
     }
 
     // Shapes
@@ -43,6 +54,7 @@ public class Box2DDefs
     public static final FixtureDef INNER_CIRCLE_FIXTURE_DEF = createInnerCircleFixtureDef();
     public static final FixtureDef OUTER_CIRCLE_FIXTURE_DEF = createOuterCircleFixtureDef();
     public static final FixtureDef STAKE_FIXTURE_DEF = createStakeFixtureDef();
+    public static final FixtureDef PILLAR_FIXTURE_DEF = createPillarFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
@@ -151,6 +163,15 @@ public class Box2DDefs
     }
 
     private static FixtureDef createStakeFixtureDef()
+    {
+        FixtureDef fixtureDef = new FixtureDef();
+
+        fixtureDef.friction = 1f;
+
+        return fixtureDef;
+    }
+
+    private static FixtureDef createPillarFixtureDef()
     {
         FixtureDef fixtureDef = new FixtureDef();
 

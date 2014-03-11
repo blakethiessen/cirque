@@ -11,8 +11,8 @@ import com.oak.projectoak.components.ArenaRotation;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
+import com.oak.projectoak.physics.userdata.LethalUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
-import com.oak.projectoak.physics.userdata.TrapUD;
 import com.oak.projectoak.systems.PlayerDestructionSystem;
 
 public class AbilitySystem extends EntityProcessingSystem
@@ -52,7 +52,7 @@ public class AbilitySystem extends EntityProcessingSystem
         final Object fixtureUDA = contact.getFixtureA().getUserData();
         final Object bodyUDB = contact.getFixtureB().getBody().getUserData();
 
-        if (fixtureUDA instanceof TrapUD)
+        if (fixtureUDA instanceof LethalUD)
         {
             if (bodyUDB instanceof PlayerUD)
             {
@@ -66,7 +66,7 @@ public class AbilitySystem extends EntityProcessingSystem
             final Object fixtureUDB = contact.getFixtureB().getUserData();
             final Object bodyUDA = contact.getFixtureA().getBody().getUserData();
 
-            if (fixtureUDB instanceof TrapUD)
+            if (fixtureUDB instanceof LethalUD)
             {
                 if (bodyUDA instanceof PlayerUD)
                 {

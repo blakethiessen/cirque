@@ -4,7 +4,6 @@ import com.artemis.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.physics.userdata.FootSensorUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
-import com.oak.projectoak.physics.userdata.TrapUD;
 import com.oak.projectoak.physics.userdata.UserData;
 
 /*
@@ -57,7 +56,6 @@ public class PhysicsFactory
         fixtureDef.shape = shape;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(new TrapUD());
 
         return fixture;
     }

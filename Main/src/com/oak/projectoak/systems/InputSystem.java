@@ -49,21 +49,25 @@ public class InputSystem extends EntityProcessingSystem
         keyMaps.put(Constants.P1_RIGHT_KEY, new PlayerAction(1, Action.MOVING_RIGHT));
         keyMaps.put(Constants.P1_JUMP_KEY, new PlayerAction(1, Action.JUMPING));
         keyMaps.put(Constants.P1_ABILITY_1_KEY, new PlayerAction(1, Action.ABILITY_1));
+        keyMaps.put(Constants.P1_ABILITY_2_KEY, new PlayerAction(1, Action.ABILITY_2));
 
         keyMaps.put(Constants.P2_LEFT_KEY, new PlayerAction(2, Action.MOVING_LEFT));
         keyMaps.put(Constants.P2_RIGHT_KEY, new PlayerAction(2, Action.MOVING_RIGHT));
         keyMaps.put(Constants.P2_JUMP_KEY, new PlayerAction(2, Action.JUMPING));
         keyMaps.put(Constants.P2_ABILITY_1_KEY, new PlayerAction(2, Action.ABILITY_1));
+        keyMaps.put(Constants.P2_ABILITY_2_KEY, new PlayerAction(1, Action.ABILITY_2));
 
         keyMaps.put(Constants.P3_LEFT_KEY, new PlayerAction(3, Action.MOVING_LEFT));
         keyMaps.put(Constants.P3_RIGHT_KEY, new PlayerAction(3, Action.MOVING_RIGHT));
         keyMaps.put(Constants.P3_JUMP_KEY, new PlayerAction(3, Action.JUMPING));
         keyMaps.put(Constants.P3_ABILITY_1_KEY, new PlayerAction(3, Action.ABILITY_1));
+        keyMaps.put(Constants.P3_ABILITY_2_KEY, new PlayerAction(1, Action.ABILITY_2));
 
         keyMaps.put(Constants.P4_LEFT_KEY, new PlayerAction(4, Action.MOVING_LEFT));
         keyMaps.put(Constants.P4_RIGHT_KEY, new PlayerAction(4, Action.MOVING_RIGHT));
         keyMaps.put(Constants.P4_JUMP_KEY, new PlayerAction(4, Action.JUMPING));
         keyMaps.put(Constants.P4_ABILITY_1_KEY, new PlayerAction(4, Action.ABILITY_1));
+        keyMaps.put(Constants.P4_ABILITY_2_KEY, new PlayerAction(1, Action.ABILITY_2));
 
         controlStates = new HashMap[Constants.MAX_NUM_OF_PLAYERS];
 
@@ -75,6 +79,7 @@ public class InputSystem extends EntityProcessingSystem
             controlStates[i].put(Action.MOVING_RIGHT, false);
             controlStates[i].put(Action.JUMPING, false);
             controlStates[i].put(Action.ABILITY_1, false);
+            controlStates[i].put(Action.ABILITY_2, false);
         }
     }
 
@@ -98,6 +103,8 @@ public class InputSystem extends EntityProcessingSystem
                 controlStates[playerArrNum].get(Action.JUMPING));
         player.setAction(Action.ABILITY_1,
                 controlStates[playerArrNum].get(Action.ABILITY_1));
+        player.setAction(Action.ABILITY_2,
+                controlStates[playerArrNum].get(Action.ABILITY_2));
     }
 
     @Override

@@ -6,11 +6,11 @@ import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.Render.Layer;
-import com.oak.projectoak.components.abilities.Stake;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
@@ -18,6 +18,7 @@ import com.oak.projectoak.components.physics.TrapPhysics;
 import com.oak.projectoak.physics.Box2DDefs;
 import com.oak.projectoak.physics.FixturePositioningBody;
 import com.oak.projectoak.physics.PhysicsFactory;
+import com.oak.projectoak.physics.userdata.PillarUD;
 
 import java.util.Random;
 
@@ -170,11 +171,37 @@ public class EntityFactory
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        e.addComponent(new Stake());
-        e.addComponent(new TrapPhysics(Box2DDefs.getSpikeVertices(), trapRingBody, twoDPosition, radialPosition, onOutsideEdge));
+        e.addComponent(new TrapPhysics(Box2DDefs.STAKE_FIXTURE_DEF, Box2DDefs.getSpikeVertices(),
+                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, true));
 
         e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
         e.addComponent(new Animate(Constants.SPIKE, true));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    public static Entity createPillar(World world, FixturePositioningBody trapRingBody, float radialPosition, boolean onOutsideEdge)
+    {
+        Entity e = world.createEntity();
+
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
+
+        for (Fixture fixture : trapRingBody.getBody().getFixtureList())
+        {
+            if (fixture.getUserData() instanceof PillarUD && fixture.testPoint(twoDPosition))
+            {
+                System.out.println("HAPPEN");
+                twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge, 1);
+            }
+        }
+
+        e.addComponent(new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF, Box2DDefs.getPillarVertices(),
+                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, false));
+
+        e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+        e.addComponent(new Animate(Constants.PILLAR, true));
 
         e.addToWorld();
 

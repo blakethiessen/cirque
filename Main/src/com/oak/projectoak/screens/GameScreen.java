@@ -115,8 +115,8 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
-        EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
-        EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
+        EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
 //        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 //        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 

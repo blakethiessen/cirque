@@ -75,7 +75,9 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                             !arenaTransform.onOutsideEdge));
                                     break;
                                 case PILLAR:
-                                    // TODO
+                                    scheduleEntityForDestruction(EntityFactory.createPillar(world, trapRingBody,
+                                            arenaTransform.radialPosition,
+                                            !arenaTransform.onOutsideEdge));
                                     break;
                                 default:
                                     Gdx.app.error("Invalid ability creation", "No implementation for ability.");

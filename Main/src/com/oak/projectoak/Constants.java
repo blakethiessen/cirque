@@ -95,7 +95,7 @@ public class Constants
     public static final float STAKE_WIDTH = .65f;
     public static final float STAKE_HEIGHT = .65f;
     public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 4f;
-
+    
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
     public static final float ARENA_INNER_RADIUS = 5;
@@ -113,6 +113,14 @@ public class Constants
 
         return new Vector2((float)(ARENA_CENTER.x + DISTANCE * Math.cos(radialPosition)),
                            (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));
+    }
+
+    public static Vector2 ConvertRadialTo2DPositionWithHeight(float radialPosition, boolean onOutsideEdge, float height)
+    {
+        float DISTANCE = onOutsideEdge ? Constants.ARENA_OUTER_RADIUS + height : Constants.ARENA_INNER_RADIUS - height;
+
+        return new Vector2((float)(ARENA_CENTER.x + DISTANCE * Math.cos(radialPosition)),
+                (float)(ARENA_CENTER.y + DISTANCE * Math.sin(radialPosition)));
     }
 
     public static void setSpriteTexture(Sprite sprite, TextureRegion textureRegion)
@@ -143,21 +151,25 @@ public class Constants
     public static final int P1_RIGHT_KEY = Input.Keys.D;
     public static final int P1_JUMP_KEY = Input.Keys.W;
     public static final int P1_ABILITY_1_KEY = Input.Keys.Q;
+    public static final int P1_ABILITY_2_KEY = Input.Keys.E;
 
     public static final int P2_LEFT_KEY = Input.Keys.LEFT;
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
     public static final int P2_JUMP_KEY = Input.Keys.UP;
-    public static final Integer P2_ABILITY_1_KEY = Input.Keys.SLASH;
+    public static final int P2_ABILITY_1_KEY = Input.Keys.SLASH;
+    public static final int P2_ABILITY_2_KEY = Input.Keys.E;
 
 
     // Currently for debug
     public static final int P3_LEFT_KEY = Input.Keys.F;
     public static final int P3_RIGHT_KEY = Input.Keys.H;
     public static final int P3_JUMP_KEY = Input.Keys.T;
-    public static final Integer P3_ABILITY_1_KEY = Input.Keys.R;
+    public static final int P3_ABILITY_1_KEY = Input.Keys.R;
+    public static final int P3_ABILITY_2_KEY = Input.Keys.E;
 
     public static final int P4_LEFT_KEY = Input.Keys.J;
     public static final int P4_RIGHT_KEY = Input.Keys.L;
     public static final int P4_JUMP_KEY = Input.Keys.I;
-    public static final Integer P4_ABILITY_1_KEY = Input.Keys.U;
+    public static final int P4_ABILITY_1_KEY = Input.Keys.U;
+    public static final int P4_ABILITY_2_KEY = Input.Keys.E;
 }
