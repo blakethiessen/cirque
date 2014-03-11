@@ -1,6 +1,9 @@
 package com.oak.projectoak.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.physics.box2d.Fixture;
+
+import java.util.ArrayList;
 
 /*
     The Platformer component is attached to
@@ -15,7 +18,7 @@ public class Platformer extends Component
     public float latMaxVel;
     public float jumpAccel;
 
-    public int footContactCount;
+    public ArrayList<Fixture> footContacts;
 
     public boolean jumpTimeoutOver;
 
@@ -24,12 +27,12 @@ public class Platformer extends Component
         this.latAccel = latAccel;
         this.latMaxVel = latMaxVel;
         this.jumpAccel = jumpAccel;
-        this.footContactCount = 0;
+        this.footContacts = new ArrayList<Fixture>();
         this.jumpTimeoutOver = true;
     }
 
     public boolean isOnGround()
     {
-        return footContactCount > 0;
+        return !footContacts.isEmpty();
     }
 }

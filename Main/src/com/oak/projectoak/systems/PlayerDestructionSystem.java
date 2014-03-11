@@ -12,9 +12,9 @@ import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.systems.physics.ArenaRotationSystem;
-import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 import java.util.ArrayList;
 
@@ -85,7 +85,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                         (float) (arenaTransform.radialPosition + Math.PI), arenaTransform.onOutsideEdge), 0);
 
                 dpm.get(e).body = runnerBody;
-                platm.get(e).footContactCount = 0;
+                platm.get(e).footContacts.clear();
                 final Player player = playm.get(e);
                 player.resetActions();
                 player.invulnerable = true;

@@ -62,12 +62,17 @@ public class FootContactListenerSystem extends EntityProcessingSystem
             if (p != null && p.body != null && p.body.getFixtureList().size > 1)
             {
                 final Fixture footFixture = p.body.getFixtureList().get(1);
-                if ((udA != null && footFixture.getUserData() == udA) ||
-                        (udB != null && footFixture.getUserData() == udB))
+                Platformer plat = plm.get(e);
+
+                if (udA != null && footFixture.getUserData() == udA)
                 {
-                    Platformer plat = plm.get(e);
-                    plat.footContactCount++;
-//                    System.out.println("FOOT CONTACTS: " + plat.footContactCount);
+                    plat.footContacts.add(contact.getFixtureB());
+
+                    return true;
+                }
+                else if ((udB != null && footFixture.getUserData() == udB))
+                {
+                    plat.footContacts.add(contact.getFixtureA());
 
                     return true;
                 }
@@ -95,11 +100,17 @@ public class FootContactListenerSystem extends EntityProcessingSystem
                 if (p != null && p.body != null && p.body.getFixtureList().size > 1)
                 {
                     final Fixture footFixture = p.body.getFixtureList().get(1);
-                    if ((udA != null && footFixture.getUserData() == udA) ||
-                            (udB != null && footFixture.getUserData() == udB))
+                    Platformer plat = plm.get(e);
+
+                    if (udA != null && footFixture.getUserData() == udA)
                     {
-                        Platformer plat = plm.get(e);
-                        plat.footContactCount--;
+                        plat.footContacts.remove(contact.getFixtureB());
+
+                        return true;
+                    }
+                    else if ((udB != null && footFixture.getUserData() == udB))
+                    {
+                        plat.footContacts.remove(contact.getFixtureA());
 
                         return true;
                     }

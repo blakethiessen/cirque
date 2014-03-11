@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.input.InputManager;
@@ -116,8 +117,12 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
-        EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
-        EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player = EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        abilityDestructionSystem.addFootContactUser(player.getComponent(Platformer.class), true);
+
+        final Entity player2 = EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
+
 //        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 //        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
 
