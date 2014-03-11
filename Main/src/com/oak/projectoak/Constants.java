@@ -157,7 +157,7 @@ public class Constants
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
     public static final int P2_JUMP_KEY = Input.Keys.UP;
     public static final int P2_ABILITY_1_KEY = Input.Keys.SLASH;
-    public static final int P2_ABILITY_2_KEY = Input.Keys.E;
+    public static final int P2_ABILITY_2_KEY = Input.Keys.APOSTROPHE;
 
 
     // Currently for debug
@@ -165,11 +165,11 @@ public class Constants
     public static final int P3_RIGHT_KEY = Input.Keys.H;
     public static final int P3_JUMP_KEY = Input.Keys.T;
     public static final int P3_ABILITY_1_KEY = Input.Keys.R;
-    public static final int P3_ABILITY_2_KEY = Input.Keys.E;
+    public static final int P3_ABILITY_2_KEY = Input.Keys.Y;
 
     public static final int P4_LEFT_KEY = Input.Keys.J;
     public static final int P4_RIGHT_KEY = Input.Keys.L;
     public static final int P4_JUMP_KEY = Input.Keys.I;
     public static final int P4_ABILITY_1_KEY = Input.Keys.U;
-    public static final int P4_ABILITY_2_KEY = Input.Keys.E;
+    public static final int P4_ABILITY_2_KEY = Input.Keys.O;
 }

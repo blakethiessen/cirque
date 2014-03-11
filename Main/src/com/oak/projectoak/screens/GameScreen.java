@@ -33,10 +33,11 @@ import com.oak.projectoak.systems.physics.*;
 public class GameScreen implements Screen
 {
     private World world;
+    OrthographicCamera camera;
 
     public GameScreen()
     {
-        OrthographicCamera camera = new OrthographicCamera();
+        camera = new OrthographicCamera();
 
         // Setup asset loading
         AssetLoader.initialize();
@@ -135,7 +136,10 @@ public class GameScreen implements Screen
 	@Override
 	public void render(float delta)
     {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+//        camera.rotate((float)Math.random());
+//        camera.zoom = (float)Math.random() + 1f;
+//		Gdx.gl.glClearColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         world.process();

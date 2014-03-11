@@ -192,7 +192,6 @@ public class EntityFactory
         {
             if (fixture.getUserData() instanceof PillarUD && fixture.testPoint(twoDPosition))
             {
-                System.out.println("HAPPEN");
                 twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge, 1);
             }
         }

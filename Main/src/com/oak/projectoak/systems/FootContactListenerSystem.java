@@ -50,11 +50,6 @@ public class FootContactListenerSystem extends EntityProcessingSystem
         return false;
     }
 
-    public void removeIdenticalEntity(Entity e)
-    {
-        footContactEntities.remove(e);
-    }
-
     @Override
     public boolean beginContact(Contact contact)
     {
@@ -72,6 +67,7 @@ public class FootContactListenerSystem extends EntityProcessingSystem
                 {
                     Platformer plat = plm.get(e);
                     plat.footContactCount++;
+//                    System.out.println("FOOT CONTACTS: " + plat.footContactCount);
 
                     return true;
                 }
