@@ -228,6 +228,7 @@ public class EntityFactory
         if (pillarsUnderneath > 0)
         {
             trapHeight = Constants.PILLAR_HEIGHT * pillarsUnderneath;
+            radialPosition = exactSelectedPillarPosition;
             twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(exactSelectedPillarPosition, onOutsideEdge, trapHeight);
         }
 
