@@ -1,6 +1,11 @@
 package com.oak.projectoak.physics.userdata;
 
-public class LethalUD implements UserData
-{
+import com.artemis.Entity;
 
+public class LethalUD extends AbilityUD
+{
+    public LethalUD(Entity entity)
+    {
+        super(entity);
+    }
 }

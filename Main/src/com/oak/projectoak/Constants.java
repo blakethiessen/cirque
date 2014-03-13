@@ -60,6 +60,8 @@ public class Constants
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
+    public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
+    public static final int PILLAR_LIFETIME = 10;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
@@ -94,8 +96,12 @@ public class Constants
     // ABILITY CONSTANTS
     public static final float STAKE_WIDTH = .65f;
     public static final float STAKE_HEIGHT = .65f;
-    public static final float STAKE_SPAWN_OFFSET = STAKE_WIDTH / 4f;
-    
+
+    public static final float PILLAR_WIDTH = .65f;
+    public static final float PILLAR_HEIGHT = .65f;
+
+    public static final float PILLAR_STACK_RANGE = .1f;
+
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
     public static final float ARENA_INNER_RADIUS = 5;

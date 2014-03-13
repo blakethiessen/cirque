@@ -28,8 +28,8 @@ public class TrapPhysicsSystem extends EntityProcessingSystem
 
         final float angle = trapPhysics.fixture.getBody().getAngle();
         render.setRotation((float)Math.toDegrees(angle + trapPhysics.initialRotation));
-        final Vector2 newPosition = Constants.ConvertRadialTo2DPosition(
-                trapPhysics.initialRadialPosition + angle, trapPhysics.onOutsideEdge);
+        final Vector2 newPosition = Constants.ConvertRadialTo2DPositionWithHeight(
+                trapPhysics.initialRadialPosition + angle, trapPhysics.onOutsideEdge, trapPhysics.trapHeight);
         newPosition.scl(Constants.METERS_TO_PIXELS);
         render.setPosition(newPosition);
     }

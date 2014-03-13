@@ -3,10 +3,10 @@ package com.oak.projectoak.systems.ability;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
@@ -14,7 +14,6 @@ import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
-import com.oak.projectoak.physics.FixturePositioningBody;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
@@ -24,18 +23,15 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<Animate> am;
     @Mapper ComponentMapper<PlayerAnimation> pam;
 
-    private World world;
-
     private final AbilityDestructionSystem abilityDestructionSystem;
-    private final FixturePositioningBody trapRingBody;
+    private final Body trapRingBody;
 
-    public AbilityCreationSystem(World world, AbilityDestructionSystem abilityDestructionSystem, Entity trapRing)
+    public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, Entity trapRing)
     {
         super(Aspect.getAspectForAll(Player.class));
 
-        this.world = world;
         this.abilityDestructionSystem = abilityDestructionSystem;
-        trapRingBody = new FixturePositioningBody(trapRing.getComponent(DynamicPhysics.class).body);
+        trapRingBody = trapRing.getComponent(DynamicPhysics.class).body;
     }
 
     @Override
@@ -72,12 +68,12 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                 case STAKE:
                                     scheduleEntityForDestruction(EntityFactory.createStake(world, trapRingBody,
                                             arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge));
+                                            !arenaTransform.onOutsideEdge), Constants.STAKE_LIFETIME);
                                     break;
                                 case PILLAR:
                                     scheduleEntityForDestruction(EntityFactory.createPillar(world, trapRingBody,
                                             arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge));
+                                            !arenaTransform.onOutsideEdge), Constants.PILLAR_LIFETIME);
                                     break;
                                 default:
                                     Gdx.app.error("Invalid ability creation", "No implementation for ability.");
@@ -94,7 +90,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
         }
     }
 
-    private void scheduleEntityForDestruction(final Entity entity)
+    private void scheduleEntityForDestruction(final Entity entity, int entityLifetime)
     {
         Timer.schedule(new Timer.Task()
         {
@@ -103,6 +99,6 @@ public class AbilityCreationSystem extends EntityProcessingSystem
             {
                 abilityDestructionSystem.destroyEntity(entity);
             }
-        }, Constants.STAKE_LIFETIME);
+        }, entityLifetime);
     }
 }

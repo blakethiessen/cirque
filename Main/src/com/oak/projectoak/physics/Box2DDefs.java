@@ -35,9 +35,9 @@ public class Box2DDefs
         return new Vector2[]
                 {
                         new Vector2(0, 0),
-                        new Vector2(Constants.STAKE_WIDTH, 0),
-                        new Vector2(Constants.STAKE_WIDTH, Constants.STAKE_HEIGHT),
-                        new Vector2(0, Constants.STAKE_HEIGHT)
+                        new Vector2(Constants.PILLAR_WIDTH, 0),
+                        new Vector2(Constants.PILLAR_WIDTH, Constants.PILLAR_HEIGHT),
+                        new Vector2(0, Constants.PILLAR_HEIGHT)
                 };
     }
 

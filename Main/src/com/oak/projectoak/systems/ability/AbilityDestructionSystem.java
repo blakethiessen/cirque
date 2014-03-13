@@ -6,6 +6,8 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
+import com.oak.projectoak.components.Pillar;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.components.physics.TrapPhysics;
@@ -16,18 +18,19 @@ public class AbilityDestructionSystem extends VoidEntitySystem
 {
     @Mapper ComponentMapper<Physics> pm;
     @Mapper ComponentMapper<TrapPhysics> tpm;
+    @Mapper ComponentMapper<Pillar> pim;
 
     private final World b2world;
     private ArrayList<Entity> entitiesToDestroy;
 
-    private ArrayList<Platformer> externalPlatformer;
-    private ArrayList<Platformer> internalPlatformer;
+    private ArrayList<Platformer> externalPlatformers;
+    private ArrayList<Platformer> internalPlatformers;
 
     public AbilityDestructionSystem(World b2world)
     {
         entitiesToDestroy = new ArrayList<Entity>();
-        externalPlatformer = new ArrayList<Platformer>(2);
-        internalPlatformer = new ArrayList<Platformer>(2);
+        externalPlatformers = new ArrayList<Platformer>(2);
+        internalPlatformers = new ArrayList<Platformer>(2);
         this.b2world = b2world;
     }
 
@@ -47,26 +50,63 @@ public class AbilityDestructionSystem extends VoidEntitySystem
     {
         while (!entitiesToDestroy.isEmpty())
         {
-            Entity e = entitiesToDestroy.get(0);
+            removeEntity(entitiesToDestroy.get(0));
+        }
+    }
 
+    private void removeEntity(final Entity e)
+    {
+        // If we're removing a pillar, remove the top stacked one if possible.
+        if (pim.has(e))
+        {
+            Pillar pillar = pim.get(e);
+            if (!pillar.pillarsStackedOnTop.isEmpty())
+            {
+                ArrayList<Entity> pillarsStackedOnTop = pillar.pillarsStackedOnTop;
+                for (int i = pillarsStackedOnTop.size() - 1; i >= 0; i--)
+                {
+                    if (pim.has(pillarsStackedOnTop.get(i)))
+                    {
+                        Entity topPillar = pillarsStackedOnTop.get(i);
+
+                        removeEntity(topPillar);
+                        entitiesToDestroy.remove(e);
+
+                        Timer.schedule(new Timer.Task()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                destroyEntity(e);
+                            }
+                        }, pillar.destructionTimeReset);
+
+                        pillar.destructionTimeReset /= 2;
+
+                        return;
+                    }
+                    else
+                        pillarsStackedOnTop.remove(i);
+                }
+            }
+        }
+
+        if (pm.has(e))
+            b2world.destroyBody(pm.get(e).body);
+        else if (tpm.has(e))
+        {
             final TrapPhysics trapPhysics = tpm.get(e);
             Fixture fixtureToRemove = trapPhysics.fixture;
-
-            if (pm.has(e))
-                b2world.destroyBody(pm.get(e).body);
-            else if (tpm.has(e))
-            {
-                fixtureToRemove.getBody().destroyFixture(fixtureToRemove);
-            }
+            fixtureToRemove.getBody().destroyFixture(fixtureToRemove);
 
             if (trapPhysics.onOutsideEdge)
-                updateRelevantFootContacts(fixtureToRemove, externalPlatformer);
+                updateRelevantFootContacts(fixtureToRemove, externalPlatformers);
             else
-                updateRelevantFootContacts(fixtureToRemove, internalPlatformer);
-
-            world.deleteEntity(e);
-            entitiesToDestroy.remove(e);
+                updateRelevantFootContacts(fixtureToRemove, internalPlatformers);
         }
+
+        world.deleteEntity(e);
+        entitiesToDestroy.remove(e);
     }
 
     private void updateRelevantFootContacts(Fixture fixtureToRemove, ArrayList<Platformer> platformers)
@@ -88,8 +128,8 @@ public class AbilityDestructionSystem extends VoidEntitySystem
     public void addFootContactUser(Platformer platformer, boolean onOutsideEdge)
     {
         if (onOutsideEdge)
-            externalPlatformer.add(platformer);
+            externalPlatformers.add(platformer);
         else
-            internalPlatformer.add(platformer);
+            internalPlatformers.add(platformer);
     }
 }

@@ -6,10 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.oak.projectoak.physics.FixturePositioningBody;
 import com.oak.projectoak.physics.PhysicsFactory;
-import com.oak.projectoak.physics.userdata.LethalUD;
-import com.oak.projectoak.physics.userdata.PillarUD;
 
 public class TrapPhysics extends Component
 {
@@ -18,17 +15,25 @@ public class TrapPhysics extends Component
 
     public boolean onOutsideEdge;
     public final float initialRotation;
+    public float trapHeight;
 
-    public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, FixturePositioningBody trapRingBody,
-                       Vector2 position, float radialPosition, boolean onOutsideEdge, boolean isLethal)
+    public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
+                       Vector2 position, float radialPosition, boolean onOutsideEdge, float trapHeight)
+    {
+        this(trapFixtureDef, shapeVertices, trapRingBody, position, radialPosition, onOutsideEdge);
+        this.trapHeight = trapHeight;
+    }
+
+    public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
+                       Vector2 position, float radialPosition, boolean onOutsideEdge)
     {
         this.onOutsideEdge = onOutsideEdge;
-        this.initialRadialPosition = radialPosition - trapRingBody.getBody().getAngle();
+        this.initialRadialPosition = radialPosition - trapRingBody.getAngle();
+        this.trapHeight = 0;
 
         PolygonShape shape = new PolygonShape();
 
-        Body body = trapRingBody.getBody();
-        final Vector2 localPosition = body.getLocalPoint(position);
+        final Vector2 localPosition = trapRingBody.getLocalPoint(position);
 
         // Rotate the vertices
         initialRotation = onOutsideEdge ? (float)(initialRadialPosition - Math.PI / 2) : (float)(initialRadialPosition + Math.PI / 2);
@@ -45,10 +50,6 @@ public class TrapPhysics extends Component
 
         shape.set(shapeVertices);
 
-        fixture = PhysicsFactory.createTrapFixture(trapFixtureDef, body, shape);
-        if (isLethal)
-            fixture.setUserData(new LethalUD());
-        else
-            fixture.setUserData(new PillarUD());
+        fixture = PhysicsFactory.createTrapFixture(trapFixtureDef, trapRingBody, shape);
     }
 }

@@ -6,6 +6,7 @@ import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.Constants;
@@ -16,8 +17,8 @@ import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.components.physics.TrapPhysics;
 import com.oak.projectoak.physics.Box2DDefs;
-import com.oak.projectoak.physics.FixturePositioningBody;
 import com.oak.projectoak.physics.PhysicsFactory;
+import com.oak.projectoak.physics.userdata.LethalUD;
 import com.oak.projectoak.physics.userdata.PillarUD;
 
 import java.util.Random;
@@ -165,14 +166,16 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createStake(World world, FixturePositioningBody trapRingBody, float radialPosition, boolean onOutsideEdge)
+    public static Entity createStake(World world, Body trapRingBody, float radialPosition, boolean onOutsideEdge)
     {
         Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        e.addComponent(new TrapPhysics(Box2DDefs.STAKE_FIXTURE_DEF, Box2DDefs.getSpikeVertices(),
-                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, true));
+        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.STAKE_FIXTURE_DEF, Box2DDefs.getSpikeVertices(),
+                trapRingBody, twoDPosition, radialPosition, onOutsideEdge);
+        trapPhysics.fixture.setUserData(new LethalUD(e));
+        e.addComponent(trapPhysics);
 
         e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
         e.addComponent(new Animate(Constants.SPIKE, true));
@@ -182,22 +185,58 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createPillar(World world, FixturePositioningBody trapRingBody, float radialPosition, boolean onOutsideEdge)
+    public static Entity createPillar(World world, Body trapRingBody,
+                                      float radialPosition, boolean onOutsideEdge)
     {
         Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        for (Fixture fixture : trapRingBody.getBody().getFixtureList())
+        int pillarsUnderneath = 0;
+        float exactSelectedPillarPosition = 0f;
+        for (Fixture fixture : trapRingBody.getFixtureList())
         {
-            if (fixture.getUserData() instanceof PillarUD && fixture.testPoint(twoDPosition))
+            final Object userData = fixture.getUserData();
+            if (userData instanceof PillarUD)
             {
-                twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge, 1);
+                Entity pillarEntity = ((PillarUD) userData).entity;
+                final TrapPhysics trapPhysics = pillarEntity.getComponent(TrapPhysics.class);
+                final float curTrapPos = trapPhysics.initialRadialPosition + trapRingBody.getAngle();
+                if (trapPhysics.onOutsideEdge == onOutsideEdge)
+                {
+                    if (pillarsUnderneath > 0)
+                    {
+                        // If we've found an intersecting pillar before, we need to add to any pillars on top.
+                        if (curTrapPos == exactSelectedPillarPosition)
+                        {
+                            pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
+                            pillarsUnderneath++;
+                        }
+                    }
+                    else if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition && curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
+                    {
+                        pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
+
+                        exactSelectedPillarPosition = curTrapPos;
+                        pillarsUnderneath++;
+                    }
+                }
             }
         }
 
-        e.addComponent(new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF, Box2DDefs.getPillarVertices(),
-                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, false));
+        float trapHeight = 0;
+        if (pillarsUnderneath > 0)
+        {
+            trapHeight = Constants.PILLAR_HEIGHT * pillarsUnderneath;
+            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(exactSelectedPillarPosition, onOutsideEdge, trapHeight);
+        }
+
+        e.addComponent(new Pillar());
+
+        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF, Box2DDefs.getPillarVertices(),
+                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, trapHeight);
+        trapPhysics.fixture.setUserData(new PillarUD(e));
+        e.addComponent(trapPhysics);
 
         e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
         e.addComponent(new Animate(Constants.PILLAR, true));
