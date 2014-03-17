@@ -116,7 +116,7 @@ public class GameScreen implements Screen
 
         SpriteBatch uiSpriteBatch = new SpriteBatch();
 
-        world.setSystem(new RenderSystem(camera));
+        world.setSystem(new RenderSystem(camera, "background"));
         world.setSystem(new SpriteBatchStarter(uiSpriteBatch));
         world.setSystem(new UIRenderSystem(uiSpriteBatch));
         world.setSystem(new TextRenderSystem(uiSpriteBatch));

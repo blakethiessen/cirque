@@ -109,7 +109,7 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
             EntityFactory.createText(world,
                     winMessage,
                     new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference) +  (heightDifference * 0)),
-                    Color.BLACK,
+                    Color.WHITE,
                     (float)maxWidth,
                     BitmapFont.HAlignment.CENTER );
 

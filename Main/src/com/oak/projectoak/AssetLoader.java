@@ -1,6 +1,7 @@
 package com.oak.projectoak;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -33,8 +34,8 @@ public class AssetLoader
 
             loadAtlasIntoMaps(textureAtlases);
 
-//        textureMap.put("background",
-//                new TextureRegion(new Texture("textures/background.png")));
+        textureMap.put("background",
+                new TextureRegion(new Texture("textures/arenaBackground.png")));
 
             initialized = true;
         }

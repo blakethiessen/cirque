@@ -6,8 +6,11 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
 import com.artemis.utils.ImmutableBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.UI;
 
@@ -27,14 +30,18 @@ public class RenderSystem extends EntitySystem
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
+    TextureRegion backgroundTexture;
+
     private List<Entity> sortedEntities;
 
-    public RenderSystem(OrthographicCamera camera)
+    public RenderSystem(OrthographicCamera camera, String backgroundTextureName)
     {
         super(Aspect.getAspectForAll(Render.class).exclude(UI.class));
 
         batch = new SpriteBatch();
         this.camera = camera;
+
+        backgroundTexture = AssetLoader.getTextureRegion(backgroundTextureName);
     }
 
     @Override
@@ -63,7 +70,12 @@ public class RenderSystem extends EntitySystem
     protected void begin()
     {
         batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
+
+        batch.disableBlending();
+        batch.draw(backgroundTexture, (Gdx.graphics.getWidth() - backgroundTexture.getRegionWidth()) / 2, (Gdx.graphics.getHeight() - backgroundTexture.getRegionHeight()) / 2);
+        batch.enableBlending();
     }
 
     protected void process(Entity e)
