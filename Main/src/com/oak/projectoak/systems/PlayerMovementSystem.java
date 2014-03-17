@@ -14,6 +14,7 @@ import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 /*
     The PlayerMovementSystem moves players when the Player
@@ -22,6 +23,7 @@ import com.oak.projectoak.components.physics.DynamicPhysics;
 
 public class PlayerMovementSystem extends EntityProcessingSystem
 {
+    private final GameModeManager gmManager;
     @Mapper ComponentMapper<Platformer> pm;
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<Render> rm;
@@ -30,9 +32,16 @@ public class PlayerMovementSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<Player> cm;
     @Mapper ComponentMapper<ArenaTransform> atm;
 
-    public PlayerMovementSystem()
+    public PlayerMovementSystem(GameModeManager gmManager)
     {
         super(Aspect.getAspectForAll(PlayerAnimation.class));
+        this.gmManager = gmManager;
+    }
+
+    @Override
+    protected boolean checkProcessing()
+    {
+        return !gmManager.isGameOver();
     }
 
     @Override

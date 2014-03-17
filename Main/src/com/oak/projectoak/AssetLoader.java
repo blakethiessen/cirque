@@ -18,19 +18,26 @@ public class AssetLoader
     private static HashMap<String, TextureRegion> textureMap;
     private static HashMap<String, Animation> animationMap;
 
+    private static boolean initialized = false;
+
     public static void initialize()
     {
-        TextureAtlas[] textureAtlases = new TextureAtlas[2];
+        if (!initialized)
+        {
+            TextureAtlas[] textureAtlases = new TextureAtlas[2];
 
-        textureAtlases[0] = new TextureAtlas(Gdx.files.internal("textures/pack1/pack1.atlas"),
-                Gdx.files.internal("textures/pack1"));
-        textureAtlases[1] = new TextureAtlas(Gdx.files.internal("textures/pack2/pack2.atlas"),
-                Gdx.files.internal("textures/pack2"));
+            textureAtlases[0] = new TextureAtlas(Gdx.files.internal("textures/pack1/pack1.atlas"),
+                    Gdx.files.internal("textures/pack1"));
+            textureAtlases[1] = new TextureAtlas(Gdx.files.internal("textures/pack2/pack2.atlas"),
+                    Gdx.files.internal("textures/pack2"));
 
-        loadAtlasIntoMaps(textureAtlases);
+            loadAtlasIntoMaps(textureAtlases);
 
 //        textureMap.put("background",
 //                new TextureRegion(new Texture("textures/background.png")));
+
+            initialized = true;
+        }
     }
 
     private static void loadAtlasIntoMaps(TextureAtlas[] atlases)

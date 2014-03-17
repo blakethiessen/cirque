@@ -39,6 +39,28 @@ public class EntityFactory
         return e;
     }
 
+    public static Entity createStaticImage(World world, String imagePath, Vector2 position)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new Render(imagePath, Layer.UI, position, true));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    public static Entity createBasicController(World world)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new Player(0, null));
+
+        e.addToWorld();
+
+        return e;
+    }
+
     public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
         Entity e = world.createEntity();
@@ -171,15 +193,22 @@ public class EntityFactory
         return abilityCreationComponent;
     }
 
-    public static Entity createTrapRing(World world, Vector2 position)
+    public static Entity createTrapRing(World world, Vector2 position, float initialSpin)
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position));
-        e.addComponent(new ArenaRotation());
-//        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
+        DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position);
 
-//        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
+        ArenaRotation arenaRotation = new ArenaRotation();
+        arenaRotation.rotationVelocity = initialSpin;
+
+        dynamicPhysics.body.setAngularVelocity(initialSpin);
+
+        e.addComponent(arenaRotation);
+        e.addComponent(dynamicPhysics);
+        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
+
+        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
 
         e.addToWorld();
 

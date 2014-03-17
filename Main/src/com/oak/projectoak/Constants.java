@@ -8,6 +8,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Constants
 {
+    public static final String TITLE_LOGO = "cirqueTitle";
+    public static final int TITLE_LOGO_WIDTH = 433;
+    public static final int TITLE_LOGO_HEIGHT = 131;
+
     // Animations
     public static final String SHAHAN_WALK = "characters/shahan/walk/walk";
     public static final String SHAHAN_IDLE = "characters/shahan/idle/idle";
@@ -79,7 +83,8 @@ public class Constants
     public static final int DEATHMATCH_NUM_TEAMS = 2;
     public static final int DEATHMATCH_KILLS_TO_WIN = 8;
 
-    public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = 1f / DEATHMATCH_KILLS_TO_WIN;
+    public static final float MAX_ARENA_ROTATION_SPEED = 2f;
+    public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
     public static final float TIER1_ABILITY_ENERGY_COST = .33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
@@ -93,7 +98,8 @@ public class Constants
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
-    public static final float INITIAL_CAMERA_ZOOM = 2f;
+    public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
+    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0002f;
 
     public class Groups
     {

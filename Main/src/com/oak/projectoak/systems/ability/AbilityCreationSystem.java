@@ -14,6 +14,7 @@ import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 public class AbilityCreationSystem extends EntityProcessingSystem
 {
@@ -24,14 +25,22 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     @Mapper ComponentMapper<PlayerAnimation> pam;
 
     private final AbilityDestructionSystem abilityDestructionSystem;
+    private final GameModeManager gmManager;
     private final Body trapRingBody;
 
-    public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, Entity trapRing)
+    public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, GameModeManager gmManager, Entity trapRing)
     {
         super(Aspect.getAspectForAll(Player.class));
 
         this.abilityDestructionSystem = abilityDestructionSystem;
+        this.gmManager = gmManager;
         trapRingBody = trapRing.getComponent(DynamicPhysics.class).body;
+    }
+
+    @Override
+    protected boolean checkProcessing()
+    {
+        return !gmManager.isGameOver();
     }
 
     @Override

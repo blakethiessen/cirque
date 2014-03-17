@@ -1,15 +1,9 @@
 package com.oak.projectoak.physics.contactlisteners;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
-import com.artemis.annotations.Mapper;
-import com.artemis.utils.ImmutableBag;
-import com.badlogic.gdx.physics.box2d.*;
-import com.oak.projectoak.components.Platformer;
-import com.oak.projectoak.components.physics.DynamicPhysics;
-import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 import java.util.ArrayList;
 
@@ -25,6 +19,11 @@ public class GFContactListener implements ContactListener
     public void addContactListener(BaseContactListener contactListener)
     {
         contactListeners.add(contactListener);
+    }
+
+    public void clearContactListeners()
+    {
+        contactListeners.clear();
     }
 
     @Override

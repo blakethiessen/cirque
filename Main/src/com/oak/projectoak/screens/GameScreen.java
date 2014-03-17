@@ -3,6 +3,7 @@ package com.oak.projectoak.screens;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
@@ -35,18 +36,19 @@ import com.oak.projectoak.systems.render.*;
 
 public class GameScreen implements Screen
 {
+    private final Game game;
     private World world;
     OrthographicCamera camera;
 
-    public GameScreen()
+    public GameScreen(Game game)
     {
+        this.game = game;
         camera = new OrthographicCamera();
 
-        // Setup asset loading
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = Constants.INITIAL_CAMERA_ZOOM;
+        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / (float)Gdx.graphics.getHeight();
 
         // Setup Entity world
         world = new World();
@@ -75,32 +77,32 @@ public class GameScreen implements Screen
         b2world.setContactListener(contactListener);
 
         // Setup input manager
-        final InputManager inputManager = new InputManager(world);
+        final InputManager inputManager = new InputManager();
 
         // Setup systems
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
         PhysicsFactory.setWorld(b2world);
-        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER);
+        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER, 0);
 
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new TrapPhysicsSystem());
         world.setSystem(new RenderOffsetSystem());
         world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
 
-        InputSystem input = new InputSystem(camera, deathMatchManager);
-        inputManager.addInputProcessor(input);
-        Controllers.addListener(input);
-        world.setSystem(input);
+        InputSystem inputSystem = new InputSystem(camera);
+        inputManager.addInputProcessor(inputSystem);
+        Controllers.addListener(inputSystem);
+        world.setSystem(inputSystem);
 
         world.setSystem(new CameraSystem(camera, true));
         world.setSystem(arenaRotationSystem);
 
         world.setSystem(footContactListenerSystem);
-        world.setSystem(new PlayerMovementSystem());
+        world.setSystem(new PlayerMovementSystem(deathMatchManager));
 
-        world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, trapRing));
+        world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
         world.setSystem(abilitySystem);
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
@@ -144,7 +146,7 @@ public class GameScreen implements Screen
         Array<Controller> controllers = Controllers.getControllers();
         for(int i = 0; i < controllers.size; i++)
         {
-            input.controllerMap.put(controllers.get(i), i);
+            inputSystem.controllerMap.put(controllers.get(i), i);
         }
     }
 

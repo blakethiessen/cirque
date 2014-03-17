@@ -1,7 +1,7 @@
 package com.oak.projectoak;
 
 import com.badlogic.gdx.Game;
-import com.oak.projectoak.screens.GameScreen;
+import com.oak.projectoak.screens.TitleScreen;
 
 /*
     This is where the game is run from, independent of
@@ -13,6 +13,6 @@ public class ProjectOak extends Game
     @Override
     public void create()
     {
-        setScreen(new GameScreen());
+        setScreen(new TitleScreen(this));
     }
 }

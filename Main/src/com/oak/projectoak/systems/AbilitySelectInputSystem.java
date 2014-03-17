@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 import java.util.HashMap;
 
@@ -22,7 +23,7 @@ import java.util.HashMap;
     that is for in-game players.
  */
 
-public class InputSystem extends EntityProcessingSystem
+public class AbilitySelectInputSystem extends EntityProcessingSystem
         implements InputProcessor, ControllerListener
 {
     @Mapper ComponentMapper<Player> pm;
@@ -32,11 +33,13 @@ public class InputSystem extends EntityProcessingSystem
     private HashMap<Integer, PlayerAction> keyMaps;
     private HashMap<Action, Boolean>[] controlStates;
     private OrthographicCamera camera;
+    private GameModeManager gameModeManager;
 
-    public InputSystem(OrthographicCamera camera)
+    public AbilitySelectInputSystem(OrthographicCamera camera, GameModeManager gameModeManager)
     {
         super(Aspect.getAspectForAll(Player.class));
         this.camera = camera;
+        this.gameModeManager = gameModeManager;
 
         this.controllerMap = new HashMap<Controller, Integer>(4);
 
@@ -78,6 +81,12 @@ public class InputSystem extends EntityProcessingSystem
             controlStates[i].put(Action.ABILITY_1, false);
             controlStates[i].put(Action.ABILITY_2, false);
         }
+    }
+
+    @Override
+    protected boolean checkProcessing()
+    {
+        return !gameModeManager.isGameOver();
     }
 
     @Override
@@ -210,7 +219,7 @@ public class InputSystem extends EntityProcessingSystem
     public boolean axisMoved(Controller controller, int axisCode, float value)
     {
         final int curPlayer = controllerMap.get(controller);
-        
+
         if (axisCode == 1)
         {
             if (value < -.5f)
