@@ -21,7 +21,7 @@ public class TitleScreen implements Screen, InputProcessor
     Sprite logo;
 
     boolean beginZoomTransition = false;
-    private float rotationSpeed = .2f;
+    private float rotationSpeed = .1f;
     private float zoomIncreasePerFrame = .002f;
     private float logoAlpha = 1;
 
@@ -35,7 +35,8 @@ public class TitleScreen implements Screen, InputProcessor
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float)Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING);
+        camera.zoom = 1.36f;
+//        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float)Gdx.graphics.getHeight());
 
         background = new Sprite(AssetLoader.getTextureRegion("background"));
 
@@ -61,7 +62,8 @@ public class TitleScreen implements Screen, InputProcessor
 
         if (beginZoomTransition)
         {
-            arenaRing.rotate(rotationSpeed += .05f);
+            camera.rotate(rotationSpeed += .05f);
+            logo.rotate(-rotationSpeed);
             camera.zoom -= (zoomIncreasePerFrame += Constants.CAMERA_TRANSITION_ZOOM_ACCEL);
 
             if ((logoAlpha -= .01f) < 0)
@@ -75,7 +77,11 @@ public class TitleScreen implements Screen, InputProcessor
             }
         }
         else
-            arenaRing.rotate(rotationSpeed);
+        {
+            camera.rotate(rotationSpeed);
+            logo.rotate(-rotationSpeed);
+        }
+
 
         draw();
     }
