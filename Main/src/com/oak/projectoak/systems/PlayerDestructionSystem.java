@@ -42,6 +42,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
 
     public void destroyEntity(Entity entity)
     {
+        playm.get(entity).deaths++;
         entitiesToDestroy.add(entity);
     }
 

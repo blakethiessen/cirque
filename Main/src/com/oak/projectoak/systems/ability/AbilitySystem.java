@@ -20,6 +20,7 @@ public class AbilitySystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Player> pm;
     @Mapper ComponentMapper<ArenaRotation> am;
+    @Mapper ComponentMapper<Ability> abm;
 
     private PlayerDestructionSystem playerDestructionSystem;
     private AbilityDestructionSystem abilityDestructionSystem;
@@ -56,9 +57,7 @@ public class AbilitySystem extends EntityProcessingSystem
         {
             if (bodyUDB instanceof PlayerUD)
             {
-                killPlayer((PlayerUD)bodyUDB);
-
-                return true;
+                return killPlayer((LethalUD) fixtureUDA, (PlayerUD) bodyUDB);
             }
         }
         else
@@ -70,24 +69,32 @@ public class AbilitySystem extends EntityProcessingSystem
             {
                 if (bodyUDA instanceof PlayerUD)
                 {
-                    killPlayer((PlayerUD)bodyUDA);
-
-                    return true;
+                    return killPlayer((LethalUD) fixtureUDB, (PlayerUD) bodyUDA);
                 }
             }
         }
         return false;
     }
 
-    private void killPlayer(PlayerUD userData)
-    {
-        Entity entity = userData.entity;
+    private boolean killPlayer(LethalUD fixtureUDA, PlayerUD bodyUDB) {
+        Entity entity = ((PlayerUD)bodyUDB).entity;
 
         if (!pm.get(entity).invulnerable)
         {
             dmManager.addKillStatistic(entity.getComponent(Player.class).teamNum);
             playerDestructionSystem.destroyEntity(entity);
         }
+
+        Player player = pm.get(abm.get(((LethalUD) fixtureUDA).entity).owner);
+        int OwnerTeamNumber = player.teamNum;
+        int VictimTeamNumber = pm.get(((PlayerUD) bodyUDB).entity).teamNum;
+
+        if(OwnerTeamNumber == VictimTeamNumber)
+            player.friendlyKills++;
+        else
+            player.enemyKills++;
+
+        return true;
     }
 
     @Override
