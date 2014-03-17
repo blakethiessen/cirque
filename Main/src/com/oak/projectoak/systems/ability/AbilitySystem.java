@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.components.Ability;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
@@ -92,7 +93,11 @@ public class AbilitySystem extends EntityProcessingSystem
 
         if (!pm.get(entity).invulnerable)
         {
-            dmManager.addKillStatistic(entity.getComponent(Player.class).teamNum);
+            Player player = entity.getComponent(Player.class);
+            dmManager.addKillStatistic(player.teamNum);
+
+            AssetLoader.playSound("death");
+
             playerDestructionSystem.destroyEntity(entity);
         }
 

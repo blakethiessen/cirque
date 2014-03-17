@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.AbilityType;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.Render.Layer;
@@ -194,7 +195,7 @@ public class EntityFactory
                 break;
             case LIGHTNING_BOLT:
                 bubbleTextures[0] = Constants.UI_LIGHTNING_METER;
-                bubbleTextures[2] = Constants.UI_ENERGY_METER_3_LEVEL;
+                bubbleTextures[2] = Constants.UI_ENERGY_METER_2_LEVEL;
                 break;
             default:
                 Gdx.app.error("Unknown Ability UI", "UI for an unknown ability: " + abilityType + " could not be created.");
@@ -237,7 +238,7 @@ public class EntityFactory
 
         e.addComponent(arenaRotation);
         e.addComponent(dynamicPhysics);
-        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH + .05f)));
+        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f)));
 
         e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
 
@@ -273,6 +274,8 @@ public class EntityFactory
         e.addComponent(new Ability(owner));
 
         e.addToWorld();
+
+        AssetLoader.playSound("spike");
 
         return e;
     }
@@ -336,6 +339,8 @@ public class EntityFactory
 
         e.addToWorld();
 
+        AssetLoader.playSound("pillar");
+
         return e;
     }
 
@@ -382,6 +387,8 @@ public class EntityFactory
         e.addComponent(new Ability(owner));
 
         e.addToWorld();
+
+        AssetLoader.playSound("lightning");
 
         return e;
     }

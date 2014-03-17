@@ -85,7 +85,7 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
-        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 140)));
+        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 300)));
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
@@ -173,7 +173,7 @@ public class GameScreen implements Screen
 //        camera.rotate((float)Math.random());
 //        camera.zoom = (float)Math.random() + 1f;
 //		Gdx.gl.glClearColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         world.process();

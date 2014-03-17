@@ -101,6 +101,8 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 animate.setToStaticTexture();
                 Constants.setSpriteTexture(render.sprites[0], AssetLoader.getTextureRegion(playerAnimation.jump));
 
+                AssetLoader.playSound("jump");
+
                 Timer.schedule(new Timer.Task()
                 {
                     @Override

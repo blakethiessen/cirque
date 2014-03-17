@@ -8,8 +8,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.components.PlayerAnimation;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
@@ -24,6 +26,8 @@ public class PlayerDestructionSystem extends VoidEntitySystem
     @Mapper ComponentMapper<Platformer> platm;
     @Mapper ComponentMapper<Player> playm;
     @Mapper ComponentMapper<ArenaTransform> am;
+    @Mapper ComponentMapper<Animate> anm;
+    @Mapper ComponentMapper<PlayerAnimation> pam;
 
     private final GameModeManager deathMatchManager;
     private final ArenaRotationSystem arenaRotationSystem;
@@ -59,19 +63,29 @@ public class PlayerDestructionSystem extends VoidEntitySystem
     {
         while (!entitiesToDestroy.isEmpty())
         {
-            Entity e = entitiesToDestroy.get(0);
+            final Entity e = entitiesToDestroy.get(0);
 
-            if (dpm.has(e))
-                b2world.destroyBody(dpm.get(e).body);
+            Animate animate = anm.get(e);
+            animate.setAnimation(pam.get(e).death, true);
 
-            e.disable();
+            Timer.schedule(new Timer.Task()
+            {
+                @Override
+                public void run()
+                {
+                    if (dpm.has(e))
+                        b2world.destroyBody(dpm.get(e).body);
 
-            if (!deathMatchManager.isGameOver())
-                setupPlayerRespawnTimer(e);
+                    e.disable();
+
+                    if (!deathMatchManager.isGameOver())
+                        setupPlayerRespawnTimer(e);
+
+                    arenaRotationSystem.increaseArenaRotationalVelocity();
+                }
+            }, .6f);
 
             entitiesToDestroy.remove(e);
-
-            arenaRotationSystem.increaseArenaRotationalVelocity();
         }
     }
 

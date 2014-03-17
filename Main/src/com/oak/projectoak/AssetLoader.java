@@ -1,6 +1,7 @@
 package com.oak.projectoak;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,6 +19,7 @@ public class AssetLoader
 {
     private static HashMap<String, TextureRegion> textureMap;
     private static HashMap<String, Animation> animationMap;
+    private static HashMap<String, Sound> soundMap;
 
     private static boolean initialized = false;
 
@@ -36,6 +38,13 @@ public class AssetLoader
 
         textureMap.put("background",
                 new TextureRegion(new Texture("textures/arenaBackground.png")));
+
+            soundMap = new HashMap<String, Sound>();
+            soundMap.put("death", Gdx.audio.newSound(Gdx.files.internal("sounds/death_sound_2.wav")));
+            soundMap.put("pillar", Gdx.audio.newSound(Gdx.files.internal("sounds/hammer.wav")));
+            soundMap.put("jump", Gdx.audio.newSound(Gdx.files.internal("sounds/woosh.wav")));
+            soundMap.put("spike", Gdx.audio.newSound(Gdx.files.internal("sounds/spike.wav")));
+            soundMap.put("lightning", Gdx.audio.newSound(Gdx.files.internal("sounds/thunder.wav")));
 
             initialized = true;
         }
@@ -109,5 +118,10 @@ public class AssetLoader
             Gdx.app.error("Animation not found", "Animation: " + animationName + " was not in the animationMap.");
 
         return animation;
+    }
+
+    public static void playSound(String soundName)
+    {
+        soundMap.get(soundName).play();
     }
 }

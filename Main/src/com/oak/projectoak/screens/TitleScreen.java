@@ -11,9 +11,12 @@ import com.oak.projectoak.Constants;
 public class TitleScreen implements Screen, InputProcessor
 {
     private final Game game;
+    private final int BACKGROUND_X;
+    private final int BACKGROUND_Y;
     OrthographicCamera camera;
 
     SpriteBatch batch;
+    Sprite background;
     Sprite arenaRing;
     Sprite logo;
 
@@ -32,7 +35,9 @@ public class TitleScreen implements Screen, InputProcessor
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / (float)Gdx.graphics.getHeight();
+        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float)Gdx.graphics.getHeight() - 300);
+
+        background = new Sprite(AssetLoader.getTextureRegion("background"));
 
         arenaRing = new Sprite(AssetLoader.getTextureRegion(Constants.OUTER_RING));
         arenaRing.setPosition((Gdx.graphics.getWidth() - arenaRing.getWidth()) / 2, (Gdx.graphics.getHeight() - arenaRing.getHeight()) / 2);
@@ -41,12 +46,15 @@ public class TitleScreen implements Screen, InputProcessor
         logo.setPosition((Gdx.graphics.getWidth() - logo.getWidth()) / 2, (Gdx.graphics.getHeight() - logo.getHeight()) / 2);
 
         Gdx.input.setInputProcessor(this);
+
+        BACKGROUND_X = (Gdx.graphics.getWidth() - background.getRegionWidth()) / 2;
+        BACKGROUND_Y = (Gdx.graphics.getHeight() - background.getRegionHeight()) / 2;
     }
 
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -75,7 +83,12 @@ public class TitleScreen implements Screen, InputProcessor
     private void draw()
     {
         batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
+
+        batch.disableBlending();
+        batch.draw(background, BACKGROUND_X, BACKGROUND_Y);
+        batch.enableBlending();
 
         arenaRing.draw(batch);
         logo.draw(batch);

@@ -18,12 +18,11 @@ public class Constants
     public static final String PORTRAIT_TEAM_BLUE = "characterPortraits/TEAMCOLORS/blue";
     public static final String GAME_OVER_TEXT = "Press Enter to restart game or Escape to re-choose abilities";
 
-
     public static final String PIRATE_IDLE = "characters/pirate/idle/idle";
     public static final String PIRATE_WALK = "characters/pirate/walk/walk";
     public static final String PIRATE_JUMP = "characters/pirate/jump/jump";
     public static final String PIRATE_LAY_TRAP = "characters/pirate/lay_trap/lay_trap";
-    public static final String PIRATE_SELF_DESTRUCT = "characters/pirate/self_destruct/self_destruct";
+    public static final String PIRATE_DEATH = "characters/pirate/death/death";
     public static final String PIRATE_PORTRAIT_HEALTHY = "characterPortraits/pirate/1_healthy";
     public static final String PIRATE_PORTRAIT_BRUISED = "characterPortraits/pirate/2_bruised";
     public static final String PIRATE_PORTRAIT_NEAR_DEAD = "characterPortraits/pirate/3_near_dead";
@@ -33,7 +32,7 @@ public class Constants
     public static final String NINJA_WALK = "characters/ninja/walk/walk";
     public static final String NINJA_JUMP = "characters/ninja/jump/jump";
     public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
-    public static final String NINJA_SELF_DESTRUCT = "characters/ninja/self_destruct/self_destruct";
+    public static final String NINJA_DEATH = "characters/ninja/death/death";
     public static final String NINJA_PORTRAIT_HEALTHY = "characterPortraits/ninja/1_healthy";
     public static final String NINJA_PORTRAIT_BRUISED = "characterPortraits/ninja/2_bruised";
     public static final String NINJA_PORTRAIT_NEAR_DEAD = "characterPortraits/ninja/3_near_dead";
@@ -43,7 +42,7 @@ public class Constants
     public static final String GANGSTA_WALK = "characters/gangsta/walk/walk";
     public static final String GANGSTA_JUMP = "characters/gangsta/jump/jump";
     public static final String GANGSTA_LAY_TRAP = "characters/gangsta/lay_trap/lay_trap";
-    public static final String GANGSTA_SELF_DESTRUCT = "characters/gangsta/self_destruct/self_destruct";
+    public static final String GANGSTA_DEATH = "characters/gangsta/death/death";
     public static final String GANGSTA_PORTRAIT_HEALTHY = "characterPortraits/gangsta/1_healthy";
     public static final String GANGSTA_PORTRAIT_BRUISED = "characterPortraits/gangsta/2_bruised";
     public static final String GANGSTA_PORTRAIT_NEAR_DEAD = "characterPortraits/gangsta/3_near_dead";
@@ -53,7 +52,7 @@ public class Constants
     public static final String PHARAOH_WALK = "characters/pharaoh/walk/walk";
     public static final String PHARAOH_JUMP = "characters/pharaoh/jump/jump";
     public static final String PHARAOH_LAY_TRAP = "characters/pharaoh/lay_trap/lay_trap";
-    public static final String PHARAOH_SELF_DESTRUCT = "characters/pharaoh/self_destruct/self_destruct";
+    public static final String PHARAOH_DEATH = "characters/pharaoh/death/death";
     public static final String PHARAOH_PORTRAIT_HEALTHY = "characterPortraits/pharaoh/1_healthy";
     public static final String PHARAOH_PORTRAIT_BRUISED = "characterPortraits/pharaoh/2_bruised";
     public static final String PHARAOH_PORTRAIT_NEAR_DEAD = "characterPortraits/pharaoh/3_near_dead";
@@ -88,12 +87,12 @@ public class Constants
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 1;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = 0f; //.33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
@@ -106,6 +105,7 @@ public class Constants
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
     public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .4f;
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
+    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
