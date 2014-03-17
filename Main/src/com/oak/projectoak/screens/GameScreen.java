@@ -148,7 +148,7 @@ public class GameScreen implements Screen
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 
         Array<Controller> controllers = Controllers.getControllers();
-        for(int i = 0; i < controllers.size; i++)
+        for (int i = 0; i < controllers.size; i++)
         {
             inputSystem.controllerMap.put(controllers.get(i), i);
         }

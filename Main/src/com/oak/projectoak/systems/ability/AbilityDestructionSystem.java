@@ -38,7 +38,8 @@ public class AbilityDestructionSystem extends VoidEntitySystem
 
     public void destroyEntity(Entity entity)
     {
-        entitiesToDestroy.add(entity);
+        if (!entitiesToDestroy.contains(entity))
+            entitiesToDestroy.add(entity);
     }
 
     @Override

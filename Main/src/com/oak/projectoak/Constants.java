@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants
 {
     public static final String TITLE_LOGO = "cirqueTitle";
-    public static final int TITLE_LOGO_WIDTH = 433;
-    public static final int TITLE_LOGO_HEIGHT = 131;
 
     // Animations
     public static final String SHAHAN_WALK = "characters/shahan/walk/walk";
