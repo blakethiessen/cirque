@@ -124,6 +124,8 @@ public class GameScreen implements Screen
         world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
+        world.setSystem(new ScoreTrackingSystem(deathMatchManager));
+
         world.setManager(new GroupManager());
 
         world.setDelta(.01f);
