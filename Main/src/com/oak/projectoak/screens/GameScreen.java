@@ -85,7 +85,7 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
-        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 300)));
+        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 

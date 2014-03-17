@@ -97,7 +97,7 @@ public class Constants
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
-    public static final int PILLAR_LIFETIME = 10;
+    public static final int PILLAR_LIFETIME = 16;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
     public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
     //TODO: Make these factor each other.
@@ -106,6 +106,7 @@ public class Constants
     public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .4f;
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
+    public static final int ZOOM_RING_PADDING = 260;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

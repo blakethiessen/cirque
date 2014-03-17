@@ -35,7 +35,7 @@ public class TitleScreen implements Screen, InputProcessor
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float)Gdx.graphics.getHeight() - 300);
+        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float)Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING);
 
         background = new Sprite(AssetLoader.getTextureRegion("background"));
 
