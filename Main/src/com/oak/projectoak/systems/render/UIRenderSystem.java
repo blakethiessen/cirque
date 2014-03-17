@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -19,21 +19,11 @@ public class UIRenderSystem extends EntityProcessingSystem
 
     private SpriteBatch batch;
 
-    public UIRenderSystem()
+    public UIRenderSystem(SpriteBatch spriteBatch)
     {
         super(Aspect.getAspectForAll(Render.class, UI.class));
-    }
 
-    @Override
-    protected void initialize()
-    {
-        batch = new SpriteBatch();
-    }
-
-    @Override
-    protected void begin()
-    {
-        batch.begin();
+        batch = spriteBatch;
     }
 
     protected void process(Entity e)
@@ -55,12 +45,6 @@ public class UIRenderSystem extends EntityProcessingSystem
 
             render.draw(batch);
         }
-    }
-
-    @Override
-    protected void end()
-    {
-        batch.end();
     }
 }
 

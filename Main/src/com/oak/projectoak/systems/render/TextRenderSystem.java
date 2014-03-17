@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -20,29 +20,12 @@ public class TextRenderSystem extends EntityProcessingSystem
     private SpriteBatch batch;
     private BitmapFont bitMapFont;
 
-    public TextRenderSystem()
+    public TextRenderSystem(SpriteBatch spriteBatch)
     {
         super(Aspect.getAspectForAll(TextRender.class));
 
+        batch = spriteBatch;
         bitMapFont = new BitmapFont();
-    }
-
-    @Override
-    protected void initialize()
-    {
-        batch = new SpriteBatch();
-    }
-
-    @Override
-    protected boolean checkProcessing()
-    {
-        return true;
-    }
-
-    @Override
-    protected void begin()
-    {
-        batch.begin();
     }
 
     @Override
@@ -50,13 +33,7 @@ public class TextRenderSystem extends EntityProcessingSystem
     {
         TextRender textRender = trm.get(e);
 
-        batch.setColor(textRender.r, textRender.g, textRender.b, textRender.a);
+        bitMapFont.setColor(textRender.color);
         bitMapFont.draw(batch, textRender.text, textRender.position.x, textRender.position.y);
-    }
-
-    @Override
-    protected void end()
-    {
-        batch.end();
     }
 }

@@ -1,4 +1,4 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.systems.render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -32,14 +32,14 @@ public class RenderSystem extends EntitySystem
     public RenderSystem(OrthographicCamera camera)
     {
         super(Aspect.getAspectForAll(Render.class).exclude(UI.class));
+
+        batch = new SpriteBatch();
         this.camera = camera;
     }
 
     @Override
     protected void initialize()
     {
-        batch = new SpriteBatch();
-
         sortedEntities = new ArrayList<Entity>();
     }
 
@@ -87,7 +87,6 @@ public class RenderSystem extends EntitySystem
         }
     }
 
-    @Override
     protected void end()
     {
         batch.end();

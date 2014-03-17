@@ -1,6 +1,7 @@
 package com.oak.projectoak.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
 public class TextRender extends Component
@@ -9,23 +10,17 @@ public class TextRender extends Component
 
     public String text;
 
-    public float r;
-    public float g;
-    public float b;
-    public float a;
+    public Color color;
 
-    public TextRender(String text, Vector2 position, float r, float g, float b, float a)
+    public TextRender(String text, Vector2 position, Color color)
     {
         this.text = text;
         this.position = position;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
+        this.color = color;
     }
 
     public TextRender(String text, Vector2 position)
     {
-        this(text, position, 0, 0, 0, 1);
+        this(text, position, Color.BLACK);
     }
 }

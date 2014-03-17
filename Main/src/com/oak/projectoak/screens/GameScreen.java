@@ -9,6 +9,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
@@ -24,6 +25,7 @@ import com.oak.projectoak.systems.ability.AbilityCreationSystem;
 import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
 import com.oak.projectoak.systems.ability.AbilitySystem;
 import com.oak.projectoak.systems.physics.*;
+import com.oak.projectoak.systems.render.*;
 
 /*
     The GameScreen is screen that contains the actual game.
@@ -106,8 +108,14 @@ public class GameScreen implements Screen
         world.setSystem(new AnimationSystem());
         world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new UIEnergyUpdateSystem());
+
+        SpriteBatch uiSpriteBatch = new SpriteBatch();
+
         world.setSystem(new RenderSystem(camera));
-        world.setSystem(new UIRenderSystem());
+        world.setSystem(new SpriteBatchStarter(uiSpriteBatch));
+        world.setSystem(new UIRenderSystem(uiSpriteBatch));
+        world.setSystem(new TextRenderSystem(uiSpriteBatch));
+        world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
         world.setManager(new GroupManager());
@@ -117,16 +125,20 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
-        final Entity player1 = EntityFactory.createPlayer(world, 0, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player1 = EntityFactory.createPlayer(world, 0, 0, true, 0, Constants.P1_UI_POSITION,
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
 
-        final Entity player2 = EntityFactory.createPlayer(world, 1, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player2 = EntityFactory.createPlayer(world, 1, (float) Math.PI, false, 1, Constants.P2_UI_POSITION,
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
-        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 0, Constants.P3_UI_POSITION,
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
 
-        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION,
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 
         Array<Controller> controllers = Controllers.getControllers();
