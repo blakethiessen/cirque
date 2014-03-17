@@ -77,6 +77,9 @@ public class Constants
 
     public static final String UI_PILLAR_METER = "energyMeter/abilityIcons/pillar";
     public static final String UI_SPIKE_METER = "energyMeter/abilityIcons/spike";
+    public static final String UI_LIGHTNING_METER = "energyMeter/abilityIcons/lightning_bolt";
+    public static final String UI_RING_OF_FIRE_METER = "energyMeter/abilityIcons/ring_of_fire";
+    public static final String UI_SHADOW_CLONE_METER = "energyMeter/abilityIcons/shadow_clone";
 
     public static final int ENERGY_METER_WIDTH = 70;
     public static final int PORTRAIT_WIDTH = 120;
@@ -100,7 +103,11 @@ public class Constants
     public static final int PILLAR_LIFETIME = 10;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
     public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
+    //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
+    public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
+    public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .4f;
+    public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

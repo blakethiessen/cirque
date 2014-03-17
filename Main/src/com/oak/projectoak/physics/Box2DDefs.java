@@ -237,7 +237,7 @@ public class Box2DDefs
     private static BodyDef createGenericAbilityBodyDef()
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.KinematicBody;
+        bodyDef.type = BodyType.DynamicBody;
 
         return bodyDef;
     }

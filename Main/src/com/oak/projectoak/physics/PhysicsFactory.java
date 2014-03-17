@@ -2,10 +2,7 @@ package com.oak.projectoak.physics;
 
 import com.artemis.Entity;
 import com.badlogic.gdx.physics.box2d.*;
-import com.oak.projectoak.physics.userdata.FootSensorUD;
-import com.oak.projectoak.physics.userdata.LethalUD;
-import com.oak.projectoak.physics.userdata.PlayerUD;
-import com.oak.projectoak.physics.userdata.UserData;
+import com.oak.projectoak.physics.userdata.*;
 
 /*
     The PhysicsFactory takes the pieces from Box2DDefs
@@ -46,6 +43,8 @@ public class PhysicsFactory
     {
         Body body = b2world.createBody(Box2DDefs.ARENA_BODY_DEF);
 
+        body.setUserData(new ArenaUD());
+
         body.createFixture(Box2DDefs.INNER_CIRCLE_FIXTURE_DEF);
         body.createFixture(Box2DDefs.OUTER_CIRCLE_FIXTURE_DEF);
 
@@ -67,7 +66,7 @@ public class PhysicsFactory
 
         Fixture fixture = body.createFixture(Box2DDefs.LIGHTNING_BOLT_FIXTURE_DEF);
 
-        fixture.setUserData(new LethalUD(e));
+        fixture.setUserData(new LightningUD(e));
 
         return body;
     }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.components.Pillar;
 import com.oak.projectoak.components.Platformer;
+import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.components.physics.TrapPhysics;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public class AbilityDestructionSystem extends VoidEntitySystem
 {
     @Mapper ComponentMapper<Physics> pm;
+    @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<TrapPhysics> tpm;
     @Mapper ComponentMapper<Pillar> pim;
 
@@ -93,6 +95,8 @@ public class AbilityDestructionSystem extends VoidEntitySystem
 
         if (pm.has(e))
             b2world.destroyBody(pm.get(e).body);
+        else if (dpm.has(e))
+            b2world.destroyBody(dpm.get(e).body);
         else if (tpm.has(e))
         {
             final TrapPhysics trapPhysics = tpm.get(e);

@@ -7,11 +7,12 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.oak.projectoak.components.Ability;
-import com.oak.projectoak.components.ArenaRotation;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
+import com.oak.projectoak.physics.userdata.ArenaUD;
 import com.oak.projectoak.physics.userdata.LethalUD;
+import com.oak.projectoak.physics.userdata.LightningUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.systems.PlayerDestructionSystem;
 
@@ -19,7 +20,6 @@ public class AbilitySystem extends EntityProcessingSystem
     implements BaseContactListener
 {
     @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<ArenaRotation> am;
     @Mapper ComponentMapper<Ability> abm;
 
     private PlayerDestructionSystem playerDestructionSystem;
@@ -59,6 +59,11 @@ public class AbilitySystem extends EntityProcessingSystem
             {
                 return killPlayer((LethalUD) fixtureUDA, (PlayerUD) bodyUDB);
             }
+            else if (fixtureUDA instanceof LightningUD && bodyUDB instanceof ArenaUD)
+            {
+                abilityDestructionSystem.destroyEntity(((LightningUD) fixtureUDA).entity);
+                return true;
+            }
         }
         else
         {
@@ -71,12 +76,18 @@ public class AbilitySystem extends EntityProcessingSystem
                 {
                     return killPlayer((LethalUD) fixtureUDB, (PlayerUD) bodyUDA);
                 }
+                else if (fixtureUDB instanceof LightningUD && bodyUDA instanceof ArenaUD)
+                {
+                    abilityDestructionSystem.destroyEntity(((LightningUD) fixtureUDB).entity);
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    private boolean killPlayer(LethalUD fixtureUDA, PlayerUD bodyUDB) {
+    private boolean killPlayer(LethalUD fixtureUDA, PlayerUD bodyUDB)
+    {
         Entity entity = (bodyUDB).entity;
 
         if (!pm.get(entity).invulnerable)
@@ -85,9 +96,9 @@ public class AbilitySystem extends EntityProcessingSystem
             playerDestructionSystem.destroyEntity(entity);
         }
 
-        Player player = pm.get(abm.get(((LethalUD) fixtureUDA).entity).owner);
+        Player player = pm.get(abm.get((fixtureUDA).entity).owner);
         int OwnerTeamNumber = player.teamNum;
-        int VictimTeamNumber = pm.get(((PlayerUD) bodyUDB).entity).teamNum;
+        int VictimTeamNumber = pm.get((bodyUDB).entity).teamNum;
 
         if(OwnerTeamNumber == VictimTeamNumber)
             player.friendlyKills++;
