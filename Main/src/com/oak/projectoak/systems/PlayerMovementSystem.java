@@ -91,7 +91,7 @@ public class PlayerMovementSystem extends EntityProcessingSystem
             }
         }
 
-        if (player.isActionOn(Action.JUMPING) && platformer.isOnGround())
+        if (player.isActionOn(Action.JUMPING) && platformer.isOnGround() && !animate.playWithNoInterrupts)
             if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.
