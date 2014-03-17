@@ -77,7 +77,7 @@ public class AbilitySystem extends EntityProcessingSystem
     }
 
     private boolean killPlayer(LethalUD fixtureUDA, PlayerUD bodyUDB) {
-        Entity entity = ((PlayerUD)bodyUDB).entity;
+        Entity entity = (bodyUDB).entity;
 
         if (!pm.get(entity).invulnerable)
         {

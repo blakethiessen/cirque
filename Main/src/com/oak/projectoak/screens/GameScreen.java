@@ -70,6 +70,9 @@ public class GameScreen implements Screen
 
         final ArenaRotationSystem arenaRotationSystem = new ArenaRotationSystem();
 
+        PhysicsFactory.setWorld(b2world);
+        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER, 0);
+
         final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_SEC, arenaRotationSystem);
         final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
@@ -85,9 +88,6 @@ public class GameScreen implements Screen
         world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 140)));
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
-
-        PhysicsFactory.setWorld(b2world);
-        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER, 0);
 
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new TrapPhysicsSystem());
@@ -132,19 +132,19 @@ public class GameScreen implements Screen
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
         final Entity player1 = EntityFactory.createPlayer(world, 0, 0, true, 0, Constants.P1_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
 
         final Entity player2 = EntityFactory.createPlayer(world, 1, (float) Math.PI, false, 1, Constants.P2_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
         final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 1, Constants.P3_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
 
         final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 0, Constants.P4_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 
         Array<Controller> controllers = Controllers.getControllers();

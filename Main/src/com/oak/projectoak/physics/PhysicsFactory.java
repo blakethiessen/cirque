@@ -3,6 +3,7 @@ package com.oak.projectoak.physics;
 import com.artemis.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.physics.userdata.FootSensorUD;
+import com.oak.projectoak.physics.userdata.LethalUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.physics.userdata.UserData;
 
@@ -58,5 +59,16 @@ public class PhysicsFactory
         Fixture fixture = body.createFixture(fixtureDef);
 
         return fixture;
+    }
+
+    public static Body createLightningBoltBody(Entity e)
+    {
+        Body body = b2world.createBody(Box2DDefs.GENERIC_ABILITY_BODY_DEF);
+
+        Fixture fixture = body.createFixture(Box2DDefs.LIGHTNING_BOLT_FIXTURE_DEF);
+
+        fixture.setUserData(new LethalUD(e));
+
+        return body;
     }
 }

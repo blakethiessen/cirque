@@ -47,6 +47,7 @@ public class Box2DDefs
     private static final EdgeShape FLOOR_SHAPE = createFloorShape();
     private static final ChainShape INNER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_INNER_RADIUS);
     private static final ChainShape OUTER_CIRCLE_SHAPE = createCircleShape(Constants.ARENA_OUTER_RADIUS);
+    private static final Shape LIGHTNING_BOLT_SHAPE = createLightningBoltShape();
 
     // FixtureDefs
     public static final FixtureDef PLAYER_TORSO = createPlayerTorso();
@@ -55,12 +56,13 @@ public class Box2DDefs
     public static final FixtureDef OUTER_CIRCLE_FIXTURE_DEF = createOuterCircleFixtureDef();
     public static final FixtureDef STAKE_FIXTURE_DEF = createStakeFixtureDef();
     public static final FixtureDef PILLAR_FIXTURE_DEF = createPillarFixtureDef();
+    public static final FixtureDef LIGHTNING_BOLT_FIXTURE_DEF = createLightningBoltFixtureDef();
 
     // BodyDefs
     public static final BodyDef PLAYER_BODY_DEF = createPlayerBodyDef();
     public static final BodyDef ARENA_BODY_DEF = createArenaBodyDef();
     public static final BodyDef TRAP_RING_BODY_DEF = createTrapRingBodyDef();
-    
+    public static final BodyDef GENERIC_ABILITY_BODY_DEF = createGenericAbilityBodyDef();
 
     // Shape constructors
     private static PolygonShape createPlayerTorsoShape()
@@ -104,6 +106,14 @@ public class Box2DDefs
 
         ChainShape shape = new ChainShape();
         shape.createLoop(edges);
+
+        return shape;
+    }
+
+    private static Shape createLightningBoltShape()
+    {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(Constants.LIGHTNING_BOLT_WIDTH / 2, Constants.LIGHTNING_BOLT_HEIGHT / 2, new Vector2(Constants.LIGHTNING_BOLT_WIDTH / 2 + .15f, Constants.LIGHTNING_BOLT_HEIGHT / 2), 0);
 
         return shape;
     }
@@ -180,6 +190,16 @@ public class Box2DDefs
         return fixtureDef;
     }
 
+    private static FixtureDef createLightningBoltFixtureDef()
+    {
+        FixtureDef fixtureDef = new FixtureDef();
+
+        fixtureDef.shape = LIGHTNING_BOLT_SHAPE;
+        fixtureDef.isSensor = true;
+
+        return fixtureDef;
+    }
+
     // Body Def constructors
     private static BodyDef createPlayerBodyDef()
     {
@@ -213,5 +233,14 @@ public class Box2DDefs
 
         return bodyDef;
     }
+
+    private static BodyDef createGenericAbilityBodyDef()
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.KinematicBody;
+
+        return bodyDef;
+    }
+
 }
 

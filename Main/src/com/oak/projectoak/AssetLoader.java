@@ -95,8 +95,8 @@ public class AssetLoader
     {
         final TextureRegion textureRegion = textureMap.get(textureRegionName);
 
-        if (textureRegion == null)
-            Gdx.app.error("Texture not found", "Texture: " + textureRegionName + " was not in the textureMap.");
+//        if (textureRegion == null)
+//            Gdx.app.error("Texture not found", "Texture: " + textureRegionName + " was not in the textureMap.");
 
         return textureRegion;
     }

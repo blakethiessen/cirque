@@ -138,10 +138,6 @@ public class EntityFactory
         // Add abilities
         AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
 
-
-
-
-
         // If the position is on the right side, move our uiPosition origin to the left to compensate.
         if (uiOnRightSide)
             uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
@@ -192,6 +188,11 @@ public class EntityFactory
                 bubbleTextures[2] = Constants.UI_ENERGY_METER_3_LEVEL;
                 break;
             case PILLAR:
+                bubbleTextures[0] = Constants.UI_PILLAR_METER;
+                bubbleTextures[2] = Constants.UI_ENERGY_METER_3_LEVEL;
+                break;
+            case LIGHTNING_BOLT:
+                //TODO: REPLACE WITH LIGHTNING
                 bubbleTextures[0] = Constants.UI_PILLAR_METER;
                 bubbleTextures[2] = Constants.UI_ENERGY_METER_3_LEVEL;
                 break;
@@ -337,6 +338,38 @@ public class EntityFactory
 
         return e;
     }
+
+    public static Entity createLightningBolt(World world, float radialPosition, boolean onOutsideEdge, Entity owner)
+    {
+        Entity e = world.createEntity();
+
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
+
+        DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createLightningBoltBody(e), twoDPosition);
+        Body body = dynamicPhysics.body;
+        Vector2 position = body.getPosition();
+        if (onOutsideEdge)
+        {
+            body.setLinearVelocity(twoDPosition.cpy().sub(Constants.ARENA_CENTER).scl(Constants.LIGHTNING_BOLT_SPEED_SCALE_FACTOR));
+            body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2));
+        }
+        else
+        {
+            body.setLinearVelocity(Constants.ARENA_CENTER.cpy().sub(twoDPosition).scl(Constants.LIGHTNING_BOLT_SPEED_SCALE_FACTOR));
+            body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2));
+        }
+
+        e.addComponent(dynamicPhysics);
+
+        e.addComponent(new Render(Constants.LIGHTNING_BOLT, Layer.ABILITIES, Vector2.Zero, false));
+        e.addComponent(new Animate(Constants.LIGHTNING_BOLT));
+        e.addComponent(new Ability(owner));
+
+        e.addToWorld();
+
+        return e;
+    }
+
 
     public static Entity createBackground(World world)
     {

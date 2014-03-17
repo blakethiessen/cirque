@@ -63,6 +63,7 @@ public class Constants
 
     public static final String PILLAR = "abilities/pillar/pillar";
     public static final String SPIKE = "abilities/spike/spike";
+    public static final String LIGHTNING_BOLT = "abilities/lightning_bolt/lightning_bolt";
 
     public static final String OUTER_RING = "arena/outerRing";
 
@@ -99,6 +100,7 @@ public class Constants
     public static final int PILLAR_LIFETIME = 10;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
     public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
+    public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
@@ -140,6 +142,9 @@ public class Constants
     public static final float PILLAR_X_OFFSET = 0f;
 
     public static final float PILLAR_STACK_RANGE = .1f;
+
+    public static final float LIGHTNING_BOLT_WIDTH = .45f;
+    public static final float LIGHTNING_BOLT_HEIGHT = 1.4f;
 
     // ARENA CONSTANTS
     public static final Vector2 GRAVITY = Vector2.Zero;
@@ -197,13 +202,14 @@ public class Constants
     public static final int P1_JUMP_KEY = Input.Keys.W;
     public static final int P1_ABILITY_1_KEY = Input.Keys.Q;
     public static final int P1_ABILITY_2_KEY = Input.Keys.E;
+    public static final int P1_ABILITY_3_KEY = Input.Keys.Z;
 
     public static final int P2_LEFT_KEY = Input.Keys.LEFT;
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
     public static final int P2_JUMP_KEY = Input.Keys.UP;
     public static final int P2_ABILITY_1_KEY = Input.Keys.SLASH;
     public static final int P2_ABILITY_2_KEY = Input.Keys.APOSTROPHE;
-
+    public static final int P2_ABILITY_3_KEY = Input.Keys.RIGHT_BRACKET;
 
     // Currently for debug
     public static final int P3_LEFT_KEY = Input.Keys.F;
@@ -211,10 +217,12 @@ public class Constants
     public static final int P3_JUMP_KEY = Input.Keys.T;
     public static final int P3_ABILITY_1_KEY = Input.Keys.R;
     public static final int P3_ABILITY_2_KEY = Input.Keys.Y;
+    public static final int P3_ABILITY_3_KEY = Input.Keys.V;
 
     public static final int P4_LEFT_KEY = Input.Keys.J;
     public static final int P4_RIGHT_KEY = Input.Keys.L;
     public static final int P4_JUMP_KEY = Input.Keys.I;
     public static final int P4_ABILITY_1_KEY = Input.Keys.U;
     public static final int P4_ABILITY_2_KEY = Input.Keys.O;
+    public static final int P4_ABILITY_3_KEY = Input.Keys.N;
 }

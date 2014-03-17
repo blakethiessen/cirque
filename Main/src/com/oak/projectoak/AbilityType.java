@@ -3,5 +3,5 @@ package com.oak.projectoak;
 public enum AbilityType
 {
     STAKE,
-    PILLAR
+    LIGHTNING_BOLT, PILLAR
 }
