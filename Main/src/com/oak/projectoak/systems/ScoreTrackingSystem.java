@@ -25,7 +25,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Player> pm;
 
-    private Entity x,y,z;
+    public Entity x,y,z;
     private boolean init, change;
     private int p0,p1,p2,p3;
     private float w;
@@ -55,7 +55,6 @@ public class ScoreTrackingSystem extends EntityProcessingSystem
         //Grab the player entity and determine its team number
         Player p = pm.get(e);
 
-
         if(init)
         {
             x =   EntityFactory.createText(world,
@@ -66,17 +65,15 @@ public class ScoreTrackingSystem extends EntityProcessingSystem
                                           BitmapFont.HAlignment.CENTER);
 
             y =   EntityFactory.createText(world,
-                    String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p0 - p2),
-                    new   Vector2(Gdx.graphics.getWidth()/2-  w/2, Gdx.graphics.getHeight()/2 -16),
+                    String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN),
+                    new   Vector2(Gdx.graphics.getWidth()/2-  w/2, Gdx.graphics.getHeight()/2 - 16),
                     Color.RED,
                     w,
                     BitmapFont.HAlignment.LEFT);
 
-
-
             z =   EntityFactory.createText(world,
-                    String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p1 - p3),
-                    new   Vector2(Gdx.graphics.getWidth()/2-  w/2, Gdx.graphics.getHeight()/2 -16),
+                    String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN),
+                    new   Vector2(Gdx.graphics.getWidth()/2-  w/2, Gdx.graphics.getHeight()/2 - 16),
                     Color.BLUE,
                     w,
                     BitmapFont.HAlignment.RIGHT);
@@ -109,8 +106,8 @@ public class ScoreTrackingSystem extends EntityProcessingSystem
 
         if(change)
         {
-            y.getComponent(TextRender.class).text = String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p0 - p2);
-            z.getComponent(TextRender.class).text = String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p1 - p3);
+            y.getComponent(TextRender.class).text = String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p0 - p3);
+            z.getComponent(TextRender.class).text = String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN - p1 - p2);
             change = false;
         }
 

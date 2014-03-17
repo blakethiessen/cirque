@@ -123,8 +123,9 @@ public class GameScreen implements Screen
         world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
-        world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
-        world.setSystem(new ScoreTrackingSystem(deathMatchManager));
+        ScoreTrackingSystem scoreTracking = new ScoreTrackingSystem(deathMatchManager);
+        world.setSystem(scoreTracking);
+        world.setSystem(new GameOverSystem(deathMatchManager, scoreTracking, this, game, camera));
 
         world.setManager(new GroupManager());
 
