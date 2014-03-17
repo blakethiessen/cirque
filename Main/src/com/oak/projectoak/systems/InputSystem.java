@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
 import java.util.HashMap;
 
@@ -32,11 +33,13 @@ public class InputSystem extends EntityProcessingSystem
     private HashMap<Integer, PlayerAction> keyMaps;
     private HashMap<Action, Boolean>[] controlStates;
     private OrthographicCamera camera;
+    private final GameModeManager gmManager;
 
-    public InputSystem(OrthographicCamera camera)
+    public InputSystem(OrthographicCamera camera, GameModeManager gmManager)
     {
         super(Aspect.getAspectForAll(Player.class));
         this.camera = camera;
+        this.gmManager = gmManager;
 
         this.controllerMap = new HashMap<Controller, Integer>(4);
 
@@ -81,10 +84,16 @@ public class InputSystem extends EntityProcessingSystem
     }
 
     @Override
+    protected boolean checkProcessing()
+    {
+        return !gmManager.isGameOver();
+    }
+
+    @Override
     protected void process(Entity e)
     {
         Player player = pm.get(e);
-        final int playerArrNum = pm.get(e).playerNum - 1;
+        final int playerArrNum = pm.get(e).playerNum;
 
         player.setAction(Action.MOVING_LEFT,
                 controlStates[playerArrNum].get(Action.MOVING_LEFT));

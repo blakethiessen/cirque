@@ -6,14 +6,17 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
+import com.oak.projectoak.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ public class GameOverSystem extends EntityProcessingSystem
 {
     @Mapper ComponentMapper<Player> pm;
     private final GameModeManager gmManager;
+    private final GameScreen gameScreen;
+    private final Game game;
     private final int heightDifference = -16;
     private final int maxPlayersPerTeam = 2;
 
@@ -37,10 +42,12 @@ public class GameOverSystem extends EntityProcessingSystem
 
 
 
-    public GameOverSystem(GameModeManager gmManager)
+    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game)
     {
         super(Aspect.getAspectForAll(Player.class));
         this.gmManager = gmManager;
+        this.gameScreen = gameScreen;
+        this.game = game;
 
         hasRun = false;
         playerNum = 1;
@@ -137,7 +144,6 @@ public class GameOverSystem extends EntityProcessingSystem
                                      (float)maxWidth,
                                      BitmapFont.HAlignment.CENTER);
         }
-
     }
 
     private int getMaxWidthOfText()
@@ -165,6 +171,16 @@ public class GameOverSystem extends EntityProcessingSystem
     protected void end()
     {
         hasRun = true;
+
+        Timer.schedule(new Timer.Task()
+        {
+            @Override
+            public void run()
+            {
+                gameScreen.dispose();
+                game.setScreen(new GameScreen(game));
+            }
+        }, 2);
     }
 
 }

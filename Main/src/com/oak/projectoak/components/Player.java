@@ -2,7 +2,6 @@ package com.oak.projectoak.components;
 
 import com.artemis.Component;
 import com.oak.projectoak.Action;
-import com.oak.projectoak.Constants;
 
 /*
     The Player component is attached to entities
@@ -34,12 +33,12 @@ public class Player extends Component
     //Player stats
     public int enemyKills, deaths, friendlyKills;
 
-    public Player(int teamNum, AbilityCreation[] abilityCreationComponents)
+    public Player(int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents)
     {
         this.teamNum = teamNum;
         this.abilities = abilityCreationComponents;
 
-        playerNum = ++Constants.curPlayersActive;
+        this.playerNum = playerNum;
 
         actionMask = 0;
         this.mouseX = 0f;

@@ -82,7 +82,7 @@ public class EntityFactory
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new Player(0, null));
+        e.addComponent(new Player(0, 0, null));
 
         e.addToWorld();
 
@@ -100,7 +100,6 @@ public class EntityFactory
                 Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
-
 
         boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
 
@@ -157,7 +156,7 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.addComponent(new Player(teamNum, abilityCreationComponents));
+        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents));
 
         e.addToWorld();
 

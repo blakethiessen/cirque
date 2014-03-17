@@ -88,7 +88,7 @@ public class Constants
     public static final int DEATHMATCH_NUM_TEAMS = 2;
     public static final int DEATHMATCH_KILLS_TO_WIN = 1;
 
-    public static final float MAX_ARENA_ROTATION_SPEED = 2f;
+    public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
     public static final float TIER1_ABILITY_ENERGY_COST = 0f; //.33f;
