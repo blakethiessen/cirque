@@ -23,4 +23,7 @@ local.properties
 # OS
 .DS_Store
 
-main/assets/textures/
+main/assets/textures/pack1
+main/assets/textures/pack2
+main/assets/textures/pack3
+main/assets/textures/pack4
