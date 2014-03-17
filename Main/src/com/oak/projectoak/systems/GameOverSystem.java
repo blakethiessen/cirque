@@ -16,17 +16,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
 import com.oak.projectoak.screens.GameScreen;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameOverSystem extends EntityProcessingSystem implements InputProcessor
 {
     @Mapper ComponentMapper<Player> pm;
+    @Mapper ComponentMapper<TextRender> tm;
+
     private final GameModeManager gmManager;
+    private ScoreTrackingSystem scoreTracking;
     private final GameScreen gameScreen;
     private final Game game;
     private final OrthographicCamera camera;
@@ -43,10 +48,11 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
     private List<String> blueTeamList;
     private List<String> redTeamList;
 
-    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera)
+    public GameOverSystem(GameModeManager gmManager, ScoreTrackingSystem scoreTracking, GameScreen gameScreen, Game game, OrthographicCamera camera)
     {
         super(Aspect.getAspectForAll(Player.class));
         this.gmManager = gmManager;
+        this.scoreTracking = scoreTracking;
         this.gameScreen = gameScreen;
         this.game = game;
         this.camera = camera;
@@ -86,14 +92,20 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
             blueTeamDeaths += p.deaths;
         }
 
-
         playerNum++;
 
         //Now that we have gathered all the info for the players, we can determine who won and then show the scoreboard and then center it.
-        if(playerNum ==  2 * maxPlayersPerTeam + 1)
+        if(playerNum == 2 * maxPlayersPerTeam + 1)
         {
             //determine who won by deaths. Whoever died the most lost
-            winMessage = "";
+
+            TextRender textRender = tm.get(scoreTracking.x);
+            textRender.text = "";
+            TextRender textRender2 = tm.get(scoreTracking.y);
+            textRender2.text = "";
+            TextRender textRender3 = tm.get(scoreTracking.z);
+            textRender3.text = "";
+
             if(redTeamDeaths > blueTeamDeaths)
                 winMessage = "Blue Team Wins!";
             else
@@ -142,7 +154,7 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
             EntityFactory.createText(world,
                                      Constants.GAME_OVER_TEXT,
                                      new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  heightDifference * ((2 * maxPlayersPerTeam + 1))) ,
-                                     Color.BLACK,
+                                     Color.WHITE,
                                      (float)maxWidth,
                                      BitmapFont.HAlignment.CENTER);
         }

@@ -67,6 +67,8 @@ public class PlayerDestructionSystem extends VoidEntitySystem
 
             Animate animate = anm.get(e);
             animate.setAnimation(pam.get(e).death, true);
+            final Player player = playm.get(e);
+            player.invulnerable = true;
 
             Timer.schedule(new Timer.Task()
             {

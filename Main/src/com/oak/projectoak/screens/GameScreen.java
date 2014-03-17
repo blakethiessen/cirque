@@ -85,7 +85,7 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
-        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 300)));
+        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
@@ -123,8 +123,10 @@ public class GameScreen implements Screen
         world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
-        world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
-        world.setSystem(new ScoreReportingSystem(deathMatchManager));
+        ScoreTrackingSystem scoreTracking = new ScoreTrackingSystem(deathMatchManager);
+        world.setSystem(scoreTracking);
+        world.setSystem(new GameOverSystem(deathMatchManager, scoreTracking, this, game, camera));
+
         world.setManager(new GroupManager());
 
         world.setDelta(.01f);
