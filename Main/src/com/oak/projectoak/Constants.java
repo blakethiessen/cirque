@@ -11,29 +11,46 @@ public class Constants
     // Animations
     public static final String SHAHAN_WALK = "characters/shahan/walk/walk";
     public static final String SHAHAN_IDLE = "characters/shahan/idle/idle";
+
     public static final String PIRATE_IDLE = "characters/pirate/idle/idle";
     public static final String PIRATE_WALK = "characters/pirate/walk/walk";
     public static final String PIRATE_JUMP = "characters/pirate/jump/jump";
     public static final String PIRATE_LAY_TRAP = "characters/pirate/lay_trap/lay_trap";
     public static final String PIRATE_SELF_DESTRUCT = "characters/pirate/self_destruct/self_destruct";
-    
+    public static final String PIRATE_PORTRAIT_HEALTHY = "characterPortraits/pirate/1_healthy";
+    public static final String PIRATE_PORTRAIT_BRUISED = "characterPortraits/pirate/2_bruised";
+    public static final String PIRATE_PORTRAIT_NEAR_DEAD = "characterPortraits/pirate/3_near_dead";
+    public static final String PIRATE_PORTRAIT_DEAD = "characterPortraits/pirate/4_dead";
+
     public static final String NINJA_IDLE = "characters/ninja/idle/idle";
     public static final String NINJA_WALK = "characters/ninja/walk/walk";
     public static final String NINJA_JUMP = "characters/ninja/jump/jump";
     public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
     public static final String NINJA_SELF_DESTRUCT = "characters/ninja/self_destruct/self_destruct";
+    public static final String NINJA_PORTRAIT_HEALTHY = "characterPortraits/ninja/1_healthy";
+    public static final String NINJA_PORTRAIT_BRUISED = "characterPortraits/ninja/2_bruised";
+    public static final String NINJA_PORTRAIT_NEAR_DEAD = "characterPortraits/ninja/3_near_dead";
+    public static final String NINJA_PORTRAIT_DEAD = "characterPortraits/ninja/4_dead";
     
     public static final String GANGSTA_IDLE = "characters/gangsta/idle/idle";
     public static final String GANGSTA_WALK = "characters/gangsta/walk/walk";
     public static final String GANGSTA_JUMP = "characters/gangsta/jump/jump";
     public static final String GANGSTA_LAY_TRAP = "characters/gangsta/lay_trap/lay_trap";
     public static final String GANGSTA_SELF_DESTRUCT = "characters/gangsta/self_destruct/self_destruct";
-    
+    public static final String GANGSTA_PORTRAIT_HEALTHY = "characterPortraits/gangsta/1_healthy";
+    public static final String GANGSTA_PORTRAIT_BRUISED = "characterPortraits/gangsta/2_bruised";
+    public static final String GANGSTA_PORTRAIT_NEAR_DEAD = "characterPortraits/gangsta/3_near_dead";
+    public static final String GANGSTA_PORTRAIT_DEAD = "characterPortraits/gangsta/4_dead";
+
     public static final String PHARAOH_IDLE = "characters/pharaoh/idle/idle";
     public static final String PHARAOH_WALK = "characters/pharaoh/walk/walk";
     public static final String PHARAOH_JUMP = "characters/pharaoh/jump/jump";
     public static final String PHARAOH_LAY_TRAP = "characters/pharaoh/lay_trap/lay_trap";
     public static final String PHARAOH_SELF_DESTRUCT = "characters/pharaoh/self_destruct/self_destruct";
+    public static final String PHARAOH_PORTRAIT_HEALTHY = "characterPortraits/pharaoh/1_healthy";
+    public static final String PHARAOH_PORTRAIT_BRUISED = "characterPortraits/pharaoh/2_bruised";
+    public static final String PHARAOH_PORTRAIT_NEAR_DEAD = "characterPortraits/pharaoh/3_near_dead";
+    public static final String PHARAOH_PORTRAIT_DEAD = "characterPortraits/pharaoh/4_dead";
 
     public static final String PILLAR = "abilities/pillar/pillar";
     public static final String SPIKE = "abilities/spike/spike";
@@ -52,6 +69,7 @@ public class Constants
     public static final String UI_SPIKE_METER = "energyMeter/abilityIcons/spike";
 
     public static final int ENERGY_METER_WIDTH = 70;
+    public static final int PORTRAIT_WIDTH = 120;
 
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
@@ -69,6 +87,7 @@ public class Constants
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
     public static final int PILLAR_LIFETIME = 10;
+    public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
@@ -84,9 +103,9 @@ public class Constants
     // ANIMATION CONSTANTS
     public static final float DEFAULT_FRAME_DURATION = 1/30f;
 
-    public static final int UI_PADDING = 50;
-    public static final Vector2 P1_UI_POSITION = new Vector2(UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - ENERGY_METER_WIDTH);
-    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - ENERGY_METER_WIDTH);
+    public static final int UI_PADDING = 20;
+    public static final Vector2 P1_UI_POSITION = new Vector2(UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
+    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
     public static final Vector2 P3_UI_POSITION = new Vector2(UI_PADDING, UI_PADDING);
     public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, UI_PADDING);
 

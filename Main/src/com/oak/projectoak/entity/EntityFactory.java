@@ -21,8 +21,6 @@ import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.physics.userdata.LethalUD;
 import com.oak.projectoak.physics.userdata.PillarUD;
 
-import java.util.Random;
-
 /*
     The EntityFactory is where all entities
     are composed of their components.
@@ -41,7 +39,7 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createPlayer(World world, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
+    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
         Entity e = world.createEntity();
 
@@ -53,26 +51,31 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
 
-        int randNum = new Random().nextInt(4);
-        if (randNum == 0)
+        String characterPortait;
+
+        if (playerNum == 0)
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+            characterPortait = Constants.PIRATE_PORTRAIT_HEALTHY;
         }
-        else if (randNum == 1)
+        else if (playerNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+            characterPortait = Constants.NINJA_PORTRAIT_HEALTHY;
         }
-        else if (randNum == 2)
+        else if (playerNum == 2)
         {
-            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
+            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            characterPortait = Constants.GANGSTA_PORTRAIT_HEALTHY;
         }
-        else if (randNum == 3)
+        else
         {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
+            characterPortait = Constants.PHARAOH_PORTRAIT_HEALTHY;
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
@@ -82,9 +85,20 @@ public class EntityFactory
         // Add abilities
         AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
 
+        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
+
+        if (uiOnRightSide)
+            uiPosition.x -= Constants.PORTRAIT_WIDTH;
+
+        createCharacterPortrait(world, characterPortait, uiPosition);
+
         // If the position is on the right side, move our uiPosition origin to the left to compensate.
-        if (uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION))
-            uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length;
+        if (uiOnRightSide)
+            uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
+        else
+            uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
+
+        uiPosition.y += Constants.PORTRAIT_WIDTH / 4;
 
         for (int i = 0; i < chosenAbilityTypes.length; i++)
         {
@@ -93,6 +107,18 @@ public class EntityFactory
         }
 
         e.addComponent(new Player(teamNum, abilityCreationComponents));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new UI());
+        e.addComponent(new Render(portraitImage, Layer.UI, screenPosition, true));
 
         e.addToWorld();
 

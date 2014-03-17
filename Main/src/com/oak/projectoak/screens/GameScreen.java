@@ -117,14 +117,17 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
-        final Entity player = EntityFactory.createPlayer(world, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
-        abilityDestructionSystem.addFootContactUser(player.getComponent(Platformer.class), true);
+        final Entity player1 = EntityFactory.createPlayer(world, 0, 0, true, 0, Constants.P1_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
 
-        final Entity player2 = EntityFactory.createPlayer(world, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        final Entity player2 = EntityFactory.createPlayer(world, 1, (float) Math.PI, false, 1, Constants.P2_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
-//        EntityFactory.createPlayer(world, (float)Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
-//        EntityFactory.createPlayer(world, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.STAKE, AbilityType.STAKE});
+        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 0, Constants.P3_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
+
+        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION, new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
+        abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 
         Array<Controller> controllers = Controllers.getControllers();
         for(int i = 0; i < controllers.size; i++)

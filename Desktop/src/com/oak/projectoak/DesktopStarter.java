@@ -19,15 +19,24 @@ public class DesktopStarter
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         cfg.width = 1280;
         cfg.height = 720;
-//        cfg.width = (int)screenSize.getWidth();
-//        cfg.height = (int)screenSize.getHeight();
         cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
-//        cfg.fullscreen = true;
 
         // Pass in the argument "nopack" to not run the image packer.
-        if (!(args.length > 0 && args[0].equals("nopack")))
+        if (args.length > 0)
+        {
+            if (!args[0].equals("nopack"))
+                ImagePacker.run();
+            if (args.length > 1 && args[1].equals("f"))
+            {
+                cfg.width = (int)screenSize.getWidth();
+                cfg.height = (int)screenSize.getHeight();
+                cfg.fullscreen = true;
+            }
+        }
+        else
             ImagePacker.run();
+
 
         new LwjglApplication(new ProjectOak(), cfg);
     }
