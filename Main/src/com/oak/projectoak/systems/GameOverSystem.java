@@ -8,10 +8,12 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.entity.EntityFactory;
@@ -21,12 +23,13 @@ import com.oak.projectoak.screens.GameScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameOverSystem extends EntityProcessingSystem
+public class GameOverSystem extends EntityProcessingSystem implements InputProcessor
 {
     @Mapper ComponentMapper<Player> pm;
     private final GameModeManager gmManager;
     private final GameScreen gameScreen;
     private final Game game;
+    private final OrthographicCamera camera;
     private final int heightDifference = -16;
     private final int maxPlayersPerTeam = 2;
 
@@ -40,14 +43,13 @@ public class GameOverSystem extends EntityProcessingSystem
     private List<String> blueTeamList;
     private List<String> redTeamList;
 
-
-
-    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game)
+    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera)
     {
         super(Aspect.getAspectForAll(Player.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
+        this.camera = camera;
 
         hasRun = false;
         playerNum = 1;
@@ -172,15 +174,63 @@ public class GameOverSystem extends EntityProcessingSystem
     {
         hasRun = true;
 
-        Timer.schedule(new Timer.Task()
-        {
-            @Override
-            public void run()
-            {
-                gameScreen.dispose();
-                game.setScreen(new GameScreen(game));
-            }
-        }, 2);
+        Gdx.input.setInputProcessor(this);
     }
 
+    @Override
+    public boolean keyDown(int keycode)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode)
+    {
+        if (keycode == Input.Keys.ENTER)
+        {
+            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
+        }
+        else if (keycode == Input.Keys.ESCAPE)
+        {
+            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false));
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount)
+    {
+        return false;
+    }
 }

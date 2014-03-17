@@ -20,6 +20,7 @@ public class TitleScreen implements Screen, InputProcessor
     boolean beginZoomTransition = false;
     private float rotationSpeed = .2f;
     private float zoomIncreasePerFrame = .002f;
+    private float logoAlpha = 1;
 
     public TitleScreen(Game game)
     {
@@ -54,6 +55,11 @@ public class TitleScreen implements Screen, InputProcessor
         {
             arenaRing.rotate(rotationSpeed += .05f);
             camera.zoom -= (zoomIncreasePerFrame += Constants.CAMERA_TRANSITION_ZOOM_ACCEL);
+
+            if ((logoAlpha -= .01f) < 0)
+                logoAlpha = 0;
+
+            logo.setColor(1, 1, 1, logoAlpha);
 
             if (camera.zoom <= 0)
             {

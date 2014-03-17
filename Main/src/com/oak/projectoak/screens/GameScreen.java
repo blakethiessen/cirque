@@ -51,7 +51,7 @@ public class GameScreen implements Screen
         AssetLoader.initialize();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = (float)Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / (float)Gdx.graphics.getHeight();
+        camera.zoom = 0;
 
         // Setup Entity world
         world = new World();
@@ -82,6 +82,7 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
+        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - 140)));
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
@@ -122,7 +123,7 @@ public class GameScreen implements Screen
         world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
-        world.setSystem(new GameOverSystem(deathMatchManager, this, game));
+        world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
         world.setManager(new GroupManager());
 
         world.setDelta(.01f);

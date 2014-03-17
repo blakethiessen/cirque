@@ -98,6 +98,7 @@ public class Constants
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
     public static final int PILLAR_LIFETIME = 10;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
+    public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
