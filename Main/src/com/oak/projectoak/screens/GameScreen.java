@@ -120,7 +120,9 @@ public class GameScreen implements Screen
         world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
+        world.setSystem(new GameOverSystem(deathMatchManager));
         world.setManager(new GroupManager());
+
 
         world.setDelta(.01f);
         world.initialize();
@@ -135,11 +137,11 @@ public class GameScreen implements Screen
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
-        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 0, Constants.P3_UI_POSITION,
+        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 1, Constants.P3_UI_POSITION,
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
 
-        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 1, Constants.P4_UI_POSITION,
+        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 0, Constants.P4_UI_POSITION,
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.STAKE});
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 

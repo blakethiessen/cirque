@@ -23,8 +23,11 @@ public class DeathMatchManager extends GameModeManager
         if (++teamDeaths[teamNum] >= maxDeaths)
         {
             winner = teamNum;
-            EntityFactory.createText(world, "Team " + winner + " wins!",
-                    new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
+           // EntityFactory.createText(world, "Team " + winner + " wins!",
+             //       new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
         }
     }
+
+
+
 }

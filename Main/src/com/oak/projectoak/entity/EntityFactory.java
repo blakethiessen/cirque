@@ -4,6 +4,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,6 +30,7 @@ import com.oak.projectoak.physics.userdata.PillarUD;
 
 public class EntityFactory
 {
+    //create text with Black color
     public static Entity createText(World world, String text, Vector2 position)
     {
         Entity e = world.createEntity();
@@ -38,6 +41,31 @@ public class EntityFactory
 
         return e;
     }
+
+    //create colored text with 'color' as the parameter
+    public static Entity createText(World world, String text, Vector2 position, Color color)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new TextRender(text, position, color));
+
+        e.addToWorld();
+
+        return e;
+    }
+
+    //Create aligned text
+    public static Entity createText(World world, String text, Vector2 position, Color color, float alignmentSize, BitmapFont.HAlignment alignment)
+    {
+        Entity e = world.createEntity();
+
+        e.addComponent(new TextRender(text, position, color, alignmentSize, alignment));
+
+        e.addToWorld();
+
+        return e;
+    }
+
 
     public static Entity createStaticImage(World world, String imagePath, Vector2 position)
     {
@@ -73,31 +101,35 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
 
-        String characterPortait;
+
+        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
+
+        if (uiOnRightSide)
+            uiPosition.x -= Constants.PORTRAIT_WIDTH;
 
         if (playerNum == 0)
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-            characterPortait = Constants.PIRATE_PORTRAIT_HEALTHY;
+            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
         else if (playerNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
-            characterPortait = Constants.NINJA_PORTRAIT_HEALTHY;
+            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
         else if (playerNum == 2)
         {
             e.addComponent(new Animate(Constants.GANGSTA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-            characterPortait = Constants.GANGSTA_PORTRAIT_HEALTHY;
+            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
         else
         {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
-            characterPortait = Constants.PHARAOH_PORTRAIT_HEALTHY;
+            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
@@ -107,12 +139,9 @@ public class EntityFactory
         // Add abilities
         AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
 
-        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
 
-        if (uiOnRightSide)
-            uiPosition.x -= Constants.PORTRAIT_WIDTH;
 
-        createCharacterPortrait(world, characterPortait, uiPosition);
+
 
         // If the position is on the right side, move our uiPosition origin to the left to compensate.
         if (uiOnRightSide)
@@ -135,12 +164,14 @@ public class EntityFactory
         return e;
     }
 
-    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition)
+    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor)
     {
         Entity e = world.createEntity();
 
         e.addComponent(new UI());
-        e.addComponent(new Render(portraitImage, Layer.UI, screenPosition, true));
+
+        String[] imgArray = new String[]{teamColor,portraitImage};
+        e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true));
 
         e.addToWorld();
 
@@ -226,7 +257,7 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createStake(World world, Body trapRingBody, float radialPosition, boolean onOutsideEdge)
+    public static Entity createStake(World world, Body trapRingBody, float radialPosition, boolean onOutsideEdge, Entity owner)
     {
         Entity e = world.createEntity();
 
@@ -239,6 +270,7 @@ public class EntityFactory
 
         e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
         e.addComponent(new Animate(Constants.SPIKE, true));
+        e.addComponent(new Ability(owner));
 
         e.addToWorld();
 

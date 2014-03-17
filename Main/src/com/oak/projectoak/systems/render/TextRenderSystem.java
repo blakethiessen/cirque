@@ -34,6 +34,7 @@ public class TextRenderSystem extends EntityProcessingSystem
         TextRender textRender = trm.get(e);
 
         bitMapFont.setColor(textRender.color);
-        bitMapFont.draw(batch, textRender.text, textRender.position.x, textRender.position.y);
+        bitMapFont.drawMultiLine(batch, textRender.text, textRender.position.x, textRender.position.y, textRender.alignmentSize, textRender.alignment);
+
     }
 }

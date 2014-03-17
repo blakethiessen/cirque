@@ -44,7 +44,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     }
 
     @Override
-    protected void process(Entity e)
+    protected void process(final Entity e)
     {
         final Player player = playm.get(e);
         Platformer platformer = platm.get(e);
@@ -77,7 +77,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                 case STAKE:
                                     scheduleEntityForDestruction(EntityFactory.createStake(world, trapRingBody,
                                             arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge), Constants.STAKE_LIFETIME);
+                                            !arenaTransform.onOutsideEdge, e), Constants.STAKE_LIFETIME);
                                     break;
                                 case PILLAR:
                                     scheduleEntityForDestruction(EntityFactory.createPillar(world, trapRingBody,

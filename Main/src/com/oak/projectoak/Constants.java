@@ -16,6 +16,11 @@ public class Constants
     public static final String SHAHAN_WALK = "characters/shahan/walk/walk";
     public static final String SHAHAN_IDLE = "characters/shahan/idle/idle";
 
+    public static final String PORTRAIT_TEAM_RED = "characterPortraits/TEAMCOLORS/red";
+    public static final String PORTRAIT_TEAM_BLUE = "characterPortraits/TEAMCOLORS/blue";
+    public static final String GAME_OVER_TEXT = "Press Enter to restart game or Escape to re-choose abilities";
+
+
     public static final String PIRATE_IDLE = "characters/pirate/idle/idle";
     public static final String PIRATE_WALK = "characters/pirate/walk/walk";
     public static final String PIRATE_JUMP = "characters/pirate/jump/jump";
@@ -81,12 +86,12 @@ public class Constants
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 1;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 2f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = 0f; //.33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;

@@ -31,6 +31,9 @@ public class Player extends Component
     public float lastLateralChangePosition;
     public boolean isMovingRight;
 
+    //Player stats
+    public int enemyKills, deaths, friendlyKills;
+
     public Player(int teamNum, AbilityCreation[] abilityCreationComponents)
     {
         this.teamNum = teamNum;
@@ -47,6 +50,8 @@ public class Player extends Component
         energyIncreaseMultiplier = 1;
         lastLateralChangePosition = 0f;
         isMovingRight = true;
+
+        friendlyKills = enemyKills = deaths = 0;
     }
 
     public void setAction(Action action, boolean state)
