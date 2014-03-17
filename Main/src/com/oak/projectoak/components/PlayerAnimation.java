@@ -36,6 +36,13 @@ public class PlayerAnimation extends Component
                layTrap = Constants.GANGSTA_LAY_TRAP;
                selfDestruct = Constants.GANGSTA_SELF_DESTRUCT;
                break;
+           case PHARAOH:
+               idle = Constants.PHARAOH_IDLE;
+               walk = Constants.PHARAOH_WALK;
+               jump = Constants.PHARAOH_JUMP;
+               layTrap = Constants.PHARAOH_LAY_TRAP;
+               selfDestruct = Constants.PHARAOH_SELF_DESTRUCT;
+               break;
            default:
                idle = Constants.SHAHAN_IDLE;
                walk = Constants.SHAHAN_WALK;
@@ -47,6 +54,6 @@ public class PlayerAnimation extends Component
     {
         SHAHAN,
         PIRATE,
-        GANGSTA, NINJA
+        GANGSTA, PHARAOH, NINJA
     }
 }

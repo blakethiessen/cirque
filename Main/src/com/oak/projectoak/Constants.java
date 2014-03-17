@@ -16,6 +16,7 @@ public class Constants
     public static final String PIRATE_JUMP = "characters/pirate/jump/jump";
     public static final String PIRATE_LAY_TRAP = "characters/pirate/lay_trap/lay_trap";
     public static final String PIRATE_SELF_DESTRUCT = "characters/pirate/self_destruct/self_destruct";
+    
     public static final String NINJA_IDLE = "characters/ninja/idle/idle";
     public static final String NINJA_WALK = "characters/ninja/walk/walk";
     public static final String NINJA_JUMP = "characters/ninja/jump/jump";
@@ -27,6 +28,12 @@ public class Constants
     public static final String GANGSTA_JUMP = "characters/gangsta/jump/jump";
     public static final String GANGSTA_LAY_TRAP = "characters/gangsta/lay_trap/lay_trap";
     public static final String GANGSTA_SELF_DESTRUCT = "characters/gangsta/self_destruct/self_destruct";
+    
+    public static final String PHARAOH_IDLE = "characters/pharaoh/idle/idle";
+    public static final String PHARAOH_WALK = "characters/pharaoh/walk/walk";
+    public static final String PHARAOH_JUMP = "characters/pharaoh/jump/jump";
+    public static final String PHARAOH_LAY_TRAP = "characters/pharaoh/lay_trap/lay_trap";
+    public static final String PHARAOH_SELF_DESTRUCT = "characters/pharaoh/self_destruct/self_destruct";
 
     public static final String PILLAR = "abilities/pillar/pillar";
     public static final String SPIKE = "abilities/spike/spike";
@@ -94,11 +101,12 @@ public class Constants
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
-    public static final float STAKE_WIDTH = .65f;
+    public static final float STAKE_WIDTH = .64f;
     public static final float STAKE_HEIGHT = .65f;
 
-    public static final float PILLAR_WIDTH = .65f;
-    public static final float PILLAR_HEIGHT = .65f;
+    public static final float PILLAR_WIDTH = .55f;
+    public static final float PILLAR_HEIGHT = .55f;
+    public static final float PILLAR_X_OFFSET = 0f;
 
     public static final float PILLAR_STACK_RANGE = .1f;
 

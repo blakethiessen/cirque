@@ -34,10 +34,10 @@ public class Box2DDefs
     {
         return new Vector2[]
                 {
-                        new Vector2(0, 0),
-                        new Vector2(Constants.PILLAR_WIDTH, 0),
-                        new Vector2(Constants.PILLAR_WIDTH, Constants.PILLAR_HEIGHT),
-                        new Vector2(0, Constants.PILLAR_HEIGHT)
+                        new Vector2(Constants.PILLAR_X_OFFSET, 0),
+                        new Vector2(Constants.PILLAR_X_OFFSET + Constants.PILLAR_WIDTH, 0),
+                        new Vector2(Constants.PILLAR_X_OFFSET + Constants.PILLAR_WIDTH, Constants.PILLAR_HEIGHT),
+                        new Vector2(Constants.PILLAR_X_OFFSET, Constants.PILLAR_HEIGHT)
                 };
     }
 

@@ -53,7 +53,7 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
 
-        int randNum = new Random().nextInt(3);
+        int randNum = new Random().nextInt(4);
         if (randNum == 0)
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
@@ -66,8 +66,13 @@ public class EntityFactory
         }
         else if (randNum == 2)
         {
-            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
+            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+        }
+        else if (randNum == 3)
+        {
+            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
