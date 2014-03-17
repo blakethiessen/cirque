@@ -203,7 +203,7 @@ public class InputSystem extends EntityProcessingSystem
             controlStates[curPlayer].put(Action.ABILITY_1, true);
         else if (buttonCode == 3)
             controlStates[curPlayer].put(Action.ABILITY_2, true);
-        else if (buttonCode == 4)
+        else if (buttonCode == 1)
             controlStates[curPlayer].put(Action.ABILITY_3, true);
 
         return false;
@@ -220,7 +220,7 @@ public class InputSystem extends EntityProcessingSystem
             controlStates[curPlayer].put(Action.ABILITY_1, false);
         else if (buttonCode == 3)
             controlStates[curPlayer].put(Action.ABILITY_2, false);
-        else if (buttonCode == 4)
+        else if (buttonCode == 1)
             controlStates[curPlayer].put(Action.ABILITY_3, false);
 
         return false;
@@ -242,13 +242,6 @@ public class InputSystem extends EntityProcessingSystem
                 controlStates[curPlayer].put(Action.MOVING_RIGHT, true);
             else
                 controlStates[curPlayer].put(Action.MOVING_RIGHT, false);
-        }
-        if (axisCode == 0)
-        {
-            if (value < -.5f)
-                controlStates[curPlayer].put(Action.JUMPING, true);
-            else
-                controlStates[curPlayer].put(Action.JUMPING, false);
         }
 
         return false;
