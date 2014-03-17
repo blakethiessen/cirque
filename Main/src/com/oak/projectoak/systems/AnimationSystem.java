@@ -32,7 +32,7 @@ public class AnimationSystem extends EntityProcessingSystem
         Render render = rm.get(e);
 
         // If the animation isn't set, we're rendering static images.
-        if (animate.getAnimation() != null)
+        if (animate != null && render != null && animate.getAnimation() != null)
         {
             Constants.setSpriteTexture(render.sprites[animate.animationArrayLocation],
                     animate.getAnimation().getKeyFrame(animate.stateTime, true));

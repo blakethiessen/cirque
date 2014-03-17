@@ -85,9 +85,9 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                             !arenaTransform.onOutsideEdge), Constants.PILLAR_LIFETIME);
                                     break;
                                 case LIGHTNING_BOLT:
-                                    scheduleEntityForDestruction(EntityFactory.createLightningBolt(world,
+                                    EntityFactory.createLightningBolt(world,
                                             arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge, e), Constants.PILLAR_LIFETIME);
+                                            !arenaTransform.onOutsideEdge, e);
                                     break;
                                 default:
                                     Gdx.app.error("Invalid ability creation", "No implementation for ability.");

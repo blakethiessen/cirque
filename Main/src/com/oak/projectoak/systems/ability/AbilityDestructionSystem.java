@@ -4,9 +4,9 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.VoidEntitySystem;
+import com.artemis.utils.Timer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.components.Pillar;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.physics.DynamicPhysics;
@@ -75,14 +75,22 @@ public class AbilityDestructionSystem extends VoidEntitySystem
                         removeEntity(topPillar);
                         entitiesToDestroy.remove(e);
 
-                        Timer.schedule(new Timer.Task()
+//                        Timer.schedule(new Timer.Task()
+//                        {
+//                            @Override
+//                            public void run()
+//                            {
+//                                destroyEntity(e);
+//                            }
+//                        }, pillar.destructionTimeReset);
+                        new Timer(pillar.destructionTimeReset)
                         {
                             @Override
-                            public void run()
+                            public void execute()
                             {
                                 destroyEntity(e);
                             }
-                        }, pillar.destructionTimeReset);
+                        };
 
                         pillar.destructionTimeReset /= 2;
 
@@ -100,7 +108,7 @@ public class AbilityDestructionSystem extends VoidEntitySystem
             b2world.destroyBody(dpm.get(e).body);
         else if (tpm.has(e))
         {
-            final TrapPhysics trapPhysics = tpm.get(e);
+            TrapPhysics trapPhysics = tpm.get(e);
             Fixture fixtureToRemove = trapPhysics.fixture;
             fixtureToRemove.getBody().destroyFixture(fixtureToRemove);
 

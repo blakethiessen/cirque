@@ -28,11 +28,14 @@ public class DynamicPhysicsSystem extends EntityProcessingSystem
         Render render = dm.get(e);
         DynamicPhysics physics = dpm.get(e);
 
-        Body body = physics.body;
-        Vector2 position = body.getPosition();
+        if (render != null && physics != null)
+        {
+            Body body = physics.body;
+            Vector2 position = body.getPosition();
 
-        Vector2 scaledPosition = position.cpy().scl(Constants.METERS_TO_PIXELS);
-        render.setPosition(new Vector2(scaledPosition.x, scaledPosition.y));
-        render.setRotation((float)Math.toDegrees(body.getAngle()));
+            Vector2 scaledPosition = position.cpy().scl(Constants.METERS_TO_PIXELS);
+            render.setPosition(new Vector2(scaledPosition.x, scaledPosition.y));
+            render.setRotation((float)Math.toDegrees(body.getAngle()));
+        }
     }
 }

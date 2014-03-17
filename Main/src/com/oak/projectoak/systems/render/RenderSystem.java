@@ -30,7 +30,9 @@ public class RenderSystem extends EntitySystem
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
-    TextureRegion backgroundTexture;
+    private TextureRegion backgroundTexture;
+    final int BACKGROUND_X;
+    final int BACKGROUND_Y;
 
     private List<Entity> sortedEntities;
 
@@ -42,6 +44,8 @@ public class RenderSystem extends EntitySystem
         this.camera = camera;
 
         backgroundTexture = AssetLoader.getTextureRegion(backgroundTextureName);
+        BACKGROUND_X = (Gdx.graphics.getWidth() - backgroundTexture.getRegionWidth()) / 2;
+        BACKGROUND_Y = (Gdx.graphics.getHeight() - backgroundTexture.getRegionHeight()) / 2;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class RenderSystem extends EntitySystem
         batch.begin();
 
         batch.disableBlending();
-        batch.draw(backgroundTexture, (Gdx.graphics.getWidth() - backgroundTexture.getRegionWidth()) / 2, (Gdx.graphics.getHeight() - backgroundTexture.getRegionHeight()) / 2);
+        batch.draw(backgroundTexture, BACKGROUND_X, BACKGROUND_Y);
         batch.enableBlending();
     }
 
@@ -82,7 +86,7 @@ public class RenderSystem extends EntitySystem
     {
         Render render = sm.get(e);
 
-        if (render.isVisible)
+        if (render != null && render.isVisible)
         {
             if (render.flipped)
             {
