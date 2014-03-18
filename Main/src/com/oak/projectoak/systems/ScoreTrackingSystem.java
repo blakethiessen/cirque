@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.Render;
@@ -120,7 +121,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
     public ScoreTrackingSystem(GameModeManager gmManager,GameScreen gameScreen, Game game, OrthographicCamera camera, int totalTeams, int playersPerTeam)
     {
-        super(Aspect.getAspectForAll(Player.class,Render.class));
+        super(Aspect.getAspectForAll(Player.class, Render.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
@@ -175,10 +176,9 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
                 changeDisplayScores();
                 change =  false;
             }
+
+            AssetLoader.fadeMusic();
         }
-
-
-
     }
 
 
@@ -524,7 +524,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     {
         if (keycode == Input.Keys.ENTER)
         {
-            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
+            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true)); 
         }
         else if (keycode == Input.Keys.ESCAPE)
         {

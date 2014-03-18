@@ -106,6 +106,7 @@ public class Constants
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
     public static final int ZOOM_RING_PADDING = 260;
+    public static final float MUSIC_FADE_RATE = .001f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
