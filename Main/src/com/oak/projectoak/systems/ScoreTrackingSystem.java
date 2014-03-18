@@ -231,6 +231,9 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     }
 
 
+    //Currently doesnt position correctly in fullscreen. I think the aspect ratio changes which makes this a little problematic.
+    //Perhaps there's better way to position the portrait scores but im too tired atm to think of them.
+
     private void setUpPortraitsScores()
     {
         //top left = width/40, height/1.5f
