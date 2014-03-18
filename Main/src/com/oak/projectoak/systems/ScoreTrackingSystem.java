@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
@@ -31,6 +32,7 @@ import java.util.Random;
 public class ScoreTrackingSystem extends EntityProcessingSystem implements InputProcessor
 {
     @Mapper ComponentMapper<Player> pm;
+    @Mapper ComponentMapper<Render> rm;
 
     //a private class to easily manage player information. Should think about making this public and have the Player class use it as well.
     private class PlayerInfo
@@ -61,8 +63,6 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             kills         = EntityFactory.createText(world,"0", new Vector2(0,0), Color.GREEN , 100, BitmapFont.HAlignment.LEFT) ;
             deaths        = EntityFactory.createText(world,"0", new Vector2(0,0), Color.RED,100, BitmapFont.HAlignment.CENTER);
             friendlyKills = EntityFactory.createText(world,"0", new Vector2(0,0),Color.ORANGE, 100, BitmapFont.HAlignment.RIGHT);
-
-            System.out.println(Gdx.graphics.getHeight());
         }
 
 
@@ -120,7 +120,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
     public ScoreTrackingSystem(GameModeManager gmManager,GameScreen gameScreen, Game game, OrthographicCamera camera, int totalTeams, int playersPerTeam)
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Aspect.getAspectForAll(Player.class,Render.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
@@ -151,12 +151,13 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
         //updates info related to this player . If an update is made to this player's deaths. The change variable is set to true.
         updatePlayerInfo(p);
+        updatePortraits(e);
 
         //Display remaining lives if game isnt over
         if(change && !gmManager.isGameOver())
         {
            changeDisplayLivesRemaining();
-           changeDisplayPortraits();
+           changePortraitScores();
            change = false;
         }
 
@@ -248,7 +249,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         portraitScores.get(3).setPos(new Vector2(Gdx.graphics.getWidth()/1.11f, Gdx.graphics.getHeight()/4.5f));    //R
     }
 
-    private void changeDisplayPortraits()
+    private void changePortraitScores()
     {
         for(int i = 0; i < portraitScores.size(); i++)
         {
@@ -257,6 +258,57 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             portraitScores.get(i).setFriendlyKills(players.get(i).friendlyKills);
         }
     }
+
+
+    private void updatePortraits(Entity e)
+    {
+        for(int i = 0; i < players.size(); i++)
+        {
+            int deathPercent = (players.get(i).deaths * 100) / Constants.DEATHMATCH_KILLS_TO_WIN;
+            if(deathPercent >= 30 && deathPercent <65)
+                degradePortrait(i,e,1);
+            else if(deathPercent >= 65 && deathPercent < 100)
+                degradePortrait(i,e,2);
+            else if(deathPercent == 100)
+                degradePortrait(i,e,3);
+        }
+    }
+
+    private void degradePortrait(int i, Entity e, int injuryLevel)
+    {
+        //No point in doing anything unless the textures are not null. Cause we've only saved portrait texture names.
+        Render r = rm.get(e);
+        String[] rImages = r.textureNames;
+
+        if(rImages != null)
+        {
+            //Make teamString
+            String teamClr = "";
+            if(players.get(i).teamNum == 0)
+                teamClr = Constants.PORTRAIT_TEAM_RED;
+            else
+                teamClr = Constants.PORTRAIT_TEAM_BLUE;
+
+            //Make injury string
+            String injury = "";
+            switch (injuryLevel)
+            {
+                case 0 :    injury = "1_healthy";      break;
+                case 1 :    injury = "2_bruised";      break;
+                case 2 :    injury = "3_near_dead";    break;
+                case 3 :    injury = "4_dead";         break;
+            }
+
+            //characterPortraits/gangsta/1_healthy";
+            injury = "characterPortraits/" + players.get(i).playerName.toLowerCase() + "/" + injury;
+
+            //Recreate the sprites in the render Cmpnt.
+            if(rImages.length == 2 && !rImages[1].equals(injury) && rImages[1].contains("characterPortraits/" + players.get(i).playerName.toLowerCase() + "/"))
+               r.recreateWithNewImgArray(new String[]{teamClr, injury});
+
+        }
+    }
+
 
     private void changeDisplayLivesRemaining()
     {

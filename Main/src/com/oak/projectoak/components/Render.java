@@ -22,13 +22,47 @@ public class Render extends Component
 
     public Layer layer;
     public boolean isVisible;
+    public Vector2 position;
+    public boolean rotatingOriginAtCenter;
+    public String[] textureNames;
 
+
+
+    //overloaded ctor. Only gets called for in createPortrait
+    public Render(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter, boolean saveImgArray)
+    {
+        create(textureNames,layer,position,rotationOriginAtCenter,saveImgArray);
+    }
+
+    //extracted the constructor into create method
     public Render(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
+       create(textureNames,layer,position,rotationOriginAtCenter,false);
+    }
+
+    public void recreateWithNewImgArray(String[] imgArray)
+    {
+        create(imgArray,this.layer,this.position,this.rotatingOriginAtCenter,true);
+    }
+
+
+    public void create(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter, boolean saveImgArray)
+    {
+        this.textureNames = null;
+
         sprites = new Sprite[textureNames.length];
         for (int i = 0; i < sprites.length; i++)
         {
             // TODO: May eventually have issues with needing to retrieve animations.
+            if(saveImgArray)
+            {
+                if(this.textureNames == null)
+                    this.textureNames = new String[textureNames.length];
+                this.textureNames[i] = textureNames[i];
+            }
+
+
+
             final TextureRegion texture = getTexture(textureNames[i]);
             if (texture != null)
                 sprites[i] = new Sprite(texture);
@@ -48,9 +82,13 @@ public class Render extends Component
 
         this.layer = layer;
         this.flipped = false;
-
+        this.position = position.cpy();
+        this.rotatingOriginAtCenter = rotationOriginAtCenter;
         this.isVisible = true;
+
     }
+
+
 
     public Render(String textureName, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
