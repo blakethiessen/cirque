@@ -87,7 +87,7 @@ public class Constants
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 1;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
@@ -99,7 +99,6 @@ public class Constants
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
     public static final int PILLAR_LIFETIME = 16;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
-    public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
     //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
