@@ -180,16 +180,14 @@ public class EntityFactory
         return e;
     }
 
-    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor, int teamNum)
+    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor)
     {
         Entity e = world.createEntity();
 
         e.addComponent(new UI());
 
         String[] imgArray = new String[]{teamColor,portraitImage};
-        e.addComponent(new Render(imgArray,Layer.UI, screenPosition, true));      //save imgNames, we will need these for later.
-
-        e.addComponent(new Portrait(teamColor,teamNum));
+        e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true,true));      //save imgNames, we will need these for later.
 
         e.addToWorld();
 

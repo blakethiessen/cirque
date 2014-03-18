@@ -99,7 +99,6 @@ public class Constants
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
     public static final int PILLAR_LIFETIME = 16;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
-    public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
     //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
@@ -107,13 +106,14 @@ public class Constants
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
     public static final int ZOOM_RING_PADDING = 260;
+    public static final float MUSIC_FADE_RATE = .001f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
-    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0002f;
+    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
 
     public class Groups
     {

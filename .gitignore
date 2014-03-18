@@ -11,6 +11,7 @@
 # generated files
 bin/
 gen/
+out/
  
 # Local configuration file (sdk path, etc)
 local.properties
@@ -19,6 +20,7 @@ local.properties
 *.iws
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/artifacts/
  
 # OS
 .DS_Store
@@ -27,3 +29,5 @@ main/assets/textures/pack1
 main/assets/textures/pack2
 main/assets/textures/pack3
 main/assets/textures/pack4
+
+META_INF/
