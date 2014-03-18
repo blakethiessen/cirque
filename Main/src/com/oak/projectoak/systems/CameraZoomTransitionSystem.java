@@ -13,14 +13,16 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
     private final float finalCameraZoom;
     private Game game;
     private GameScreen gameScreen;
-    private final boolean restartGame;
+    private boolean restartGame;
 
+    private float zoomVel;
     private boolean zoomingInwards;
 
     public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom)
     {
         this.camera = camera;
         this.finalCameraZoom = finalCameraZoom;
+        zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
 
         if (finalCameraZoom < camera.zoom)
             zoomingInwards = true;
@@ -32,25 +34,20 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
 
     public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame)
     {
-        this.camera = camera;
-        this.finalCameraZoom = finalCameraZoom;
+        this(camera, finalCameraZoom);
+
         this.game = game;
         this.gameScreen = gameScreen;
         this.restartGame = restartGame;
-
-        if (finalCameraZoom < camera.zoom)
-            zoomingInwards = true;
-        else
-            zoomingInwards = false;
     }
 
     @Override
     protected void processSystem()
     {
         if (zoomingInwards)
-            camera.zoom -= Constants.CAMERA_TRANSITION_ZOOM_SPEED;
+            camera.zoom -= zoomVel;
         else
-            camera.zoom += Constants.CAMERA_TRANSITION_ZOOM_SPEED;
+            camera.zoom += zoomVel;
 
         if ((!zoomingInwards && camera.zoom >= finalCameraZoom) ||
                 (zoomingInwards && camera.zoom < finalCameraZoom))
@@ -66,5 +63,12 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
                     game.setScreen(new TitleScreen(game));
             }
         }
+        else if ((!zoomingInwards && camera.zoom >= finalCameraZoom / 2 + .01f) ||
+                 (zoomingInwards && camera.zoom < finalCameraZoom / 2 - .01f))
+        {
+            zoomVel -= Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
+        }
+        else
+            zoomVel += Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
     }
 }
