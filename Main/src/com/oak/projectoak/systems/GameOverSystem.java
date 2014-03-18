@@ -20,10 +20,12 @@ import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
 import com.oak.projectoak.screens.GameScreen;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 
 import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class GameOverSystem extends EntityProcessingSystem implements InputProcessor
 {
@@ -73,6 +75,8 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
         return !hasRun && gmManager.isGameOver();
     }
 
+
+    //THIS ONLY GETS CALLED WHEN GAME IS OVER!!
     @Override
     protected void process(Entity e)
     {
@@ -83,28 +87,24 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
         //make player strings by player number
         if(p.teamNum == 0)
         {
-            redTeamList.add(characterNames[playerNum - 1] + "     EnemyKills : " + p.enemyKills + "     Friendly Kills : " + p.friendlyKills + "     Deaths : " + p.deaths);
+            redTeamList.add(characterNames[p.playerNum] + "     EnemyKills : " + p.enemyKills + "     Friendly Kills : " + p.friendlyKills + "     Deaths : " + p.deaths);
             redTeamDeaths += p.deaths;
         }
         else
         {
-            blueTeamList.add(characterNames[playerNum - 1] + "     EnemyKills : " + p.enemyKills + "     Friendly Kills : " + p.friendlyKills + "     Deaths : " + p.deaths);
+            blueTeamList.add(characterNames[p.playerNum] + "     EnemyKills : " + p.enemyKills + "     Friendly Kills : " + p.friendlyKills + "     Deaths : " + p.deaths);
             blueTeamDeaths += p.deaths;
         }
 
         playerNum++;
 
         //Now that we have gathered all the info for the players, we can determine who won and then show the scoreboard and then center it.
-        if(playerNum == 2 * maxPlayersPerTeam + 1)
+        if(redTeamDeaths >= Constants.DEATHMATCH_KILLS_TO_WIN || blueTeamDeaths >= Constants.DEATHMATCH_KILLS_TO_WIN)
         {
             //determine who won by deaths. Whoever died the most lost
+            //RESET THE STRINGS
+            tm.get(scoreTracking.x).text = tm.get(scoreTracking.y).text = tm.get(scoreTracking.z).text = "";
 
-            TextRender textRender = tm.get(scoreTracking.x);
-            textRender.text = "";
-            TextRender textRender2 = tm.get(scoreTracking.y);
-            textRender2.text = "";
-            TextRender textRender3 = tm.get(scoreTracking.z);
-            textRender3.text = "";
 
             if(redTeamDeaths > blueTeamDeaths)
                 winMessage = "Blue Team Wins!";
@@ -114,7 +114,6 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
 
             //Need to determine width and height of all the text we are going to use
             int maxWidth =  getMaxWidthOfText();
-
 
 
             //DISPLAY win message, use maxWidth to center text horizontally
@@ -135,9 +134,6 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
                                          (float)maxWidth,
                                          BitmapFont.HAlignment.CENTER);
             }
-
-
-
 
             //DISPLAY BLUE TEAM SCORES
             for(int i = 0 ; i < blueTeamList.size(); i++)
