@@ -27,14 +27,12 @@ public class AbilityCreation extends Component
             case STAKE:
             case PILLAR:
                 energyAmt = Constants.STARTING_TIER1_ABILITY_ENERGY;
-//                energyCostPerUse = Constants.TIER1_ABILITY_ENERGY_COST;
-                energyCostPerUse = 0;
+                energyCostPerUse = Constants.TIER1_ABILITY_ENERGY_COST;
                 energyIncreasePerFrame = Constants.TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
                 break;
             case LIGHTNING_BOLT:
                 energyAmt = Constants.STARTING_TIER1_ABILITY_ENERGY;
-//                energyCostPerUse = Constants.LIGHTNING_BOLT_ENERGY_COST;
-                energyCostPerUse = 0;
+                energyCostPerUse = Constants.LIGHTNING_BOLT_ENERGY_COST;
                 energyIncreasePerFrame = Constants.TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING;
                 break;
             default:

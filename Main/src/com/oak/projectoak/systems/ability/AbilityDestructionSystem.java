@@ -118,7 +118,6 @@ public class AbilityDestructionSystem extends VoidEntitySystem
                 updateRelevantFootContacts(fixtureToRemove, internalPlatformers);
         }
 
-        world.disable(e);
         world.deleteEntity(e);
         entitiesToDestroy.remove(e);
     }

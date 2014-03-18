@@ -1,7 +1,6 @@
 package com.oak.projectoak;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -21,8 +20,6 @@ public class AssetLoader
     private static HashMap<String, TextureRegion> textureMap;
     private static HashMap<String, Animation> animationMap;
     private static HashMap<String, Sound> soundMap;
-
-    private static Music music;
 
     private static boolean initialized = false;
 
@@ -126,25 +123,5 @@ public class AssetLoader
     public static void playSound(String soundName)
     {
         soundMap.get(soundName).play();
-    }
-
-    public static void playMusic()
-    {
-        music.setVolume(1);
-        music.play();
-    }
-
-    public static void fadeMusic()
-    {
-        if (music.getVolume() - Constants.MUSIC_FADE_RATE <= 0)
-            music.stop();
-        else
-            music.setVolume(music.getVolume() - Constants.MUSIC_FADE_RATE);
-
-    }
-
-    public static void setMusic(String musicName)
-    {
-        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/" + musicName));
     }
 }

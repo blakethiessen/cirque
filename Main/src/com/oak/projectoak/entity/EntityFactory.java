@@ -127,28 +127,28 @@ public class EntityFactory
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED, teamNum);
+            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
             playerName = extractPlayerName(Constants.PIRATE_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else if (playerNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
-            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE, teamNum);
+            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
             playerName = extractPlayerName(Constants.NINJA_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else if (playerNum == 2)
         {
             e.addComponent(new Animate(Constants.GANGSTA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE, teamNum);
+            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
             playerName = extractPlayerName(Constants.GANGSTA_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else
         {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
-            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED, teamNum);
+            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
             playerName = extractPlayerName(Constants.PHARAOH_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
 
@@ -180,14 +180,16 @@ public class EntityFactory
         return e;
     }
 
-    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor)
+    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor, int teamNUm)
     {
         Entity e = world.createEntity();
 
         e.addComponent(new UI());
 
         String[] imgArray = new String[]{teamColor,portraitImage};
-        e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true,true));      //save imgNames, we will need these for later.
+        e.addComponent(new Render(imgArray,Layer.UI, screenPosition, true));      //save imgNames, we will need these for later.
+
+        e.addComponent(new Portrait(portraitImage, teamNUm));
 
         e.addToWorld();
 
