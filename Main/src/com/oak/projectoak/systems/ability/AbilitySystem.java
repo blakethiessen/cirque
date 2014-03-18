@@ -5,11 +5,13 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.components.Ability;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
+import com.oak.projectoak.gamemodemanagers.GameModeManager;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.ArenaUD;
 import com.oak.projectoak.physics.userdata.LethalUD;
@@ -27,14 +29,16 @@ public class AbilitySystem extends EntityProcessingSystem
     private AbilityDestructionSystem abilityDestructionSystem;
     private DeathMatchManager dmManager;
 
-    public AbilitySystem(PlayerDestructionSystem playerDestructionSystem,
-                         AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
+
+    public AbilitySystem(PlayerDestructionSystem playerDestructionSystem,AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
     {
         super(Aspect.getAspectForAll(Ability.class));
         this.playerDestructionSystem = playerDestructionSystem;
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.dmManager = dmManager;
     }
+
+
 
     @Override
     protected boolean checkProcessing()
@@ -98,17 +102,10 @@ public class AbilitySystem extends EntityProcessingSystem
 
             AssetLoader.playSound("death");
 
-            playerDestructionSystem.destroyEntity(entity);
+            Player killer = pm.get(abm.get((fixtureUDA).entity).owner);
+            playerDestructionSystem.destroyEntity(entity, killer);          //changed player destruction system to handle both deaths and kills
         }
 
-        Player player = pm.get(abm.get((fixtureUDA).entity).owner);
-        int OwnerTeamNumber = player.teamNum;
-        int VictimTeamNumber = pm.get((bodyUDB).entity).teamNum;
-
-        if(OwnerTeamNumber == VictimTeamNumber)
-            player.friendlyKills++;
-        else
-            player.enemyKills++;
 
         return true;
     }

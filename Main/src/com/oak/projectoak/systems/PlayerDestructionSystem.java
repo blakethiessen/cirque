@@ -44,13 +44,31 @@ public class PlayerDestructionSystem extends VoidEntitySystem
         this.respawnTime = respawnTime;
     }
 
+
     public void destroyEntity(Entity entity)
     {
+        if (!entitiesToDestroy.contains(entity))
+            entitiesToDestroy.add(entity);
+    }
+
+
+    //Overided the destroyEntity Method because incrementing score on collision was causing
+    //the game to increment friendlyKills multiple times
+    public void destroyEntity(Entity entity, Player killer)
+    {
+        //increment victim's deaths
         playm.get(entity).deaths++;
+
+        //increment killer's ally OR enemy kills
+        if(killer.teamNum == entity.getComponent(Player.class).teamNum)
+            killer.friendlyKills++;
+        else
+            killer.enemyKills++;
 
         if (!entitiesToDestroy.contains(entity))
             entitiesToDestroy.add(entity);
     }
+
 
     @Override
     protected boolean checkProcessing()
@@ -66,15 +84,15 @@ public class PlayerDestructionSystem extends VoidEntitySystem
             final Entity e = entitiesToDestroy.get(0);
 
             Animate animate = anm.get(e);
+            animate.playOnce = true;                        //not having this was causing weird bugs when game was over. player would keep playing death animation over and over sometimes.
             animate.setAnimation(pam.get(e).death, true);
+
             final Player player = playm.get(e);
             player.invulnerable = true;
 
-            Timer.schedule(new Timer.Task()
-            {
+            Timer.schedule(new Timer.Task() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     if (dpm.has(e))
                         b2world.destroyBody(dpm.get(e).body);
 

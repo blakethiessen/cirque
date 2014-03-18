@@ -21,8 +21,6 @@ public class Player extends Component
 
     public float lastCircularMovePosition;
 
-    public int teamNum;
-
     public boolean invulnerable;
     public boolean wasInvulnerableLastFrame;
 
@@ -31,14 +29,15 @@ public class Player extends Component
     public boolean isMovingRight;
 
     //Player stats
-    public int enemyKills, deaths, friendlyKills;
+    public int enemyKills, deaths, friendlyKills, teamNum;
+    public String playerName;                                               //having this makes it easier to display name of player in scoreboard.
 
-    public Player(int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents)
+    public Player(int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents, String playerName)
     {
         this.teamNum = teamNum;
         this.abilities = abilityCreationComponents;
-
         this.playerNum = playerNum;
+        this.playerName = playerName;
 
         actionMask = 0;
         this.mouseX = 0f;

@@ -84,12 +84,26 @@ public class EntityFactory
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new Player(0, 0, null));
+        e.addComponent(new Player(0, 0, null,"N/A"));
 
         e.addToWorld();
 
         return e;
     }
+
+    //Expects characters/<PlayerNAME> or charactersPortraits/<PlayerNames> or anything with <folder>/<playername>/<whatever>
+    //This method should prove more useful later on when we have more than 4 characters and there's a character select screen.
+    //It makes it so we don't have to rely on constants.
+    private static String extractPlayerName(String s)
+    {
+        String[] arr = s.split("/");
+
+        if(arr != null && arr.length > 0)
+            return arr[1].toUpperCase();
+
+        return "No player name found";
+    }
+
 
     public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
@@ -103,6 +117,7 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
 
+        String playerName = "No Name assigned yet";
         boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
 
         if (uiOnRightSide)
@@ -113,24 +128,28 @@ public class EntityFactory
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
             createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
+            playerName = extractPlayerName(Constants.PIRATE_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else if (playerNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
             createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
+            playerName = extractPlayerName(Constants.NINJA_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else if (playerNum == 2)
         {
             e.addComponent(new Animate(Constants.GANGSTA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
             createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
+            playerName = extractPlayerName(Constants.GANGSTA_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
         else
         {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
             createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
+            playerName = extractPlayerName(Constants.PHARAOH_PORTRAIT_HEALTHY); //assign player name from his portrait
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
@@ -154,7 +173,7 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents));
+        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents, playerName));
 
         e.addToWorld();
 
