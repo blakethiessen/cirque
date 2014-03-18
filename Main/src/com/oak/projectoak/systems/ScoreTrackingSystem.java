@@ -14,8 +14,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Player;
+import com.oak.projectoak.components.Portrait;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
@@ -32,7 +34,9 @@ import java.util.Random;
 public class ScoreTrackingSystem extends EntityProcessingSystem implements InputProcessor
 {
     @Mapper ComponentMapper<Player> pm;
+    @Mapper ComponentMapper<Portrait> pcm;
     @Mapper ComponentMapper<Render> rm;
+
 
     //a private class to easily manage player information. Should think about making this public and have the Player class use it as well.
     private class PlayerInfo
@@ -120,7 +124,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
     public ScoreTrackingSystem(GameModeManager gmManager,GameScreen gameScreen, Game game, OrthographicCamera camera, int totalTeams, int playersPerTeam)
     {
-        super(Aspect.getAspectForAll(Player.class,Render.class));
+        super(Aspect.getAspectForOne(Player.class, Render.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
@@ -149,9 +153,12 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             init = false;   //turn init to false so we dont call it again
         }
 
-        //updates info related to this player . If an update is made to this player's deaths. The change variable is set to true.
-        updatePlayerInfo(p);
-        updatePortraits(e);
+        //updates info related to this player . If an update is made to this player's deaths. The change variable is set to true. 
+        if(p != null)
+            updatePlayerInfo(p);
+
+        if(e != null)
+            updatePortraits(e);
 
         //Display remaining lives if game isnt over
         if(change && !gmManager.isGameOver())
@@ -175,12 +182,13 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
                 changeDisplayScores();
                 change =  false;
             }
+            //degrade the loser's portraits
+            turnLoserPortraitToSkulls(e, getWinningTeam());
         }
 
 
 
     }
-
 
 
 
@@ -277,37 +285,49 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     private void degradePortrait(int i, Entity e, int injuryLevel)
     {
         //No point in doing anything unless the textures are not null. Cause we've only saved portrait texture names.
-        Render r = rm.get(e);
-        String[] rImages = r.textureNames;
+        Portrait p = pcm.get(e);
 
-        if(rImages != null)
+        if(p!= null)
         {
-            //Make teamString
-            String teamClr = "";
-            if(players.get(i).teamNum == 0)
-                teamClr = Constants.PORTRAIT_TEAM_RED;
-            else
-                teamClr = Constants.PORTRAIT_TEAM_BLUE;
-
-            //Make injury string
-            String injury = "";
-            switch (injuryLevel)
+            if(p.portraitName.contains("characterPortraits/" + players.get(i).playerName.toLowerCase() + "/"))     //some quick checks so we dont have to do all this over and over
             {
-                case 0 :    injury = "1_healthy";      break;
-                case 1 :    injury = "2_bruised";      break;
-                case 2 :    injury = "3_near_dead";    break;
-                case 3 :    injury = "4_dead";         break;
-            }
+                //Make injury string
+                String injury = "";
+                switch (injuryLevel)
+                {
+                    case 0 :    injury = "1_healthy";      break;
+                    case 1 :    injury = "2_bruised";      break;
+                    case 2 :    injury = "3_near_dead";    break;
+                    case 3 :    injury = "4_dead";         break;
+                }
 
             //characterPortraits/gangsta/1_healthy";
             injury = "characterPortraits/" + players.get(i).playerName.toLowerCase() + "/" + injury;
 
             //Recreate the sprites in the render Cmpnt.
-            if(rImages.length == 2 && !rImages[1].equals(injury) && rImages[1].contains("characterPortraits/" + players.get(i).playerName.toLowerCase() + "/"))
-               r.recreateWithNewImgArray(new String[]{teamClr, injury});
-
+            if(!p.portraitName.equals(injury))
+            Constants.setSpriteTexture(rm.get(e).sprites[1], AssetLoader.getTextureRegion(injury));
+            }
         }
     }
+
+
+    private void turnLoserPortraitToSkulls(Entity e, int winningTeam)
+    {
+        Portrait p = pcm.get(e);
+
+        if(p!= null)
+        {
+            if(winningTeam != p.teamNum)
+            {
+                String[] arr = p.portraitName.split("/");
+
+                if(p.portraitName != arr[0] + "/" + arr[1] + "/" + "4_dead")
+                    Constants.setSpriteTexture(rm.get(e).sprites[1], AssetLoader.getTextureRegion(arr[0] + "/" + arr[1] + "/4_dead")   );
+            }
+        }
+    }
+
 
 
     private void changeDisplayLivesRemaining()
