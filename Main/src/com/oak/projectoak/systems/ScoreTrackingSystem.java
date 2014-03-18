@@ -3,6 +3,7 @@ package com.oak.projectoak.systems;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Game;
@@ -19,8 +20,6 @@ import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
 import com.oak.projectoak.screens.GameScreen;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,6 +45,54 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         }
     }
 
+    private class PortraitScore
+    {
+        private Entity kills, deaths, friendlyKills;
+        private int pOffset = 8;
+        World world;
+
+        public PortraitScore(World world)
+        {
+            this.world = world;
+
+
+
+
+            kills         = EntityFactory.createText(world,"0", new Vector2(0,0), Color.GREEN , 100, BitmapFont.HAlignment.LEFT) ;
+            deaths        = EntityFactory.createText(world,"0", new Vector2(0,0), Color.RED,100, BitmapFont.HAlignment.CENTER);
+            friendlyKills = EntityFactory.createText(world,"0", new Vector2(0,0),Color.ORANGE, 100, BitmapFont.HAlignment.RIGHT);
+
+            System.out.println(Gdx.graphics.getHeight());
+        }
+
+
+        //will do arcing implemention later
+        public void setPos(Vector2 v)
+        {
+            kills.getComponent(TextRender.class).position         =  deaths.getComponent(TextRender.class).position= friendlyKills.getComponent(TextRender.class).position =v.cpy();
+            //   deaths.getComponent(TextRender.class).position        = v.cpy();      //deaths.getComponent(TextRender.class).position.x += offset;
+           // friendlyKills.getComponent(TextRender.class).position = v.cpy();      //friendlyKills.getComponent(TextRender.class).position.x += 2 *offset;
+        }
+
+
+        public void setKills(int k)
+        {
+            kills.getComponent(TextRender.class).text = String.valueOf(k);
+        }
+
+        public void setDeaths(int d)
+        {
+            deaths.getComponent(TextRender.class).text = String.valueOf(d);
+        }
+
+        public void setFriendlyKills(int f)
+        {
+            friendlyKills.getComponent(TextRender.class).text = String.valueOf(f);
+        }
+    }
+
+
+
     public Entity x,y,z;
     private boolean init, change, finalize;
     private final int offset = -70;
@@ -55,9 +102,9 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
 
     private ArrayList<PlayerInfo> players;
-    private ArrayList<String>  teamColors;     //The team colors. Currently there are 4 in this list by default.
-    private ArrayList<Entity> teamScoreList; //these are the text objects that will display team scores in the end
-
+    private ArrayList<String>  teamColors;              //The team colors. Currently there are 4 in this list by default.
+    private ArrayList<Entity> teamScoreList;            //these are the text objects that will display team scores in the end
+    private ArrayList<PortraitScore> portraitScores;    //The scores on the portraits
 
     private final GameScreen gameScreen;
     private final Game game;
@@ -108,7 +155,8 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         //Display remaining lives if game isnt over
         if(change && !gmManager.isGameOver())
         {
-           displayLivesRemaining();
+           changeDisplayLivesRemaining();
+           changeDisplayPortraits();
            change = false;
         }
 
@@ -123,7 +171,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             }
             else if(change)
             {
-                displayScores();
+                changeDisplayScores();
                 change =  false;
             }
         }
@@ -144,6 +192,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
                 w,
                 BitmapFont.HAlignment.CENTER);
 
+
         y =   EntityFactory.createText(world,
                 String.valueOf(Constants.DEATHMATCH_KILLS_TO_WIN),
                 new   Vector2(Gdx.graphics.getWidth()/2-  w/2, Gdx.graphics.getHeight()/2 + heightDifference),
@@ -160,21 +209,53 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
         //initialize all the lists.
         players = new ArrayList<PlayerInfo>();
+        portraitScores = new ArrayList<PortraitScore>();
 
         for(int i = 0; i < playersPerTeam * totalTeams; i++)
         {
             players.add(new PlayerInfo());
+
+            portraitScores.add(new PortraitScore(world));
         }
 
+        setUpPortraitsScores();
+
         teamColors      = new ArrayList<String>();
+
         populateColors();
 
         teamScoreList = null;
 
+
+
     }
 
 
-    private void displayLivesRemaining()
+    private void setUpPortraitsScores()
+    {
+        //top left = width/40, height/1.5f
+        //bot left = width/40, height/4.5f
+
+        //TOP
+        portraitScores.get(0).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/1.25f));       //L
+        portraitScores.get(1).setPos(new Vector2(Gdx.graphics.getWidth()/1.11f, Gdx.graphics.getHeight()/1.25f));     //R
+
+        //BOTTOM
+        portraitScores.get(2).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/4.5f));       //L
+        portraitScores.get(3).setPos(new Vector2(Gdx.graphics.getWidth()/1.11f, Gdx.graphics.getHeight()/4.5f));    //R
+    }
+
+    private void changeDisplayPortraits()
+    {
+        for(int i = 0; i < portraitScores.size(); i++)
+        {
+            portraitScores.get(i).setDeaths(players.get(i).deaths);
+            portraitScores.get(i).setKills(players.get(i).kills);
+            portraitScores.get(i).setFriendlyKills(players.get(i).friendlyKills);
+        }
+    }
+
+    private void changeDisplayLivesRemaining()
     {
         y.getComponent(TextRender.class).text = String.valueOf(getLivesRemaining(0));
         z.getComponent(TextRender.class).text = String.valueOf(getLivesRemaining(1));
@@ -226,7 +307,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     }
 
 
-    private void displayScores()
+    private void changeDisplayScores()
     {
         for(int i = 0; i < Constants.DEATHMATCH_NUM_TEAMS; i++)
             teamScoreList.get(i).getComponent(TextRender.class).text = getTeamStats(i);
