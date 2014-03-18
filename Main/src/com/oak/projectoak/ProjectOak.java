@@ -13,6 +13,7 @@ public class ProjectOak extends Game
     @Override
     public void create()
     {
+        AssetLoader.setMusic("music.mp3");
         setScreen(new TitleScreen(this));
     }
 }

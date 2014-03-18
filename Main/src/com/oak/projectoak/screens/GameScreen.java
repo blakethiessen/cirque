@@ -86,8 +86,6 @@ public class GameScreen implements Screen
 
         // Setup systems
         world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
-        world.setSystem(playerDestructionSystem);
-        world.setSystem(abilityDestructionSystem);
 
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new TrapPhysicsSystem());
@@ -108,7 +106,7 @@ public class GameScreen implements Screen
         world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
         world.setSystem(abilitySystem);
-        world.setSystem(new PhysicsDebugSystem(b2world, camera));
+//        world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(new AnimationSystem());
         world.setSystem(new PlayerInvulnerableFlashingSystem());
@@ -124,6 +122,8 @@ public class GameScreen implements Screen
         world.setSystem(new GraphicsDebugSystem(camera));
         world.setSystem(new ScoreTrackingSystem(deathMatchManager, this, game, camera,2,2));    //2 teams with 2 players each);
 
+        world.setSystem(playerDestructionSystem);
+        world.setSystem(abilityDestructionSystem);
 
         world.setManager(new GroupManager());
 
@@ -153,6 +153,8 @@ public class GameScreen implements Screen
         {
             inputSystem.controllerMap.put(controllers.get(i), i);
         }
+
+        AssetLoader.playMusic();
     }
 
 	@Override

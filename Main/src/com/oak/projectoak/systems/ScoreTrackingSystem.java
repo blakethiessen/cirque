@@ -184,10 +184,9 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             }
             //degrade the loser's portraits
             turnLoserPortraitToSkulls(e, getWinningTeam());
+
+            AssetLoader.fadeMusic();
         }
-
-
-
     }
 
 
@@ -321,9 +320,9 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             String[] arr = p.portraitName.split("/");
 
 
-            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/" + "/4_dead"))
+            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/" + "4_dead"))
             {
-                p.portraitName = arr[0] + "/" + arr[1] + "/" + "/4_dead";
+                p.portraitName = arr[0] + "/" + arr[1] + "/" + "4_dead";
                 Constants.setSpriteTexture(rm.get(e).sprites[1], AssetLoader.getTextureRegion(p.portraitName));
             }
 

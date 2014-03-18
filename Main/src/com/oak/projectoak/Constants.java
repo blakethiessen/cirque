@@ -87,7 +87,7 @@ public class Constants
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 2;//8;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 1;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
@@ -107,13 +107,14 @@ public class Constants
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
     public static final int ZOOM_RING_PADDING = 260;
+    public static final float MUSIC_FADE_RATE = .0002f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
-    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0002f;
+    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
 
     public class Groups
     {
