@@ -318,7 +318,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     {
         Portrait p = pcm.get(e);
 
-        if(p!= null)
+        if(p!= null && p.teamNum != winningTeam)
         {
             String[] arr = p.portraitName.split("/");
 
