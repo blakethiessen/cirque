@@ -180,6 +180,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             else if(change)
             {
                 changeDisplayScores();
+                changePortraitScores();
                 change =  false;
             }
             //degrade the loser's portraits
@@ -249,11 +250,11 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         //bot left = width/40, height/4.5f
 
         //TOP
-        portraitScores.get(0).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/1.25f));       //L
+        portraitScores.get(0).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/1.25f));         //L
         portraitScores.get(1).setPos(new Vector2(Gdx.graphics.getWidth()/1.11f, Gdx.graphics.getHeight()/1.25f));     //R
 
         //BOTTOM
-        portraitScores.get(2).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/4.5f));       //L
+        portraitScores.get(2).setPos(new Vector2(Gdx.graphics.getWidth()/40, Gdx.graphics.getHeight()/4.5f));          //L
         portraitScores.get(3).setPos(new Vector2(Gdx.graphics.getWidth()/1.11f, Gdx.graphics.getHeight()/4.5f));    //R
     }
 
@@ -287,7 +288,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         //No point in doing anything unless the textures are not null. Cause we've only saved portrait texture names.
         Portrait p = pcm.get(e);
 
-        if(p!= null)
+        if(p!= null && !p.portraitName.contains("4_death"))
         {
             if(p.portraitName.contains("characterPortraits/" + players.get(i).playerName.toLowerCase() + "/"))     //some quick checks so we dont have to do all this over and over
             {
@@ -316,18 +317,18 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     {
         Portrait p = pcm.get(e);
 
-        if(p!= null)
+        if(p!= null && p.teamNum != winningTeam)
         {
             String[] arr = p.portraitName.split("/");
 
-
-            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/" + "/4_dead"))
+            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/4_dead"))
             {
-                p.portraitName = arr[0] + "/" + arr[1] + "/" + "/4_dead";
+                p.portraitName = arr[0] + "/" + arr[1] + "/4_dead";
                 Constants.setSpriteTexture(rm.get(e).sprites[1], AssetLoader.getTextureRegion(p.portraitName));
             }
 
         }
+
     }
 
 
@@ -516,13 +517,13 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     public int getWinningTeam()
     {
         int ret = 0;
-        int deaths = Constants.DEATHMATCH_KILLS_TO_WIN;
+        int deaths = 0;
 
         //iterate over all teams
-        for(int i = 0; i < Constants.DEATHMATCH_NUM_TEAMS; i++)
+        for(int i = 0; i < this.totalTeams; i++)
         {
             int tempDeaths = getLivesRemaining(i);     //get lives remaining of the current team
-            if(tempDeaths < deaths)
+            if(tempDeaths > deaths)
             {
                 ret = i;
                 deaths = tempDeaths;

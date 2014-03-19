@@ -132,18 +132,23 @@ public class GameScreen implements Screen
 
         EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
 
+
+        //Pirate, Team Red
         final Entity player1 = EntityFactory.createPlayer(world, 0, 0, true, 0, Constants.P1_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
 
+        //Ninja, Team Blue
         final Entity player2 = EntityFactory.createPlayer(world, 1, (float) Math.PI, false, 1, Constants.P2_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
+        //Gangsta, Team Blue
         final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 1, Constants.P3_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
 
+        //Pharaoh, Team Red
         final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 0, Constants.P4_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
