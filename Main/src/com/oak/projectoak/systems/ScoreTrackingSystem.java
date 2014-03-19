@@ -185,10 +185,11 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
             }
             //degrade the loser's portraits
             turnLoserPortraitToSkulls(e, getWinningTeam());
+            AssetLoader.fadeMusic();
         }
 
-
-
+            
+        
     }
 
 
@@ -288,7 +289,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         //No point in doing anything unless the textures are not null. Cause we've only saved portrait texture names.
         Portrait p = pcm.get(e);
 
-        if(p!= null && !p.portraitName.contains("4_death"))
+        if(p!= null)
         {
             if(p.portraitName.contains("characterPortraits/" + players.get(i).playerName.toLowerCase() + "/"))     //some quick checks so we dont have to do all this over and over
             {
@@ -317,18 +318,18 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     {
         Portrait p = pcm.get(e);
 
-        if(p!= null && p.teamNum != winningTeam)
+        if(p!= null)
         {
             String[] arr = p.portraitName.split("/");
 
-            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/4_dead"))
+
+            if(!p.portraitName.equals(arr[0] + "/" + arr[1] + "/" + "4_dead"))
             {
-                p.portraitName = arr[0] + "/" + arr[1] + "/4_dead";
+                p.portraitName = arr[0] + "/" + arr[1] + "/" + "4_dead";
                 Constants.setSpriteTexture(rm.get(e).sprites[1], AssetLoader.getTextureRegion(p.portraitName));
             }
 
         }
-
     }
 
 

@@ -62,11 +62,12 @@ public class TitleScreen implements Screen, InputProcessor
 
         if (beginZoomTransition)
         {
+
             camera.rotate(rotationSpeed += .05f);
             logo.rotate(-rotationSpeed);
             camera.zoom -= (zoomIncreasePerFrame += Constants.CAMERA_TRANSITION_ZOOM_ACCEL);
 
-            if ((logoAlpha -= .01f) < 0)
+            if ((logoAlpha -= .015f) < 0)
                 logoAlpha = 0;
 
             logo.setColor(1, 1, 1, logoAlpha);
