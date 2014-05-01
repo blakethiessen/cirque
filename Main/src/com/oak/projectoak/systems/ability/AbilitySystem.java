@@ -93,16 +93,24 @@ public class AbilitySystem extends EntityProcessingSystem
 
     private boolean killPlayer(LethalUD fixtureUDA, PlayerUD bodyUDB)
     {
-        Entity entity = (bodyUDB).entity;
+        Entity entity = bodyUDB.entity;
 
-        if (!pm.get(entity).invulnerable)
+        Player player = pm.get(entity);
+        if (!player.invulnerable)
         {
-            Player player = entity.getComponent(Player.class);
             dmManager.addKillStatistic(player.teamNum);
 
             AssetLoader.playSound("death");
 
-            Player killer = pm.get(abm.get((fixtureUDA).entity).owner);
+            Entity entityWithAbility = fixtureUDA.entity;
+            if (entityWithAbility == null)
+                System.out.println();
+
+            Ability ability = abm.get(entityWithAbility);
+            if (ability == null)
+                System.out.println("Shahan is null");
+
+            Player killer = pm.get(ability.owner);
             playerDestructionSystem.destroyEntity(entity, killer);          //changed player destruction system to handle both deaths and kills
         }
 

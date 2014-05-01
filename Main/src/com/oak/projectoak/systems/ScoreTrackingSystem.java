@@ -145,7 +145,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     protected void process(Entity e)
     {
         //Grab the player entity and determine its team number
-        Player p = pm.get(e);
+        Player p = pm.getSafe(e);
 
         if(init)
         {
@@ -287,7 +287,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     private void degradePortrait(int i, Entity e, int injuryLevel)
     {
         //No point in doing anything unless the textures are not null. Cause we've only saved portrait texture names.
-        Portrait p = pcm.get(e);
+        Portrait p = pcm.getSafe(e);
 
         if(p!= null)
         {
@@ -316,7 +316,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
     private void turnLoserPortraitToSkulls(Entity e, int winningTeam)
     {
-        Portrait p = pcm.get(e);
+        Portrait p = pcm.getSafe(e);
 
         if(p!= null && p.teamNum != winningTeam)
         {

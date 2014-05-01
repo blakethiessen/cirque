@@ -104,7 +104,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
         }
     }
 
-    private void scheduleEntityForDestruction(final Entity entity, int entityLifetime)
+    private void scheduleEntityForDestruction(final Entity entity, float entityLifetime)
     {
         Timer.schedule(new Timer.Task()
         {

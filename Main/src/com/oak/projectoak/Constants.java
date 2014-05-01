@@ -83,18 +83,18 @@ public class Constants
 
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
-    public static final int RESPAWN_TIME_SEC = 3;
-    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
+    public static final int RESPAWN_TIME_SEC = 1;
+    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 1;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 4;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 50;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f; // .33f!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static final float JUMP_TIMEOUT_DELAY = .3f;
-    public static final int STAKE_LIFETIME = 10;
+    public static final float STAKE_LIFETIME = 10; // 10!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
     public static final int PILLAR_LIFETIME = 16;
@@ -104,7 +104,7 @@ public class Constants
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
     public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .4f;
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
-    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
+    public static final float LIGHTNING_BOLT_ENERGY_COST = 0.5f; //////////////change back to 0.5f!!!!!!!!!!!!!
     public static final int ZOOM_RING_PADDING = 260;
     public static final float MUSIC_FADE_RATE = .0002f;
 
