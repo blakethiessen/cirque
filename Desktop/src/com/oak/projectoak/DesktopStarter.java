@@ -2,6 +2,7 @@ package com.oak.projectoak;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.oak.projectoak.utils.ImagePacker;
 
 import java.awt.*;
 
@@ -21,28 +22,21 @@ public class DesktopStarter
         cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
 
-        if (args.length > 0)
+        for (int i = 0; i < args.length; i++)
         {
-            cfg.width = (int)screenSize.getWidth();
-            cfg.height = (int)screenSize.getHeight();
-            cfg.fullscreen = true;
+            // go fullscreen
+            if (args[i].equals("f"))
+            {
+                cfg.width = (int)screenSize.getWidth();
+                cfg.height = (int)screenSize.getHeight();
+                cfg.fullscreen = true;
+            }
+            // Pack images
+            else if (args[i].equals("pack"))
+            {
+                ImagePacker.run();
+            }
         }
-
-        // Pass in the argument "nopack" to not run the image packer.
-//        if (args.length > 0)
-//        {
-//            if (!args[0].equals("nopack"))
-//                ImagePacker.run();
-//            if (args.length > 1 && args[1].equals("f"))
-//            {
-//                cfg.width = (int)screenSize.getWidth();
-//                cfg.height = (int)screenSize.getHeight();
-//                cfg.fullscreen = true;
-//            }
-//        }
-//        else
-//            ImagePacker.run();
-
 
         new LwjglApplication(new ProjectOak(), cfg);
     }
