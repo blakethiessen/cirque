@@ -27,6 +27,7 @@ import com.oak.projectoak.systems.*;
 import com.oak.projectoak.systems.ability.AbilityCreationSystem;
 import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
 import com.oak.projectoak.systems.ability.AbilitySystem;
+import com.oak.projectoak.systems.ability.PillarSystem;
 import com.oak.projectoak.systems.physics.*;
 import com.oak.projectoak.systems.render.*;
 
@@ -105,8 +106,9 @@ public class GameScreen implements Screen
 
         world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
+        world.setSystem(new PillarSystem());
 
-//        world.setSystem(new PhysicsDebugSystem(b2world, camera));
+        world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(abilitySystem);
         world.setSystem(new AnimationSystem());

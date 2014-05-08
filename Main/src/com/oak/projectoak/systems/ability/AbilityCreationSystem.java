@@ -80,9 +80,10 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                             !arenaTransform.onOutsideEdge, e), Constants.STAKE_LIFETIME);
                                     break;
                                 case PILLAR:
-                                    scheduleEntityForDestruction(EntityFactory.createPillar(world, trapRingBody,
+                                    // Pillar destruction is managed in the PillarSystem.
+                                    EntityFactory.createPillar(world, trapRingBody,
                                             arenaTransform.radialPosition,
-                                            !arenaTransform.onOutsideEdge), Constants.PILLAR_LIFETIME);
+                                            !arenaTransform.onOutsideEdge);
                                     break;
                                 case LIGHTNING_BOLT:
                                     EntityFactory.createLightningBolt(world,

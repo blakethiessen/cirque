@@ -1,19 +1,23 @@
 package com.oak.projectoak.components;
 
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.oak.projectoak.Constants;
 
-import java.util.ArrayList;
+/*
+    Pillar plan:
+    - A pillar entity is a collection of pieces.
+    - Adding a new pillar increments a counter, which is updated.
+    - A single body is resized to contain all pieces.
+    - A timer is used to remove the top pillar piece.
+ */
 
 public class Pillar extends Component
 {
-    public ArrayList<Entity> pillarsStackedOnTop;
-    public int destructionTimeReset;
+    public int numOfPillarSegments;
+    public int prevNumOfPillarSegments;
 
     public Pillar()
     {
-        pillarsStackedOnTop = new ArrayList<Entity>(5);
-        destructionTimeReset = Constants.PILLAR_DESTRUCTION_TIME_RESET;
+        numOfPillarSegments = 1;
+        prevNumOfPillarSegments = 1;
     }
 }
