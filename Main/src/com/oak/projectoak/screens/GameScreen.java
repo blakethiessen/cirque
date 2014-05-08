@@ -106,7 +106,7 @@ public class GameScreen implements Screen
 
         world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
-        world.setSystem(new PillarSystem());
+        world.setSystem(new PillarSystem(abilityDestructionSystem));
 
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));

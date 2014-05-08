@@ -98,7 +98,7 @@ public class Constants
     public static final float STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
-    public static final int PILLAR_LIFETIME = 16;
+    public static final long PILLAR_LIFETIME_MS = 16000;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
     //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;

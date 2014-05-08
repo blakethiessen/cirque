@@ -1,6 +1,11 @@
 package com.oak.projectoak.components;
 
 import com.artemis.Component;
+import com.oak.projectoak.Constants;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /*
     Pillar plan:
@@ -15,9 +20,14 @@ public class Pillar extends Component
     public int numOfPillarSegments;
     public int prevNumOfPillarSegments;
 
+    public Queue<Long> pillarTimeouts;
+
     public Pillar()
     {
         numOfPillarSegments = 1;
         prevNumOfPillarSegments = 1;
+
+        pillarTimeouts = new LinkedList<Long>();
+        pillarTimeouts.add(System.currentTimeMillis() + Constants.PILLAR_LIFETIME_MS);
     }
 }
