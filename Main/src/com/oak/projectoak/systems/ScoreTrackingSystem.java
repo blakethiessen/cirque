@@ -38,6 +38,8 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     @Mapper ComponentMapper<Render> rm;
 
 
+
+
     //a private class to easily manage player information. Should think about making this public and have the Player class use it as well.
     private class PlayerInfo
     {
@@ -116,13 +118,13 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
 
     private int totalTeams;
     private int playersPerTeam;
-
+    Entity[] restartPlayers;
 
     //These should probably be in a different system
 
 
 
-    public ScoreTrackingSystem(GameModeManager gmManager,GameScreen gameScreen, Game game, OrthographicCamera camera, int totalTeams, int playersPerTeam)
+    public ScoreTrackingSystem(GameModeManager gmManager,GameScreen gameScreen, Game game, OrthographicCamera camera, int totalTeams, int playersPerTeam, Entity[] restartPlayers)
     {
         super(Aspect.getAspectForOne(Player.class, Render.class));
         this.gmManager = gmManager;
@@ -131,6 +133,7 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
         this.camera = camera;
         this.totalTeams = totalTeams;
         this.playersPerTeam = playersPerTeam;
+        this.restartPlayers = restartPlayers;
 
         init = change = true;
         finalize = false;
@@ -548,11 +551,11 @@ public class ScoreTrackingSystem extends EntityProcessingSystem implements Input
     {
         if (keycode == Input.Keys.ENTER)
         {
-            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
+            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true, restartPlayers));
         }
         else if (keycode == Input.Keys.ESCAPE)
         {
-            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false));
+            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false, restartPlayers));
         }
 
         return false;

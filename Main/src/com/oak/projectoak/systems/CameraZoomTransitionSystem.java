@@ -1,5 +1,6 @@
 package com.oak.projectoak.systems;
 
+import com.artemis.Entity;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,6 +18,7 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
 
     private float zoomVel;
     private boolean zoomingInwards;
+    private Entity[] players;
 
     public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom)
     {
@@ -32,13 +34,14 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
         restartGame = false;
     }
 
-    public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame)
+    public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame, Entity[] players)
     {
         this(camera, finalCameraZoom);
 
         this.game = game;
         this.gameScreen = gameScreen;
         this.restartGame = restartGame;
+        this.players = players;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
             {
                 gameScreen.dispose();
                 if (restartGame)
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game,players));
                 else
                     game.setScreen(new TitleScreen(game));
             }

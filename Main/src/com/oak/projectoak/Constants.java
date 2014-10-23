@@ -143,9 +143,9 @@ public class Constants
 
     public static final int UI_PADDING = 20;
     public static final Vector2 P1_UI_POSITION = new Vector2(UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
-    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
+    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING - PORTRAIT_WIDTH, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
     public static final Vector2 P3_UI_POSITION = new Vector2(UI_PADDING, UI_PADDING);
-    public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, UI_PADDING);
+    public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING - PORTRAIT_WIDTH, UI_PADDING);
 
     // PLAYER CONSTANTS
     public static final float PLAYER_WIDTH = .62f;

@@ -23,11 +23,6 @@ public class Render extends Component
     public Layer layer;
     public boolean isVisible;
 
-
-
-
-
-
     //extracted the constructor into create method
     public Render(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
@@ -58,10 +53,6 @@ public class Render extends Component
         this.isVisible = true;
 
     }
-
-
-
-
 
     public Render(String textureName, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {

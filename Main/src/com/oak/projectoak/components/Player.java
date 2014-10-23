@@ -11,6 +11,7 @@ import com.oak.projectoak.Action;
 public class Player extends Component
 {
     public int playerNum;
+    public int controllerNum;
 
     public byte actionMask;
 
@@ -31,14 +32,20 @@ public class Player extends Component
     //Player stats
     public int enemyKills, deaths, friendlyKills, teamNum;
     public String playerName;                                               //having this makes it easier to display name of player in scoreboard.
+    private boolean havePlayerAttributesBeenSet, havePlayerAbilitiesBeenSet;
 
-    public Player(int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents, String playerName)
+
+    //Does nothing except get us the controller methods (setAction and getAction)
+    public Player(int controllerNum)
     {
-        this.teamNum = teamNum;
-        this.abilities = abilityCreationComponents;
-        this.playerNum = playerNum;
-        this.playerName = playerName;
+        this.controllerNum = controllerNum;
+        resetToControllerOnly();
+    }
 
+
+    public void resetToControllerOnly()
+    {
+        havePlayerAttributesBeenSet = havePlayerAbilitiesBeenSet = false;
         actionMask = 0;
         this.mouseX = 0f;
         this.mouseY = 0f;
@@ -46,11 +53,32 @@ public class Player extends Component
         invulnerable = false;
         wasInvulnerableLastFrame = false;
         energyIncreaseMultiplier = 1;
+        friendlyKills = enemyKills = deaths = 0;
         lastLateralChangePosition = 0f;
+
+        playerNum = teamNum = 0;
+        playerName = "N/A";
+    }
+
+    //sets player's attributes
+    public void setPlayerAttributes(int playerNum, int teamNum, String playerName)
+    {
+        this.teamNum = teamNum;
+        this.playerNum = playerNum;
+        this.playerName = playerName;
         isMovingRight = true;
 
-        friendlyKills = enemyKills = deaths = 0;
+        havePlayerAttributesBeenSet = true;
     }
+
+
+    //set's player's abilities
+    public void setAbilities(AbilityCreation[] abilityCreationComponents)
+    {
+        this.abilities = abilityCreationComponents;
+        havePlayerAbilitiesBeenSet = true;
+    }
+
 
     public void setAction(Action action, boolean state)
     {
@@ -74,4 +102,16 @@ public class Player extends Component
     {
         return (actionMask & (1L << actionId)) != 0;
     }
+
+
+    public boolean havePlayerAbilitiesBeenSet()
+    {
+        return havePlayerAbilitiesBeenSet;
+    }
+
+    public boolean havePlayerAttributesBeenSet()
+    {
+        return havePlayerAttributesBeenSet;
+    }
+
 }

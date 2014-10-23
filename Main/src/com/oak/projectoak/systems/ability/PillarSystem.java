@@ -5,6 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.Pillar;
@@ -57,6 +59,13 @@ public class PillarSystem extends EntityProcessingSystem
         TrapPhysics trapPhysics = tpm.get(e);
 
         changeFixtureSize(pillar, trapPhysics);
+
+        Render render = rm.get(e);
+        Sprite curSprite = render.sprites[0];
+
+        // TODO: Repeat the texture.
+        curSprite.getTexture().setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.Repeat);
+        curSprite.setSize(curSprite.getWidth(), curSprite.getRegionHeight() * pillar.numOfPillarSegments);
 
         pillar.pillarTimeouts.add(System.currentTimeMillis() + Constants.PILLAR_LIFETIME_MS);
         pillar.prevNumOfPillarSegments = pillar.numOfPillarSegments;

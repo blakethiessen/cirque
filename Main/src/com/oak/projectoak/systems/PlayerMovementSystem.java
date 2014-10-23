@@ -66,7 +66,9 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
-            increaseEnergy(player, arenaTransform);
+            // TODO: Clean up energy stuff from movement
+            if (player.havePlayerAbilitiesBeenSet())
+                increaseEnergy(player, arenaTransform);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
@@ -76,7 +78,8 @@ public class PlayerMovementSystem extends EntityProcessingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, platformer.latAccel);
-            increaseEnergy(player, arenaTransform);
+            if (player.havePlayerAbilitiesBeenSet())
+                increaseEnergy(player, arenaTransform);
         }
         else
         {

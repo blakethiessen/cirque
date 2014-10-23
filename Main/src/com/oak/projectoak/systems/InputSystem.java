@@ -98,20 +98,18 @@ public class InputSystem extends EntityProcessingSystem
     protected void process(Entity e)
     {
         Player player = pm.get(e);
-        final int playerArrNum = pm.get(e).playerNum;
 
-        player.setAction(Action.MOVING_LEFT,
-                controlStates[playerArrNum].get(Action.MOVING_LEFT));
-        player.setAction(Action.MOVING_RIGHT,
-                controlStates[playerArrNum].get(Action.MOVING_RIGHT));
-        player.setAction(Action.JUMPING,
-                controlStates[playerArrNum].get(Action.JUMPING));
-        player.setAction(Action.ABILITY_1,
-                controlStates[playerArrNum].get(Action.ABILITY_1));
-        player.setAction(Action.ABILITY_2,
-                controlStates[playerArrNum].get(Action.ABILITY_2));
-        player.setAction(Action.ABILITY_3,
-                controlStates[playerArrNum].get(Action.ABILITY_3));
+        if(player != null)
+        {
+            final int playerArrNum = pm.get(e).controllerNum;
+
+            player.setAction(Action.MOVING_LEFT,                controlStates[playerArrNum].get(Action.MOVING_LEFT));
+            player.setAction(Action.MOVING_RIGHT,               controlStates[playerArrNum].get(Action.MOVING_RIGHT));
+            player.setAction(Action.JUMPING,                    controlStates[playerArrNum].get(Action.JUMPING));
+            player.setAction(Action.ABILITY_1,                  controlStates[playerArrNum].get(Action.ABILITY_1));
+            player.setAction(Action.ABILITY_2,                  controlStates[playerArrNum].get(Action.ABILITY_2));
+            player.setAction(Action.ABILITY_3,                  controlStates[playerArrNum].get(Action.ABILITY_3));
+        }
     }
 
     @Override
