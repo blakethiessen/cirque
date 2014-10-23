@@ -30,16 +30,14 @@ public class Box2DDefs
             };
     }
 
-    public static final Vector2[] getPillarVertices(int numSegmentsHigh)
+    public static final Vector2[] getPillarVertices()
     {
-        float pillarHeight = Constants.PILLAR_HEIGHT * numSegmentsHigh;
-
         return new Vector2[]
                 {
                         new Vector2(Constants.PILLAR_X_OFFSET, 0),
                         new Vector2(Constants.PILLAR_X_OFFSET + Constants.PILLAR_WIDTH, 0),
-                        new Vector2(Constants.PILLAR_X_OFFSET + Constants.PILLAR_WIDTH, pillarHeight),
-                        new Vector2(Constants.PILLAR_X_OFFSET, pillarHeight)
+                        new Vector2(Constants.PILLAR_X_OFFSET + Constants.PILLAR_WIDTH, Constants.PILLAR_HEIGHT),
+                        new Vector2(Constants.PILLAR_X_OFFSET, Constants.PILLAR_HEIGHT)
                 };
     }
 

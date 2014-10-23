@@ -1,6 +1,5 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Entity;
 import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,17 +13,14 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
     private final float finalCameraZoom;
     private Game game;
     private GameScreen gameScreen;
-    private boolean restartGame;
+    private final boolean restartGame;
 
-    private float zoomVel;
     private boolean zoomingInwards;
-    private Entity[] players;
 
     public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom)
     {
         this.camera = camera;
         this.finalCameraZoom = finalCameraZoom;
-        zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
 
         if (finalCameraZoom < camera.zoom)
             zoomingInwards = true;
@@ -34,23 +30,27 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
         restartGame = false;
     }
 
-    public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame, Entity[] players)
+    public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame)
     {
-        this(camera, finalCameraZoom);
-
+        this.camera = camera;
+        this.finalCameraZoom = finalCameraZoom;
         this.game = game;
         this.gameScreen = gameScreen;
         this.restartGame = restartGame;
-        this.players = players;
+
+        if (finalCameraZoom < camera.zoom)
+            zoomingInwards = true;
+        else
+            zoomingInwards = false;
     }
 
     @Override
     protected void processSystem()
     {
         if (zoomingInwards)
-            camera.zoom -= zoomVel;
+            camera.zoom -= Constants.CAMERA_TRANSITION_ZOOM_SPEED;
         else
-            camera.zoom += zoomVel;
+            camera.zoom += Constants.CAMERA_TRANSITION_ZOOM_SPEED;
 
         if ((!zoomingInwards && camera.zoom >= finalCameraZoom) ||
                 (zoomingInwards && camera.zoom < finalCameraZoom))
@@ -61,17 +61,10 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
             {
                 gameScreen.dispose();
                 if (restartGame)
-                    game.setScreen(new GameScreen(game,players));
+                    game.setScreen(new GameScreen(game));
                 else
                     game.setScreen(new TitleScreen(game));
             }
         }
-        else if ((!zoomingInwards && camera.zoom >= finalCameraZoom / 2 + .01f) ||
-                (zoomingInwards && camera.zoom < finalCameraZoom / 2 - .01f))
-        {
-            zoomVel -= Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
-        }
-        else
-            zoomVel += Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
     }
 }

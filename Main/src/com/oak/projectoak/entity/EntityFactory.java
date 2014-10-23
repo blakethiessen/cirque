@@ -30,7 +30,6 @@ import com.oak.projectoak.physics.userdata.PillarUD;
     are composed of their components.
  */
 
-
 public class EntityFactory
 {
     //create text with Black color
@@ -81,240 +80,95 @@ public class EntityFactory
         return e;
     }
 
-//    public static Entity createBasicController(World world)
-//    {
-//        Entity e = world.createEntity();
-//        e.addComponent(new Player(0, 0, null,"N/A"));
-//        e.addToWorld();
-//        return e;
-//    }
-
-    //Expects characters/<PlayerNAME> or charactersPortraits/<PlayerNames> or anything with <folder>/<playername>/<whatever>
-    //This method should prove more useful later on when we have more than 4 characters and there's a character select screen.
-    //It makes it so we don't have to rely on constants.
-    private static String extractPlayerName(String s)
-    {
-        String[] arr = s.split("/");
-
-        if(arr != null && arr.length > 0)
-            return arr[1].toUpperCase();
-
-        return "No player name found";
-    }
-
-
-    //Create an Entity w/o any attributes set. This will return us a player entity with only the basic controller functioning.
-    public static Entity createPlayer_ControllerOnly(World world, int controllerNum)
+    public static Entity createBasicController(World world)
     {
         Entity e = world.createEntity();
-        e.addComponent(new Player(controllerNum));
+
+        e.addComponent(new Player(0, 0, null));
+
         e.addToWorld();
+
         return e;
     }
 
-
-    public static Entity resetPlayerToControllerOnly(World world, com.badlogic.gdx.physics.box2d.World b2world, Entity playerEntity)
+    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
-        Player playerComponent = playerEntity.getComponent(Player.class);
-        if(playerComponent != null)
+        Entity e = world.createEntity();
+
+        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
+
+        e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
+        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
+                Constants.PLAYER_LAT_MAX_VEL,
+                onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
+        e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
+
+        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
+
+        if (uiOnRightSide)
+            uiPosition.x -= Constants.PORTRAIT_WIDTH;
+
+        if (playerNum == 0)
         {
-            //remove all other components!!
-            b2world.destroyBody(playerEntity.getComponent(DynamicPhysics.class).body);
-            playerEntity.removeComponent(DynamicPhysics.class);
-            playerEntity.removeComponent(Platformer.class);
-            playerEntity.removeComponent(Render.class);
-            playerEntity.removeComponent(Animate.class);
-            playerEntity.removeComponent(PlayerAnimation.class);
-            playerEntity.removeComponent(ArenaTransform.class);
-
-            playerComponent.resetToControllerOnly();
-
-            world.changedEntity(playerEntity);
+            e.addComponent(new Animate(Constants.PIRATE_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
-        return playerEntity;
-    }
-
-
-    public static Entity addPlayerAbilities(World world, Entity playerEntity, AbilityType[] chosenAbilityTypes, Vector2 uiPosition)
-    {
-        Player playerComponent = playerEntity.getComponent(Player.class);
-        if(playerComponent != null)
+        else if (playerNum == 1)
         {
-            // Add abilities
-            AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
-            playerComponent.setAbilities(abilityCreationComponents);
-
-            // If the position is on the right side, move our uiPosition origin to the left to compensate.
-            boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
-            if (uiOnRightSide)
-                uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
-            else
-                uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
-
-            uiPosition.y += Constants.PORTRAIT_WIDTH / 4;
-
-            for (int i = 0; i < chosenAbilityTypes.length; i++)
-            {
-                abilityCreationComponents[i] = createAbilityCreator(world, chosenAbilityTypes[i], uiPosition);
-                uiPosition.x += Constants.ENERGY_METER_WIDTH;
-            }
+            e.addComponent(new Animate(Constants.NINJA_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
-        return playerEntity;
-    }
-
-
-
-
-
-    //Pass in the player entity to this to give it its name
-    public static Entity upgradePlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, Entity playerEntity)
-    {
-        //Can add mapper here later
-        Player playerComponent = playerEntity.getComponent(Player.class);
-
-        if(playerComponent != null)
+        else if (playerNum == 2)
         {
-            Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
-
-            playerEntity.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(playerEntity), twoDPosition));
-            playerEntity.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
-                    Constants.PLAYER_LAT_MAX_VEL,
-                    onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-            playerEntity.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
-
-            String playerName = "No Name assigned yet";
-            boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
-
-            if (uiOnRightSide)
-                uiPosition.x -= Constants.PORTRAIT_WIDTH;
-
-            if (playerNum == 0)
-            {
-                playerEntity.addComponent(new Animate(Constants.PIRATE_IDLE));
-                playerEntity.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-                //createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
-                playerName = extractPlayerName(Constants.PIRATE_PORTRAIT_HEALTHY); //assign player name from his portrait
-            }
-            else if (playerNum == 1)
-            {
-                playerEntity.addComponent(new Animate(Constants.NINJA_IDLE));
-                playerEntity.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
-                //createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
-                playerName = extractPlayerName(Constants.NINJA_PORTRAIT_HEALTHY); //assign player name from his portrait
-            }
-            else if (playerNum == 2)
-            {
-                playerEntity.addComponent(new Animate(Constants.GANGSTA_IDLE));
-                playerEntity.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-                //createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
-                playerName = extractPlayerName(Constants.GANGSTA_PORTRAIT_HEALTHY); //assign player name from his portrait
-            }
-            else
-            {
-                playerEntity.addComponent(new Animate(Constants.PHARAOH_IDLE));
-                playerEntity.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
-                //createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
-                playerName = extractPlayerName(Constants.PHARAOH_PORTRAIT_HEALTHY); //assign player name from his portrait
-            }
-
-            playerEntity.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
-
-            world.getManager(GroupManager.class).add(playerEntity, Constants.Groups.PLAYERS);
-
-            playerComponent.setPlayerAttributes(playerNum, teamNum, playerName);
+            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
+        }
+        else
+        {
+            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
+            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
 
-        world.changedEntity(playerEntity);
+        e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
 
-        return playerEntity;
+        world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
+
+        // Add abilities
+        AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
+
+        // If the position is on the right side, move our uiPosition origin to the left to compensate.
+        if (uiOnRightSide)
+            uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
+        else
+            uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
+
+        uiPosition.y += Constants.PORTRAIT_WIDTH / 4;
+
+        for (int i = 0; i < chosenAbilityTypes.length; i++)
+        {
+            abilityCreationComponents[i] = createAbilityCreator(world, chosenAbilityTypes[i], uiPosition);
+            uiPosition.x += Constants.ENERGY_METER_WIDTH;
+        }
+
+        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents));
+
+        e.addToWorld();
+
+        return e;
     }
 
-//    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
-//    {
-//        Entity e = world.createEntity();
-//
-//        Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
-//
-//        e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
-//        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
-//                Constants.PLAYER_LAT_MAX_VEL,
-//                onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-//        e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
-//
-//        String playerName = "No Name assigned yet";
-//        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
-//
-//        if (uiOnRightSide)
-//            uiPosition.x -= Constants.PORTRAIT_WIDTH;
-//
-//        if (playerNum == 0)
-//        {
-//            e.addComponent(new Animate(Constants.PIRATE_IDLE));
-//            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-//            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
-//            playerName = extractPlayerName(Constants.PIRATE_PORTRAIT_HEALTHY); //assign player name from his portrait
-//        }
-//        else if (playerNum == 1)
-//        {
-//            e.addComponent(new Animate(Constants.NINJA_IDLE));
-//            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
-//            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
-//            playerName = extractPlayerName(Constants.NINJA_PORTRAIT_HEALTHY); //assign player name from his portrait
-//        }
-//        else if (playerNum == 2)
-//        {
-//            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
-//            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-//            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE,teamNum);
-//            playerName = extractPlayerName(Constants.GANGSTA_PORTRAIT_HEALTHY); //assign player name from his portrait
-//        }
-//        else
-//        {
-//            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
-//            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
-//            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED,teamNum);
-//            playerName = extractPlayerName(Constants.PHARAOH_PORTRAIT_HEALTHY); //assign player name from his portrait
-//        }
-//
-//        e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
-//
-//        world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
-//
-//        // Add abilities
-//        AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
-//
-//        // If the position is on the right side, move our uiPosition origin to the left to compensate.
-//        if (uiOnRightSide)
-//            uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
-//        else
-//            uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
-//
-//        uiPosition.y += Constants.PORTRAIT_WIDTH / 4;
-//
-//        for (int i = 0; i < chosenAbilityTypes.length; i++)
-//        {
-//            abilityCreationComponents[i] = createAbilityCreator(world, chosenAbilityTypes[i], uiPosition);
-//            uiPosition.x += Constants.ENERGY_METER_WIDTH;
-//        }
-//
-//        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents, playerName));
-//
-//        e.addToWorld();
-//
-//        return e;
-//    }
-
-    public static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor, int teamNum)
+    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor)
     {
-        System.out.println(portraitImage + "\twas called");
         Entity e = world.createEntity();
 
         e.addComponent(new UI());
 
         String[] imgArray = new String[]{teamColor,portraitImage};
-        e.addComponent(new Render(imgArray,Layer.UI, screenPosition, true));      //save imgNames, we will need these for later.
-
-        e.addComponent(new Portrait(portraitImage, teamNum));
+        e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true));
 
         e.addToWorld();
 
@@ -429,59 +283,63 @@ public class EntityFactory
     public static Entity createPillar(World world, Body trapRingBody,
                                       float radialPosition, boolean onOutsideEdge)
     {
-        Entity e = null;
+        Entity e = world.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        boolean existingPillarFound = false;
-
+        int pillarsUnderneath = 0;
+        float exactSelectedPillarPosition = 0f;
         for (Fixture fixture : trapRingBody.getFixtureList())
         {
             final Object userData = fixture.getUserData();
-
             if (userData instanceof PillarUD)
             {
                 Entity pillarEntity = ((PillarUD) userData).entity;
-
                 final TrapPhysics trapPhysics = pillarEntity.getComponent(TrapPhysics.class);
                 final float curTrapPos = trapPhysics.initialRadialPosition + trapRingBody.getAngle();
-
-                if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition &&
-                    curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
+                if (trapPhysics.onOutsideEdge == onOutsideEdge)
                 {
-                    Pillar pillar = pillarEntity.getComponent(Pillar.class);
+                    if (pillarsUnderneath > 0)
+                    {
+                        // If we've found an intersecting pillar before, we need to add to any pillars on top.
+                        if (curTrapPos == exactSelectedPillarPosition)
+                        {
+                            pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
+                            pillarsUnderneath++;
+                        }
+                    }
+                    else if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition && curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
+                    {
+                        pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
 
-                    pillar.numOfPillarSegments++;
-
-                    existingPillarFound = true;
-                    e = pillarEntity;
-
-                    break;
+                        exactSelectedPillarPosition = curTrapPos;
+                        pillarsUnderneath++;
+                    }
                 }
             }
         }
 
-        if (!existingPillarFound)
+        float trapHeight = 0;
+        if (pillarsUnderneath > 0)
         {
-            e = world.createEntity();
-
-            e.addComponent(new Pillar());
-
-            final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF,
-                    Box2DDefs.getPillarVertices(1),
-                    trapRingBody, twoDPosition, radialPosition, onOutsideEdge, 0);
-            trapPhysics.fixture.setUserData(new PillarUD(e));
-            e.addComponent(trapPhysics);
-
-            e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-            e.addComponent(new Animate(Constants.PILLAR, true));
-
-            e.addToWorld();
-
-            AssetLoader.playSound("pillar");
-
+            trapHeight = Constants.PILLAR_HEIGHT * pillarsUnderneath;
+            radialPosition = exactSelectedPillarPosition;
+            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(exactSelectedPillarPosition, onOutsideEdge, trapHeight);
         }
 
+        e.addComponent(new Pillar());
+
+        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF, Box2DDefs.getPillarVertices(),
+                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, trapHeight);
+        trapPhysics.fixture.setUserData(new PillarUD(e));
+        e.addComponent(trapPhysics);
+
+        e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+        e.addComponent(new Animate(Constants.PILLAR, true));
+
+        e.addToWorld();
+
+        AssetLoader.playSound("pillar");
 
         return e;
     }

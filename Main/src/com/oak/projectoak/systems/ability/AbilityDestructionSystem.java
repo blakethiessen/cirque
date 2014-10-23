@@ -4,6 +4,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.VoidEntitySystem;
+import com.artemis.utils.Timer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.oak.projectoak.components.Pillar;
@@ -62,9 +63,42 @@ public class AbilityDestructionSystem extends VoidEntitySystem
         if (pim.has(e))
         {
             Pillar pillar = pim.get(e);
-            if (pillar.numOfPillarSegments > 0)
+            if (!pillar.pillarsStackedOnTop.isEmpty())
             {
+                ArrayList<Entity> pillarsStackedOnTop = pillar.pillarsStackedOnTop;
+                for (int i = pillarsStackedOnTop.size() - 1; i >= 0; i--)
+                {
+                    if (pim.has(pillarsStackedOnTop.get(i)))
+                    {
+                        Entity topPillar = pillarsStackedOnTop.get(i);
 
+                        removeEntity(topPillar);
+                        entitiesToDestroy.remove(e);
+
+//                        Timer.schedule(new Timer.Task()
+//                        {
+//                            @Override
+//                            public void run()
+//                            {
+//                                destroyEntity(e);
+//                            }
+//                        }, pillar.destructionTimeReset);
+                        new Timer(pillar.destructionTimeReset)
+                        {
+                            @Override
+                            public void execute()
+                            {
+                                destroyEntity(e);
+                            }
+                        };
+
+                        pillar.destructionTimeReset /= 2;
+
+                        return;
+                    }
+                    else
+                        pillarsStackedOnTop.remove(i);
+                }
             }
         }
 
@@ -84,7 +118,6 @@ public class AbilityDestructionSystem extends VoidEntitySystem
                 updateRelevantFootContacts(fixtureToRemove, internalPlatformers);
         }
 
-        world.disable(e);
         world.deleteEntity(e);
         entitiesToDestroy.remove(e);
     }

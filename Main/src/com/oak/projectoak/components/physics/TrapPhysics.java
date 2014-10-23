@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.oak.projectoak.Constants;
 import com.oak.projectoak.physics.PhysicsFactory;
 
 public class TrapPhysics extends Component
@@ -17,8 +16,6 @@ public class TrapPhysics extends Component
     public boolean onOutsideEdge;
     public final float initialRotation;
     public float trapHeight;
-
-    public final Vector2 localPosition;
 
     public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
                        Vector2 position, float radialPosition, boolean onOutsideEdge, float trapHeight)
@@ -36,9 +33,20 @@ public class TrapPhysics extends Component
 
         PolygonShape shape = new PolygonShape();
 
-        localPosition = trapRingBody.getLocalPoint(position).cpy();
+        final Vector2 localPosition = trapRingBody.getLocalPoint(position);
+
+        // Rotate the vertices
         initialRotation = onOutsideEdge ? (float)(initialRadialPosition - Math.PI / 2) : (float)(initialRadialPosition + Math.PI / 2);
-        Constants.adjustFixtureTransform(shapeVertices, localPosition, initialRotation);
+        for (int i = 1; i < shapeVertices.length; i++)
+        {
+            shapeVertices[i].rotateRad(initialRotation);
+        }
+
+        // position the shape relative to the body.
+        for (Vector2 vertex : shapeVertices)
+        {
+            vertex.add(localPosition);
+        }
 
         shape.set(shapeVertices);
 

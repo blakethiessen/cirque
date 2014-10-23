@@ -15,28 +15,28 @@ public class DesktopStarter
     public static void main(String[] args)
     {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Cirque";
+        cfg.title = "Project Oak";
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         cfg.width = 1280;
         cfg.height = 720;
         cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
 
-        for (int i = 0; i < args.length; i++)
+        // Pass in the argument "nopack" to not run the image packer.
+        if (args.length > 0)
         {
-            // go fullscreen
-            if (args[i].equals("f"))
+            if (!args[0].equals("nopack"))
+                ImagePacker.run();
+            if (args.length > 1 && args[1].equals("f"))
             {
                 cfg.width = (int)screenSize.getWidth();
                 cfg.height = (int)screenSize.getHeight();
                 cfg.fullscreen = true;
             }
-            // Pack images
-            else if (args[i].equals("pack"))
-            {
-                ImagePacker.run();
-            }
         }
+        else
+            ImagePacker.run();
+
 
         new LwjglApplication(new ProjectOak(), cfg);
     }

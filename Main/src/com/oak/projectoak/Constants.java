@@ -83,55 +83,37 @@ public class Constants
 
     public static final float ROTATIONAL_OFFSET = .04f;
     public static final float TIER1_ENERGY_INCREASE_PER_FRAME_OF_RUNNING = .001f;
-    public static final int RESPAWN_TIME_SEC = 1;
-    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 1;
+    public static final int RESPAWN_TIME_SEC = 3;
+    public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 3;//8;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
-//    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
-    public static final float STAKE_LIFETIME = 10;
+    public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
-    public static final long PILLAR_LIFETIME_MS = 16000;
+    public static final int PILLAR_LIFETIME = 16;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
+    public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
     //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
     public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .4f;
     public static final float LIGHTNING_BOLT_SPAWN_OFFSET = .1f;
-    public static final float LIGHTNING_BOLT_ENERGY_COST = 0.5f; //////////////change back to 0.5f!!!!!!!!!!!!!
+    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
     public static final int ZOOM_RING_PADDING = 260;
-    public static final float MUSIC_FADE_RATE = .0002f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
-    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
-
-    public static Vector2[] adjustFixtureTransform(Vector2[] shapeVertices, Vector2 localPosition, float rotation)
-    {
-        // Rotate the vertices
-        for (int i = 1; i < shapeVertices.length; i++)
-        {
-            shapeVertices[i].rotateRad(rotation);
-        }
-
-        // position the shape relative to the body.
-        for (Vector2 vertex : shapeVertices)
-        {
-            vertex.add(localPosition);
-        }
-
-        return shapeVertices;
-    }
+    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0002f;
 
     public class Groups
     {
@@ -143,9 +125,9 @@ public class Constants
 
     public static final int UI_PADDING = 20;
     public static final Vector2 P1_UI_POSITION = new Vector2(UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
-    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING - PORTRAIT_WIDTH, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
+    public static final Vector2 P2_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, Gdx.graphics.getHeight() - UI_PADDING - PORTRAIT_WIDTH);
     public static final Vector2 P3_UI_POSITION = new Vector2(UI_PADDING, UI_PADDING);
-    public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING - PORTRAIT_WIDTH, UI_PADDING);
+    public static final Vector2 P4_UI_POSITION = new Vector2(Gdx.graphics.getWidth() - UI_PADDING, UI_PADDING);
 
     // PLAYER CONSTANTS
     public static final float PLAYER_WIDTH = .62f;
