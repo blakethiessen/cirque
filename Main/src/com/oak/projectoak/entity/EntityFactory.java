@@ -192,7 +192,7 @@ public class EntityFactory
         e.addComponent(new UI());
         e.addComponent(new Portrait(portraitStates, deathPortrait));
 
-        String[] imgArray = new String[]{teamColor, portraitStates[Portrait.PortraitState.HEALTHY.getId()]};
+        String[] imgArray = new String[]{teamColor, portraitStates[0]};
         e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true));
 
         e.addToWorld();

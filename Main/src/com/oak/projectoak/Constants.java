@@ -98,8 +98,13 @@ public class Constants
     public static final int RESPAWN_TIME_SEC = 3;
     public static final long RESPAWN_INVULNERABLE_PERIOD_SEC = 3;
 
+    // Must be updated to reflected number of portrait states.
+    public static final int NUM_OF_PORTRAIT_STATES = 4;
+
     public static final int DEATHMATCH_NUM_TEAMS = 2;
     public static final int DEATHMATCH_KILLS_TO_WIN = 3;//8;
+    public static final int DEATHMATCH_LIVES_AT_EACH_PORTRAIT_STATE =
+            DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1);
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);

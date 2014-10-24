@@ -18,25 +18,6 @@ public class Portrait extends Component
         deathPortrait = deathPortraitTextureName;
     }
 
-    public enum PortraitState
-    {
-        HEALTHY(0),
-        BRUISED(1),
-        NEAR_DEATH(2);
-
-        private final int id;
-
-        private PortraitState(int id)
-        {
-            this.id = id;
-        }
-
-        public int getId()
-        {
-            return id;
-        }
-    }
-
     public class PortraitPair
     {
         public String normal;

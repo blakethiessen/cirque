@@ -106,8 +106,10 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 player.resetActions();
                 player.invulnerable = true;
 
+                // Portrait state is determined by how many times the player has died.
+                final int curPortraitState = player.deaths / Constants.DEATHMATCH_LIVES_AT_EACH_PORTRAIT_STATE;
                 player.portraitRender.setNewSpriteImage(
-                        player.portraitPortrait.portraitPairs[Portrait.PortraitState.HEALTHY.getId()].blink, 1);
+                        player.portraitPortrait.portraitPairs[curPortraitState].blink, 1);
 
                 Timer.schedule(new Timer.Task()
                 {
@@ -116,7 +118,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                     {
                         player.invulnerable = false;
                         player.portraitRender.setNewSpriteImage(
-                                player.portraitPortrait.portraitPairs[Portrait.PortraitState.HEALTHY.getId()].normal, 1);
+                                player.portraitPortrait.portraitPairs[curPortraitState].normal, 1);
                     }
                 }, Constants.RESPAWN_INVULNERABLE_PERIOD_SEC);
 
