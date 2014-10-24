@@ -57,9 +57,9 @@ public class Animate extends Component
         }
     }
 
-    public void setAnimation(String animation)
+    public void setAnimation(String animationString)
     {
-        setAnimation(animation, false);
+        setAnimation(animationString, false);
     }
 
     public Animation getAnimation()

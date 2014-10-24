@@ -97,6 +97,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
                     curAbility.energyAmt -= curAbility.energyCostPerUse;
                     curAbility.justUsed = true;
+                    curAbility.numUsesAvailable--;
                 }
             }
             else

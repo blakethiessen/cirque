@@ -45,6 +45,7 @@ public class AssetLoader
             soundMap.put("jump", Gdx.audio.newSound(Gdx.files.internal("sounds/woosh.wav")));
             soundMap.put("spike", Gdx.audio.newSound(Gdx.files.internal("sounds/spike.wav")));
             soundMap.put("lightning", Gdx.audio.newSound(Gdx.files.internal("sounds/thunder.wav")));
+            soundMap.put("ability_ready", Gdx.audio.newSound(Gdx.files.internal("sounds/ability_ready.mp3")));
 
             initialized = true;
         }

@@ -6,6 +6,8 @@ import com.artemis.Entity;
 import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.AbilityCreation;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Render;
@@ -34,17 +36,11 @@ public class UIEnergyUpdateSystem extends EntityProcessingSystem
         energyLevelSprite.setScale(1 , -abilityCreation.energyAmt);
         energyLevelSprite.setY(render.sprites[0].getY() - ((1 - abilityCreation.energyAmt) * energyLevelSprite.getHeight()) / 2);
 
-//        if (abilityCreation.numUsesAvailable < Math.floor(abilityCreation.energyAmt / abilityCreation.energyCostPerUse))
-//        {
-//            render.sprites[3].setScale(1);
-//            Constants.setSpriteTexture(render.sprites[3], AssetLoader.getAnimation(Constants.UI_ENERGY_READY).getKeyFrame(0));
-//            abilityCreation.numUsesAvailable++;
-//        }
-
-//        if (animate.getAnimation() != null && animate.getAnimation().isAnimationFinished(animate.stateTime))
-//        {
-//            render.sprites[3].setScale(0);
-//            animate.stateTime = 0;
-//        }
+        if (abilityCreation.numUsesAvailable < Math.floor(abilityCreation.energyAmt / abilityCreation.energyCostPerUse))
+        {
+            animate.setAnimation(Constants.UI_ENERGY_READY);
+            AssetLoader.playSound("ability_ready");
+            abilityCreation.numUsesAvailable++;
+        }
     }
 }
