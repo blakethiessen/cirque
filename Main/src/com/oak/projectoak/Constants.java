@@ -92,14 +92,14 @@ public class Constants
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = .33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
+//    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
     public static final int PILLAR_DESTRUCTION_TIME_RESET = 8;
-    public static final int PILLAR_LIFETIME = 16;
+    public static final long PILLAR_LIFETIME_MS = 16000;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
-    public static final float CAMERA_TRANSITION_ZOOM_SPEED = .014f;
     //TODO: Make these factor each other.
     public static final float LIGHTNING_BOLT_SPEED_SCALE_FACTOR = 4f;
     public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8f;
@@ -113,7 +113,7 @@ public class Constants
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
-    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0002f;
+    public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
 
     public class Groups
     {
@@ -162,6 +162,23 @@ public class Constants
     public static final Vector2 ARENA_CENTER = new Vector2(
             ConvertPixelsToMeters(Gdx.graphics.getWidth() / 2),
             ConvertPixelsToMeters(Gdx.graphics.getHeight() / 2));
+
+    public static Vector2[] adjustFixtureTransform(Vector2[] shapeVertices, Vector2 localPosition, float rotation)
+    {
+        // Rotate the vertices
+        for (int i = 1; i < shapeVertices.length; i++)
+        {
+            shapeVertices[i].rotateRad(rotation);
+        }
+
+        // position the shape relative to the body.
+        for (Vector2 vertex : shapeVertices)
+        {
+            vertex.add(localPosition);
+        }
+
+        return shapeVertices;
+    }
 
     public static Vector2 ConvertRadialTo2DPosition(float radialPosition, boolean onOutsideEdge)
     {

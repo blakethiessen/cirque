@@ -15,7 +15,7 @@ public class DesktopStarter
     public static void main(String[] args)
     {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Project Oak";
+        cfg.title = "Cirque";
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         cfg.width = 1280;
         cfg.height = 720;

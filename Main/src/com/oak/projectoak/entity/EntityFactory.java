@@ -283,61 +283,54 @@ public class EntityFactory
     public static Entity createPillar(World world, Body trapRingBody,
                                       float radialPosition, boolean onOutsideEdge)
     {
-        Entity e = world.createEntity();
+        Entity e = null;
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        int pillarsUnderneath = 0;
-        float exactSelectedPillarPosition = 0f;
+        boolean existingPillarFound = false;
+
         for (Fixture fixture : trapRingBody.getFixtureList())
         {
             final Object userData = fixture.getUserData();
+
             if (userData instanceof PillarUD)
             {
                 Entity pillarEntity = ((PillarUD) userData).entity;
-                final TrapPhysics trapPhysics = pillarEntity.getComponent(TrapPhysics.class);
-                final float curTrapPos = trapPhysics.initialRadialPosition + trapRingBody.getAngle();
-                if (trapPhysics.onOutsideEdge == onOutsideEdge)
-                {
-                    if (pillarsUnderneath > 0)
-                    {
-                        // If we've found an intersecting pillar before, we need to add to any pillars on top.
-                        if (curTrapPos == exactSelectedPillarPosition)
-                        {
-                            pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
-                            pillarsUnderneath++;
-                        }
-                    }
-                    else if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition && curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
-                    {
-                        pillarEntity.getComponent(Pillar.class).pillarsStackedOnTop.add(e);
 
-                        exactSelectedPillarPosition = curTrapPos;
-                        pillarsUnderneath++;
-                    }
+                final TrapPhysics trapPhysics = pillarEntity.getComponent(TrapPhysics.class);
+                // TODO: NullPointerException
+                final float curTrapPos = trapPhysics.initialRadialPosition + trapRingBody.getAngle();
+                if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition &&
+                    curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
+                {
+                    Pillar pillar = pillarEntity.getComponent(Pillar.class);
+
+                    pillar.numOfPillarSegments++;
+
+                    existingPillarFound = true;
+                    e = pillarEntity;
+
+                    break;
                 }
             }
         }
 
-        float trapHeight = 0;
-        if (pillarsUnderneath > 0)
+        if (!existingPillarFound)
         {
-            trapHeight = Constants.PILLAR_HEIGHT * pillarsUnderneath;
-            radialPosition = exactSelectedPillarPosition;
-            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(exactSelectedPillarPosition, onOutsideEdge, trapHeight);
+            e = world.createEntity();
+            e.addComponent(new Pillar());
+
+            final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF,
+                    Box2DDefs.getPillarVertices(1),
+                    trapRingBody, twoDPosition, radialPosition, onOutsideEdge, 0);
+            trapPhysics.fixture.setUserData(new PillarUD(e));
+            e.addComponent(trapPhysics);
+
+            e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+            e.addComponent(new Animate(Constants.PILLAR, true));
+
+            e.addToWorld();
         }
-
-        e.addComponent(new Pillar());
-
-        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF, Box2DDefs.getPillarVertices(),
-                trapRingBody, twoDPosition, radialPosition, onOutsideEdge, trapHeight);
-        trapPhysics.fixture.setUserData(new PillarUD(e));
-        e.addComponent(trapPhysics);
-
-        e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-        e.addComponent(new Animate(Constants.PILLAR, true));
-
-        e.addToWorld();
 
         AssetLoader.playSound("pillar");
 

@@ -20,7 +20,6 @@ public class AbilityDestructionSystem extends VoidEntitySystem
     @Mapper ComponentMapper<Physics> pm;
     @Mapper ComponentMapper<DynamicPhysics> dpm;
     @Mapper ComponentMapper<TrapPhysics> tpm;
-    @Mapper ComponentMapper<Pillar> pim;
 
     private final World b2world;
     private ArrayList<Entity> entitiesToDestroy;
@@ -59,49 +58,6 @@ public class AbilityDestructionSystem extends VoidEntitySystem
 
     private void removeEntity(final Entity e)
     {
-        // If we're removing a pillar, remove the top stacked one if possible.
-        if (pim.has(e))
-        {
-            Pillar pillar = pim.get(e);
-            if (!pillar.pillarsStackedOnTop.isEmpty())
-            {
-                ArrayList<Entity> pillarsStackedOnTop = pillar.pillarsStackedOnTop;
-                for (int i = pillarsStackedOnTop.size() - 1; i >= 0; i--)
-                {
-                    if (pim.has(pillarsStackedOnTop.get(i)))
-                    {
-                        Entity topPillar = pillarsStackedOnTop.get(i);
-
-                        removeEntity(topPillar);
-                        entitiesToDestroy.remove(e);
-
-//                        Timer.schedule(new Timer.Task()
-//                        {
-//                            @Override
-//                            public void run()
-//                            {
-//                                destroyEntity(e);
-//                            }
-//                        }, pillar.destructionTimeReset);
-                        new Timer(pillar.destructionTimeReset)
-                        {
-                            @Override
-                            public void execute()
-                            {
-                                destroyEntity(e);
-                            }
-                        };
-
-                        pillar.destructionTimeReset /= 2;
-
-                        return;
-                    }
-                    else
-                        pillarsStackedOnTop.remove(i);
-                }
-            }
-        }
-
         if (pm.has(e))
             b2world.destroyBody(pm.get(e).body);
         else if (dpm.has(e))

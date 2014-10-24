@@ -27,6 +27,7 @@ import com.oak.projectoak.systems.*;
 import com.oak.projectoak.systems.ability.AbilityCreationSystem;
 import com.oak.projectoak.systems.ability.AbilityDestructionSystem;
 import com.oak.projectoak.systems.ability.AbilitySystem;
+import com.oak.projectoak.systems.ability.PillarSystem;
 import com.oak.projectoak.systems.physics.*;
 import com.oak.projectoak.systems.render.*;
 
@@ -86,8 +87,6 @@ public class GameScreen implements Screen
 
         // Setup systems
         world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
-        world.setSystem(playerDestructionSystem);
-        world.setSystem(abilityDestructionSystem);
 
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new TrapPhysicsSystem());
@@ -107,9 +106,11 @@ public class GameScreen implements Screen
 
         world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
-        world.setSystem(abilitySystem);
+        world.setSystem(new PillarSystem(abilityDestructionSystem));
+
         world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
+        world.setSystem(abilitySystem);
         world.setSystem(new AnimationSystem());
         world.setSystem(new PlayerInvulnerableFlashingSystem());
         world.setSystem(new UIEnergyUpdateSystem());
@@ -125,6 +126,10 @@ public class GameScreen implements Screen
 
         ScoreTrackingSystem scoreTracking = new ScoreTrackingSystem(deathMatchManager);
         world.setSystem(scoreTracking);
+
+        world.setSystem(playerDestructionSystem);
+        world.setSystem(abilityDestructionSystem);
+
         world.setSystem(new GameOverSystem(deathMatchManager, scoreTracking, this, game, camera));
 
         world.setManager(new GroupManager());
@@ -142,13 +147,13 @@ public class GameScreen implements Screen
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
-        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 1, Constants.P3_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
-        abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
-
-        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 0, Constants.P4_UI_POSITION.cpy(),
-                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
-        abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
+//        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI / 2, true, 1, Constants.P3_UI_POSITION.cpy(),
+//                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
+//        abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), true);
+//
+//        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI * 3 / 2, false, 0, Constants.P4_UI_POSITION.cpy(),
+//                new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
+//        abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), false);
 
         Array<Controller> controllers = Controllers.getControllers();
         for (int i = 0; i < controllers.size; i++)
