@@ -109,8 +109,8 @@ public class Constants
     public static final float MAX_ARENA_ROTATION_SPEED = 1f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL = MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-//    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
-    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
+    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
+//    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
@@ -157,6 +157,8 @@ public class Constants
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
+    public static final float ABILITY_SPAWN_OFFSET = .09f;
+
     public static final float STAKE_WIDTH = .64f;
     public static final float STAKE_HEIGHT = .65f;
 

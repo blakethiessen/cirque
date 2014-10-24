@@ -58,7 +58,8 @@ public class GameScreen implements Screen
         world = new World();
 
         // Setup appropriate game setting
-        DeathMatchManager deathMatchManager = new DeathMatchManager(world, Constants.DEATHMATCH_NUM_TEAMS, Constants.DEATHMATCH_KILLS_TO_WIN);
+        DeathMatchManager deathMatchManager =
+                new DeathMatchManager(world, Constants.DEATHMATCH_NUM_TEAMS, Constants.DEATHMATCH_KILLS_TO_WIN);
 
         // Setup physics
         b2world = new com.badlogic.gdx.physics.box2d.World(Constants.GRAVITY, true);
@@ -74,10 +75,12 @@ public class GameScreen implements Screen
         PhysicsFactory.setWorld(b2world);
         final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER, 0);
 
-        final PlayerDestructionSystem playerDestructionSystem = new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_SEC, arenaRotationSystem);
+        final PlayerDestructionSystem playerDestructionSystem =
+                new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_SEC, arenaRotationSystem);
         final AbilityDestructionSystem abilityDestructionSystem = new AbilityDestructionSystem(b2world);
 
-        final AbilitySystem abilitySystem = new AbilitySystem(playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
+        final AbilitySystem abilitySystem =
+                new AbilitySystem(playerDestructionSystem, abilityDestructionSystem, deathMatchManager);
         contactListener.addContactListener(abilitySystem);
 
         b2world.setContactListener(contactListener);
@@ -86,7 +89,9 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
-        world.setSystem(new CameraZoomTransitionSystem(camera, (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE / ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
+        world.setSystem(new CameraZoomTransitionSystem(camera,
+                (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE /
+                        ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
 
         world.setSystem(new DynamicPhysicsSystem());
         world.setSystem(new TrapPhysicsSystem());
@@ -124,13 +129,10 @@ public class GameScreen implements Screen
         world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
         world.setSystem(new GraphicsDebugSystem(camera));
 
-        ScoreTrackingSystem scoreTracking = new ScoreTrackingSystem(deathMatchManager);
-        world.setSystem(scoreTracking);
-
         world.setSystem(playerDestructionSystem);
         world.setSystem(abilityDestructionSystem);
 
-        world.setSystem(new GameOverSystem(deathMatchManager, scoreTracking, this, game, camera));
+        world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
 
         world.setManager(new GroupManager());
 
