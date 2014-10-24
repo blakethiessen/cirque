@@ -8,10 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
-import com.oak.projectoak.components.Animate;
-import com.oak.projectoak.components.Platformer;
-import com.oak.projectoak.components.Player;
-import com.oak.projectoak.components.PlayerAnimation;
+import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
@@ -46,8 +43,6 @@ public class PlayerDestructionSystem extends VoidEntitySystem
 
     public void destroyEntity(Entity entity)
     {
-        playm.get(entity).deaths++;
-
         if (!entitiesToDestroy.contains(entity))
             entitiesToDestroy.add(entity);
     }
@@ -69,6 +64,8 @@ public class PlayerDestructionSystem extends VoidEntitySystem
             animate.setAnimation(pam.get(e).death, true);
             final Player player = playm.get(e);
             player.invulnerable = true;
+            player.deaths++;
+            player.portraitRender.setNewSpriteImage(player.portraitPortrait.deathPortrait, 1);
 
             Timer.schedule(new Timer.Task()
             {
@@ -109,12 +106,17 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 player.resetActions();
                 player.invulnerable = true;
 
+                player.portraitRender.setNewSpriteImage(
+                        player.portraitPortrait.portraitPairs[Portrait.PortraitState.HEALTHY.getId()].blink, 1);
+
                 Timer.schedule(new Timer.Task()
                 {
                     @Override
                     public void run()
                     {
                         player.invulnerable = false;
+                        player.portraitRender.setNewSpriteImage(
+                                player.portraitPortrait.portraitPairs[Portrait.PortraitState.HEALTHY.getId()].normal, 1);
                     }
                 }, Constants.RESPAWN_INVULNERABLE_PERIOD_SEC);
 

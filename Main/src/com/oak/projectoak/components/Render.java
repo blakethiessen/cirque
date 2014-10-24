@@ -121,6 +121,11 @@ public class Render extends Component
             sprite.setRotation(angle);
     }
 
+    public void setNewSpriteImage(String textureName, int layerPosition)
+    {
+        Constants.setSpriteTexture(sprites[layerPosition], AssetLoader.getTextureRegion(textureName));
+    }
+
     public void flipSprites(boolean xFlip, boolean yFlip)
     {
         for (Sprite sprite : sprites)

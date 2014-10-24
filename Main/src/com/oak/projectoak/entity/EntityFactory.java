@@ -57,7 +57,8 @@ public class EntityFactory
     }
 
     //Create aligned text
-    public static Entity createText(World world, String text, Vector2 position, Color color, float alignmentSize, BitmapFont.HAlignment alignment)
+    public static Entity createText(World world, String text, Vector2 position,
+                                    Color color, float alignmentSize, BitmapFont.HAlignment alignment)
     {
         Entity e = world.createEntity();
 
@@ -74,17 +75,6 @@ public class EntityFactory
         Entity e = world.createEntity();
 
         e.addComponent(new Render(imagePath, Layer.UI, position, true));
-
-        e.addToWorld();
-
-        return e;
-    }
-
-    public static Entity createBasicController(World world)
-    {
-        Entity e = world.createEntity();
-
-        e.addComponent(new Player(0, 0, null));
 
         e.addToWorld();
 
@@ -108,29 +98,62 @@ public class EntityFactory
         if (uiOnRightSide)
             uiPosition.x -= Constants.PORTRAIT_WIDTH;
 
+        Entity characterPortrait;
         if (playerNum == 0)
         {
             e.addComponent(new Animate(Constants.PIRATE_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
-            createCharacterPortrait(world, Constants.PIRATE_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
+            characterPortrait =
+                    createCharacterPortrait(world, 
+                            new String[]
+                                    {
+                                            Constants.PIRATE_PORTRAIT_HEALTHY,
+                                            Constants.PIRATE_PORTRAIT_BRUISED,
+                                            Constants.PIRATE_PORTRAIT_NEAR_DEAD
+                                    },
+                            Constants.PIRATE_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
         else if (playerNum == 1)
         {
             e.addComponent(new Animate(Constants.NINJA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
-            createCharacterPortrait(world, Constants.NINJA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
+            characterPortrait =
+                    createCharacterPortrait(world,
+                            new String[]
+                                    {
+                                            Constants.NINJA_PORTRAIT_HEALTHY,
+                                            Constants.NINJA_PORTRAIT_BRUISED,
+                                            Constants.NINJA_PORTRAIT_NEAR_DEAD
+                                    },
+                            Constants.NINJA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
         else if (playerNum == 2)
         {
             e.addComponent(new Animate(Constants.GANGSTA_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-            createCharacterPortrait(world, Constants.GANGSTA_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
+            characterPortrait =
+                    createCharacterPortrait(world,
+                            new String[]
+                                    {
+                                            Constants.GANGSTA_PORTRAIT_HEALTHY,
+                                            Constants.GANGSTA_PORTRAIT_BRUISED,
+                                            Constants.GANGSTA_PORTRAIT_NEAR_DEAD
+                                    },
+                            Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
         else
         {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
-            createCharacterPortrait(world, Constants.PHARAOH_PORTRAIT_HEALTHY, uiPosition, Constants.PORTRAIT_TEAM_RED);
+            characterPortrait =
+                    createCharacterPortrait(world,
+                            new String[]
+                                    {
+                                            Constants.PHARAOH_PORTRAIT_HEALTHY,
+                                            Constants.PHARAOH_PORTRAIT_BRUISED,
+                                            Constants.PHARAOH_PORTRAIT_NEAR_DEAD
+                                    },
+                            Constants.PHARAOH_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_RED);
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
@@ -154,20 +177,22 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents));
+        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents, characterPortrait));
 
         e.addToWorld();
 
         return e;
     }
 
-    private static Entity createCharacterPortrait(World world, String portraitImage, Vector2 screenPosition, String teamColor)
+    private static Entity createCharacterPortrait(World world, String[] portraitStates,
+                                                  String deathPortrait, Vector2 screenPosition, String teamColor)
     {
         Entity e = world.createEntity();
 
         e.addComponent(new UI());
+        e.addComponent(new Portrait(portraitStates, deathPortrait));
 
-        String[] imgArray = new String[]{teamColor,portraitImage};
+        String[] imgArray = new String[]{teamColor, portraitStates[Portrait.PortraitState.HEALTHY.getId()]};
         e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true));
 
         e.addToWorld();

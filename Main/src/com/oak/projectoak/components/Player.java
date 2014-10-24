@@ -1,6 +1,7 @@
 package com.oak.projectoak.components;
 
 import com.artemis.Component;
+import com.artemis.Entity;
 import com.oak.projectoak.Action;
 
 /*
@@ -30,13 +31,19 @@ public class Player extends Component
     public float lastLateralChangePosition;
     public boolean isMovingRight;
 
+    public Render portraitRender;
+    public Portrait portraitPortrait;
+
     //Player stats
     public int enemyKills, deaths, friendlyKills;
 
-    public Player(int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents)
+    public Player(
+            int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents, Entity characterPortrait)
     {
         this.teamNum = teamNum;
         this.abilities = abilityCreationComponents;
+        this.portraitRender = characterPortrait.getComponent(Render.class);
+        this.portraitPortrait = characterPortrait.getComponent(Portrait.class);
 
         this.playerNum = playerNum;
 

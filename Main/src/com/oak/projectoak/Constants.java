@@ -24,8 +24,11 @@ public class Constants
     public static final String PIRATE_LAY_TRAP = "characters/pirate/lay_trap/lay_trap";
     public static final String PIRATE_DEATH = "characters/pirate/death/death";
     public static final String PIRATE_PORTRAIT_HEALTHY = "characterPortraits/pirate/1_healthy";
+    public static final String PIRATE_PORTRAIT_HEALTHY_BLINK = "characterPortraits/pirate/1_healthy_blink";
     public static final String PIRATE_PORTRAIT_BRUISED = "characterPortraits/pirate/2_bruised";
+    public static final String PIRATE_PORTRAIT_BRUISED_BLINK = "characterPortraits/pirate/2_bruised_blink";
     public static final String PIRATE_PORTRAIT_NEAR_DEAD = "characterPortraits/pirate/3_near_dead";
+    public static final String PIRATE_PORTRAIT_NEAR_DEAD_BLINK = "characterPortraits/pirate/3_near_dead_blink";
     public static final String PIRATE_PORTRAIT_DEAD = "characterPortraits/pirate/4_dead";
 
     public static final String NINJA_IDLE = "characters/ninja/idle/idle";
@@ -34,8 +37,11 @@ public class Constants
     public static final String NINJA_LAY_TRAP = "characters/ninja/lay_trap/lay_trap";
     public static final String NINJA_DEATH = "characters/ninja/death/death";
     public static final String NINJA_PORTRAIT_HEALTHY = "characterPortraits/ninja/1_healthy";
+    public static final String NINJA_PORTRAIT_HEALTHY_BLINK = "characterPortraits/ninja/1_healthy_blink";
     public static final String NINJA_PORTRAIT_BRUISED = "characterPortraits/ninja/2_bruised";
+    public static final String NINJA_PORTRAIT_BRUISED_BLINK = "characterPortraits/ninja/2_bruised_blink";
     public static final String NINJA_PORTRAIT_NEAR_DEAD = "characterPortraits/ninja/3_near_dead";
+    public static final String NINJA_PORTRAIT_NEAR_DEAD_BLINK = "characterPortraits/ninja/3_near_dead_blink";
     public static final String NINJA_PORTRAIT_DEAD = "characterPortraits/ninja/4_dead";
     
     public static final String GANGSTA_IDLE = "characters/gangsta/idle/idle";
@@ -44,8 +50,11 @@ public class Constants
     public static final String GANGSTA_LAY_TRAP = "characters/gangsta/lay_trap/lay_trap";
     public static final String GANGSTA_DEATH = "characters/gangsta/death/death";
     public static final String GANGSTA_PORTRAIT_HEALTHY = "characterPortraits/gangsta/1_healthy";
+    public static final String GANGSTA_PORTRAIT_HEALTHY_BLINK = "characterPortraits/gangsta/1_healthy_blink";
     public static final String GANGSTA_PORTRAIT_BRUISED = "characterPortraits/gangsta/2_bruised";
+    public static final String GANGSTA_PORTRAIT_BRUISED_BLINK = "characterPortraits/gangsta/2_bruised_blink";
     public static final String GANGSTA_PORTRAIT_NEAR_DEAD = "characterPortraits/gangsta/3_near_dead";
+    public static final String GANGSTA_PORTRAIT_NEAR_DEAD_BLINK = "characterPortraits/gangsta/3_near_dead_blink";
     public static final String GANGSTA_PORTRAIT_DEAD = "characterPortraits/gangsta/4_dead";
 
     public static final String PHARAOH_IDLE = "characters/pharaoh/idle/idle";
@@ -54,8 +63,11 @@ public class Constants
     public static final String PHARAOH_LAY_TRAP = "characters/pharaoh/lay_trap/lay_trap";
     public static final String PHARAOH_DEATH = "characters/pharaoh/death/death";
     public static final String PHARAOH_PORTRAIT_HEALTHY = "characterPortraits/pharaoh/1_healthy";
+    public static final String PHARAOH_PORTRAIT_HEALTHY_BLINK = "characterPortraits/pharaoh/1_healthy_blink";
     public static final String PHARAOH_PORTRAIT_BRUISED = "characterPortraits/pharaoh/2_bruised";
+    public static final String PHARAOH_PORTRAIT_BRUISED_BLINK = "characterPortraits/pharaoh/2_bruised_blink";
     public static final String PHARAOH_PORTRAIT_NEAR_DEAD = "characterPortraits/pharaoh/3_near_dead";
+    public static final String PHARAOH_PORTRAIT_NEAR_DEAD_BLINK = "characterPortraits/pharaoh/3_near_dead_blink";
     public static final String PHARAOH_PORTRAIT_DEAD = "characterPortraits/pharaoh/4_dead";
 
     public static final String PILLAR = "abilities/pillar/pillar";
