@@ -67,12 +67,6 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
                     animate.setAnimation(playerAnimation.layTrap, true);
 
-                    final float abilitySpawnPoint;
-                    if (arenaTransform.onOutsideEdge)
-                        abilitySpawnPoint = arenaTransform.radialPosition - Constants.ABILITY_SPAWN_OFFSET;
-                    else
-                        abilitySpawnPoint = arenaTransform.radialPosition + Constants.ABILITY_SPAWN_OFFSET;
-
                     Timer.schedule(new Timer.Task()
                     {
                         @Override
@@ -82,17 +76,24 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                             {
                                 case STAKE:
                                     scheduleEntityForDestruction(EntityFactory.createStake(world, trapRingBody,
-                                            abilitySpawnPoint,
+                                            arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
+                                                    Constants.ABILITY_SPAWN_OFFSET :
+                                                    arenaTransform.radialPosition + Constants.ABILITY_SPAWN_OFFSET,
                                             !arenaTransform.onOutsideEdge, e), Constants.STAKE_LIFETIME);
                                     break;
                                 case PILLAR:
                                     // Pillar destruction is managed in the PillarSystem.
                                     EntityFactory.createPillar(world, trapRingBody,
-                                            abilitySpawnPoint, !arenaTransform.onOutsideEdge);
+                                            arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
+                                                    Constants.ABILITY_SPAWN_OFFSET :
+                                                    arenaTransform.radialPosition + Constants.ABILITY_SPAWN_OFFSET,
+                                            !arenaTransform.onOutsideEdge);
                                     break;
                                 case LIGHTNING_BOLT:
                                     EntityFactory.createLightningBolt(world,
-                                            abilitySpawnPoint,
+                                            arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
+                                                    Constants.ABILITY_SPAWN_OFFSET :
+                                                    arenaTransform.radialPosition - Constants.INSIDE_LIGHTNING_SPAWN_OFFSET,
                                             !arenaTransform.onOutsideEdge, e);
                                     break;
                                 default:

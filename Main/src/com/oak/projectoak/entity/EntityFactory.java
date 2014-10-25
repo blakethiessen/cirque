@@ -368,20 +368,30 @@ public class EntityFactory
 
         Vector2 twoDPosition;
         if (onOutsideEdge)
-            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge, Constants.LIGHTNING_BOLT_HEIGHT + Constants.LIGHTNING_BOLT_SPAWN_OFFSET);
+            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge,
+                    Constants.LIGHTNING_BOLT_HEIGHT + Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
         else
-            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(radialPosition, onOutsideEdge, Constants.LIGHTNING_BOLT_SPAWN_OFFSET);
+            twoDPosition = Constants.ConvertRadialTo2DPositionWithHeight(
+                    radialPosition, onOutsideEdge,
+                    Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
 
         DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createLightningBoltBody(e), twoDPosition);
         final Body body = dynamicPhysics.body;
         final Vector2 position = body.getPosition();
         if (onOutsideEdge)
         {
-            body.setLinearVelocity(twoDPosition.cpy().sub(Constants.ARENA_CENTER).scl(Constants.LIGHTNING_BOLT_SPEED_SCALE_FACTOR));
+            Vector2 twoDVelocityPosition = Constants.ConvertRadialTo2DPositionWithHeight(
+                    radialPosition, onOutsideEdge,
+                    Constants.LIGHTNING_BOLT_HEIGHT + Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
+
+            body.setLinearVelocity(twoDVelocityPosition.cpy().sub(Constants.ARENA_CENTER)
+                            .scl(Constants.LIGHTNING_BOLT_OUTSIDE_SPEED_SCALE_FACTOR));
+
             body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2));
 
             final Vector2 oppositeSidePos = Constants.ConvertRadialTo2DPositionWithHeight(
-                    (float) (radialPosition + Math.PI), onOutsideEdge, Constants.LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE);
+                    (float) (radialPosition + Math.PI + Constants.OUTER_LIGHTNING_ROTATION_OFFSET), onOutsideEdge,
+                    Constants.LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE);
 
             Timer.schedule(new Timer.Task()
             {
@@ -394,8 +404,12 @@ public class EntityFactory
         }
         else
         {
-            body.setLinearVelocity(Constants.ARENA_CENTER.cpy().sub(twoDPosition).scl(Constants.LIGHTNING_BOLT_SPEED_SCALE_FACTOR));
-            body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2));
+            Vector2 twoDVelocityPosition = Constants.ConvertRadialTo2DPositionWithHeight(
+                    radialPosition + Constants.LIGHTNING_BOLT_ROTATION_OFFSET, onOutsideEdge,
+                    Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
+
+            body.setLinearVelocity(Constants.ARENA_CENTER.cpy().sub(twoDVelocityPosition).scl(Constants.LIGHTNING_BOLT_INSIDE_SPEED_SCALE_FACTOR));
+            body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2 + Constants.LIGHTNING_BOLT_ROTATION_OFFSET));
         }
 
         e.addComponent(dynamicPhysics);
