@@ -119,10 +119,10 @@ public class Constants
     public static final long PILLAR_LIFETIME_MS = 16000;
     public static final int PORTRAIT_ENERGY_METER_PADDING = 12;
     //TODO: Make these factor each other.
-    public static final float LIGHTNING_BOLT_INSIDE_SPEED_SCALE_FACTOR = 3.5f;
-    public static final float LIGHTNING_BOLT_OUTSIDE_SPEED_SCALE_FACTOR = 5.5f;
-    public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 10f;
-    public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .3f;
+    public static final float LIGHTNING_BOLT_INSIDE_SPEED_SCALE_FACTOR = 4f;
+    public static final float LIGHTNING_BOLT_OUTSIDE_SPEED_SCALE_FACTOR = 4.5f;
+    public static final float LIGHTNING_WRAP_AROUND_SPAWN_DISTANCE = 8.5f;
+    public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .25f;
     public static final float LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ROTATION_OFFSET = .1f;
 //    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
