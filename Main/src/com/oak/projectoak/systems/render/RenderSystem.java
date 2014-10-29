@@ -78,7 +78,7 @@ public class RenderSystem extends EntitySystem
         batch.begin();
 
         batch.disableBlending();
-//        batch.draw(backgroundTexture, BACKGROUND_X, BACKGROUND_Y);
+        batch.draw(backgroundTexture, BACKGROUND_X, BACKGROUND_Y);
         batch.enableBlending();
     }
 

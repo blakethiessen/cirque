@@ -45,11 +45,11 @@ public class EntityFactory
     }
 
     //create colored text with 'color' as the parameter
-    public static Entity createText(World world, String text, Vector2 position, Color color)
+    public static Entity createText(World world, String text, Vector2 position, Color color, float scale)
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new TextRender(text, position, color));
+        e.addComponent(new TextRender(text, position, color, scale));
 
         e.addToWorld();
 
@@ -57,12 +57,12 @@ public class EntityFactory
     }
 
     //Create aligned text
-    public static Entity createText(World world, String text, Vector2 position,
+    public static Entity createText(World world, String text, Vector2 position, float scale,
                                     Color color, float alignmentSize, BitmapFont.HAlignment alignment)
     {
         Entity e = world.createEntity();
 
-        e.addComponent(new TextRender(text, position, color, alignmentSize, alignment));
+        e.addComponent(new TextRender(text, position, color, scale, alignmentSize, alignment));
 
         e.addToWorld();
 
@@ -81,7 +81,8 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
+    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge,
+                                      int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
         Entity e = world.createEntity();
 
@@ -129,20 +130,6 @@ public class EntityFactory
         }
         else if (playerNum == 2)
         {
-            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
-            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
-            characterPortrait =
-                    createCharacterPortrait(world,
-                            new String[]
-                                    {
-                                            Constants.GANGSTA_PORTRAIT_HEALTHY,
-                                            Constants.GANGSTA_PORTRAIT_BRUISED,
-                                            Constants.GANGSTA_PORTRAIT_NEAR_DEAD
-                                    },
-                            Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
-        }
-        else
-        {
             e.addComponent(new Animate(Constants.PHARAOH_IDLE));
             e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
             characterPortrait =
@@ -154,6 +141,20 @@ public class EntityFactory
                                             Constants.PHARAOH_PORTRAIT_NEAR_DEAD
                                     },
                             Constants.PHARAOH_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_RED);
+        }
+        else
+        {
+            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
+            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            characterPortrait =
+                    createCharacterPortrait(world,
+                            new String[]
+                                    {
+                                            Constants.GANGSTA_PORTRAIT_HEALTHY,
+                                            Constants.GANGSTA_PORTRAIT_BRUISED,
+                                            Constants.GANGSTA_PORTRAIT_NEAR_DEAD
+                                    },
+                            Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
         e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));

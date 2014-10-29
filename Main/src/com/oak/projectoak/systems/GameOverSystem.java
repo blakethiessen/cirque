@@ -107,46 +107,46 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
 
 
 
-            //DISPLAY win message, use maxWidth to center text horizontally
-            EntityFactory.createText(world,
-                    winMessage,
-                    new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference) +  (heightDifference * 0)),
-                    Color.WHITE,
-                    (float)maxWidth,
-                    BitmapFont.HAlignment.CENTER );
-
-            //DISPLAY RED TEAM SCORES
-            for(int i = 0 ; i < redTeamList.size(); i++)
-            {
-                EntityFactory.createText(world,
-                                         redTeamList.get(i),
-                                         new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2,Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  (heightDifference * (i+1))),
-                                         Color.RED ,
-                                         (float)maxWidth,
-                                         BitmapFont.HAlignment.CENTER);
-            }
-
-
-
-
-            //DISPLAY BLUE TEAM SCORES
-            for(int i = 0 ; i < blueTeamList.size(); i++)
-            {
-                EntityFactory.createText(world,
-                                         blueTeamList.get(i),
-                                         new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2,Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  (heightDifference * (maxPlayersPerTeam + i+1))),
-                                         Color.BLUE ,
-                                         (float)maxWidth,
-                                         BitmapFont.HAlignment.CENTER);
-            }
-
-            //DISPLAY GAME OVER / RESTART TEXT
-            EntityFactory.createText(world,
-                                     Constants.GAME_OVER_TEXT,
-                                     new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  heightDifference * ((2 * maxPlayersPerTeam + 1))) ,
-                                     Color.WHITE,
-                                     (float)maxWidth,
-                                     BitmapFont.HAlignment.CENTER);
+//            //DISPLAY win message, use maxWidth to center text horizontally
+//            EntityFactory.createText(world,
+//                    winMessage,
+//                    new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference) +  (heightDifference * 0)),
+//                    Color.WHITE,
+//                    (float)maxWidth,
+//                    BitmapFont.HAlignment.CENTER );
+//
+//            //DISPLAY RED TEAM SCORES
+//            for(int i = 0 ; i < redTeamList.size(); i++)
+//            {
+//                EntityFactory.createText(world,
+//                                         redTeamList.get(i),
+//                                         new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2,Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  (heightDifference * (i+1))),
+//                                         Color.RED ,
+//                                         (float)maxWidth,
+//                                         BitmapFont.HAlignment.CENTER);
+//            }
+//
+//
+//
+//
+//            //DISPLAY BLUE TEAM SCORES
+//            for(int i = 0 ; i < blueTeamList.size(); i++)
+//            {
+//                EntityFactory.createText(world,
+//                                         blueTeamList.get(i),
+//                                         new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2,Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  (heightDifference * (maxPlayersPerTeam + i+1))),
+//                                         Color.BLUE ,
+//                                         (float)maxWidth,
+//                                         BitmapFont.HAlignment.CENTER);
+//            }
+//
+//            //DISPLAY GAME OVER / RESTART TEXT
+//            EntityFactory.createText(world,
+//                                     Constants.GAME_OVER_TEXT,
+//                                     new Vector2(Gdx.graphics.getWidth()/2 - maxWidth/2, Gdx.graphics.getHeight()/2 - ((maxPlayersPerTeam + 2) * heightDifference)+  heightDifference * ((2 * maxPlayersPerTeam + 1))) ,
+//                                     Color.WHITE,
+//                                     (float)maxWidth,
+//                                     BitmapFont.HAlignment.CENTER);
         }
     }
 

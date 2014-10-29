@@ -102,16 +102,16 @@ public class Constants
     public static final int NUM_OF_PORTRAIT_STATES = 4;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 3;//8;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
     public static final int DEATHMATCH_LIVES_AT_EACH_PORTRAIT_STATE =
             DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1);
 
-    public static final float MAX_ARENA_ROTATION_SPEED = 1f;
+    public static final float MAX_ARENA_ROTATION_SPEED = 1.2f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL =
             MAX_ARENA_ROTATION_SPEED / (DEATHMATCH_KILLS_TO_WIN * DEATHMATCH_NUM_TEAMS - 1);
     public static final float ABILITY_CREATION_DELAY = .15f;
-    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
-//    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
+//    public static final float TIER1_ABILITY_ENERGY_COST = 0f;
+    public static final float TIER1_ABILITY_ENERGY_COST = 0.33f;
     public static final float JUMP_TIMEOUT_DELAY = .3f;
     public static final int STAKE_LIFETIME = 10;
     public static final float STARTING_TIER1_ABILITY_ENERGY = .33f;
@@ -125,8 +125,8 @@ public class Constants
     public static final float LIGHTNING_TIME_UNTIL_WRAP_AROUND = .25f;
     public static final float LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET = .1f;
     public static final float LIGHTNING_BOLT_ROTATION_OFFSET = .1f;
-//    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
-    public static final float LIGHTNING_BOLT_ENERGY_COST = 0f;
+    public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
+//    public static final float LIGHTNING_BOLT_ENERGY_COST = 0f;
     public static final int ZOOM_RING_PADDING = 260;
 
     // GENERAL CONSTANTS
