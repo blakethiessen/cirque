@@ -104,7 +104,8 @@ public class Constants
     public static final int DEATHMATCH_NUM_TEAMS = 2;
     public static final int DEATHMATCH_KILLS_TO_WIN = 8;
     public static final int DEATHMATCH_LIVES_AT_EACH_PORTRAIT_STATE =
-            DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1);
+            DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1) > 0
+                    ? DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1) : 1;
 
     public static final float MAX_ARENA_ROTATION_SPEED = 1.2f;
     public static final float ROTATIONAL_VELOCITY_INCREASE_PER_KILL =
@@ -128,6 +129,7 @@ public class Constants
     public static final float LIGHTNING_BOLT_ENERGY_COST = .5f;
 //    public static final float LIGHTNING_BOLT_ENERGY_COST = 0f;
     public static final int ZOOM_RING_PADDING = 260;
+    public static final float MUSIC_FADE_RATE = .0002f;
 
     // GENERAL CONSTANTS
     public static int curPlayersActive = 0;

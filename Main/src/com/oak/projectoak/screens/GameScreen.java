@@ -115,7 +115,7 @@ public class GameScreen implements Screen
 
         world.setSystem(new PillarSystem(abilityDestructionSystem));
 
-        world.setSystem(new PhysicsDebugSystem(b2world, camera));
+//        world.setSystem(new PhysicsDebugSystem(b2world, camera));
         world.setSystem(new PhysicsStepSystem(b2world));
         world.setSystem(abilitySystem);
         world.setSystem(new AnimationSystem());
@@ -164,6 +164,8 @@ public class GameScreen implements Screen
         {
             inputSystem.controllerMap.put(controllers.get(i), i);
         }
+
+        AssetLoader.playMusic();
     }
 
 	@Override

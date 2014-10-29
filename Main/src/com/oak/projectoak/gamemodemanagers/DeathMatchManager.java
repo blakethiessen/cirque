@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
 import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
@@ -43,7 +44,7 @@ public class DeathMatchManager extends GameModeManager
 
     public void addKillStatistic(int teamNum)
     {
-        if (--livesLeft[teamNum] <= 0)
+        if (--livesLeft[teamNum] == 0)
         {
             if (teamNum == 0)
                 winner = 2;
@@ -52,6 +53,8 @@ public class DeathMatchManager extends GameModeManager
 
             EntityFactory.createText(world, "Team " + winner + " wins!",
                     new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), Color.WHITE, .4f);
+
+            AssetLoader.fadeMusic();
         }
 
         livesLeftText[teamNum].text = String.valueOf(livesLeft[teamNum]);
