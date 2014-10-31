@@ -1,0 +1,650 @@
+
+pack2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 2, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 1
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 74, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 2
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 146, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 3
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 218, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 4
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 290, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 5
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 362, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 6
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 434, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 7
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 506, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 8
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 578, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 9
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 650, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 10
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 722, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 11
+abilities/lightning_bolt/lightning_bolt
+  rotate: false
+  xy: 794, 2
+  size: 70, 140
+  orig: 70, 140
+  offset: 0, 0
+  index: 12
+
+pack22.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+abilities/pillar/pillar
+  rotate: false
+  xy: 2, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+abilities/pillar/pillar
+  rotate: false
+  xy: 2, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+abilities/pillar/pillar
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 3
+abilities/pillar/pillar
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 4
+abilities/pillar/pillar
+  rotate: false
+  xy: 74, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 5
+abilities/pillar/pillar
+  rotate: false
+  xy: 74, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 6
+abilities/pillar/pillar
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 7
+abilities/pillar/pillar
+  rotate: false
+  xy: 146, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 8
+abilities/pillar/pillar
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 9
+
+pack23.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+abilities/spike/spike
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+abilities/spike/spike
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+abilities/spike/spike
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 3
+abilities/spike/spike
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 4
+abilities/spike/spike
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 5
+abilities/spike/spike
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 6
+abilities/spike/spike
+  rotate: false
+  xy: 218, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 7
+abilities/spike/spike
+  rotate: false
+  xy: 218, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 8
+abilities/spike/spike
+  rotate: false
+  xy: 290, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 9
+
+pack24.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+characterPortraits/gangsta/1_healthy
+  rotate: false
+  xy: 2, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/1_healthy_blink
+  rotate: false
+  xy: 124, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/2_bruised
+  rotate: false
+  xy: 246, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/2_bruised_blink
+  rotate: false
+  xy: 368, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/3_near_dead
+  rotate: false
+  xy: 490, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/3_near_dead_blink
+  rotate: false
+  xy: 612, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/gangsta/4_dead
+  rotate: false
+  xy: 734, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+
+pack25.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+characterPortraits/ninja/1_healthy
+  rotate: false
+  xy: 2, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/1_healthy_blink
+  rotate: false
+  xy: 124, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/2_bruised
+  rotate: false
+  xy: 246, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/2_bruised_blink
+  rotate: false
+  xy: 368, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/3_near_dead
+  rotate: false
+  xy: 490, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/3_near_dead_blink
+  rotate: false
+  xy: 612, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/ninja/4_dead
+  rotate: false
+  xy: 734, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+
+pack26.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+characterPortraits/pharaoh/1_healthy
+  rotate: false
+  xy: 2, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/1_healthy_blink
+  rotate: false
+  xy: 124, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/2_bruised
+  rotate: false
+  xy: 246, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/2_bruised_blink
+  rotate: false
+  xy: 368, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/3_near_dead
+  rotate: false
+  xy: 490, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/3_near_dead_blink
+  rotate: false
+  xy: 612, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pharaoh/4_dead
+  rotate: false
+  xy: 734, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+
+pack27.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+characterPortraits/pirate/1_healthy
+  rotate: false
+  xy: 2, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/1_healthy_blink
+  rotate: false
+  xy: 124, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/2_bruised
+  rotate: false
+  xy: 246, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/2_bruised_blink
+  rotate: false
+  xy: 368, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/3_near_dead
+  rotate: false
+  xy: 490, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/3_near_dead_blink
+  rotate: false
+  xy: 612, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/pirate/4_dead
+  rotate: false
+  xy: 734, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+
+pack28.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+characterPortraits/TEAMCOLORS/blue
+  rotate: false
+  xy: 2, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+characterPortraits/TEAMCOLORS/red
+  rotate: false
+  xy: 124, 2
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+
+pack29.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energyMeter/energy
+  rotate: false
+  xy: 2, 76
+  size: 72, 72
+  orig: 72, 72
+  offset: 0, 0
+  index: -1
+energyMeter/gray_1_notches
+  rotate: false
+  xy: 2, 2
+  size: 72, 72
+  orig: 72, 72
+  offset: 0, 0
+  index: -1
+energyMeter/gray_2_notches
+  rotate: false
+  xy: 76, 76
+  size: 72, 72
+  orig: 72, 72
+  offset: 0, 0
+  index: -1
+energyMeter/gray_3_notches
+  rotate: false
+  xy: 76, 2
+  size: 72, 72
+  orig: 72, 72
+  offset: 0, 0
+  index: -1
+
+pack210.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energyMeter/abilityIcons/lightning_bolt
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+energyMeter/abilityIcons/pillar
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+energyMeter/abilityIcons/ring_of_fire
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+energyMeter/abilityIcons/shadow_clone
+  rotate: false
+  xy: 218, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+energyMeter/abilityIcons/spike
+  rotate: false
+  xy: 290, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+
+pack211.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 2, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 74, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 3
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 4
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 146, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 5
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 6
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 218, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 7
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 218, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 8
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 290, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 9
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 290, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 10
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 362, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 11
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 362, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 12
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 434, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 13
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 434, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 14
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 506, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 15
+energyMeter/ready/ability_ready
+  rotate: false
+  xy: 506, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 16

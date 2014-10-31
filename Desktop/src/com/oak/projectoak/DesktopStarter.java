@@ -19,7 +19,6 @@ public class DesktopStarter
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         cfg.width = 1280;
         cfg.height = 720;
-        cfg.useGL20 = true;
         cfg.vSyncEnabled = true;
 
         // Pass in the argument "nopack" to not run the image packer.

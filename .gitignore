@@ -1,33 +1,69 @@
-#built application files
-*.apk
-*.ap_
- 
-# files for the dex VM
-*.dex
- 
-# Java class files
+## Java
+
 *.class
- 
-# generated files
-bin/
-gen/
-out/
- 
-# Local configuration file (sdk path, etc)
-local.properties
- 
-# Intellij project files
+*.war
+*.ear
+hs_err_pid*
+
+## GWT
+war/
+html/war/gwt_bree/
+html/gwt-unitCache/
+.apt_generated/
+html/war/WEB-INF/deploy/
+html/war/WEB-INF/classes/
+.gwt/
+gwt-unitCache/
+www-test/
+.gwt-tmp/
+
+## Android Studio and Intellij and Android in general
+android/libs/armeabi/
+android/libs/armeabi-v7a/
+android/libs/x86/
+android/gen/
+.idea/
+*.ipr
 *.iws
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/artifacts/
- 
-# OS
+*.iml
+out/
+com_crashlytics_export_strings.xml
+
+## Eclipse
+.classpath
+.project
+.metadata
+**/bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+
+## NetBeans
+**/nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+## Gradle
+
+.gradle
+build/
+
+## OS Specific
 .DS_Store
 
-main/assets/textures/pack1
-main/assets/textures/pack2
-main/assets/textures/pack3
-main/assets/textures/pack4
-
-META_INF/
+## Custom
+core/assets/textures/pack1
+core/assets/textures/pack2
+core/assets/textures/pack3
+core/assets/textures/pack4

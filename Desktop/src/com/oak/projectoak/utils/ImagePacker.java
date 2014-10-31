@@ -1,8 +1,7 @@
 package com.oak.projectoak.utils;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker2.Settings;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
 /*
     ImagePacker packs individual images into
@@ -14,7 +13,7 @@ public class ImagePacker
 {
     public static void run()
     {
-        Settings settings = new Settings();
+        TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.filterMin = Texture.TextureFilter.Linear;
         settings.filterMag = Texture.TextureFilter.Linear;
         settings.pot = false;
@@ -22,13 +21,13 @@ public class ImagePacker
         settings.stripWhitespaceY = true;
         settings.maxHeight = 1400;
         settings.maxWidth = 1400;
-        TexturePacker2.process(
+        TexturePacker.process(
                 settings, "textures-original", "textures/pack1", "pack1");
 
         settings.stripWhitespaceX = false;
         settings.stripWhitespaceY = false;
 
-        TexturePacker2.process(
+        TexturePacker.process(
                 settings, "textures-original-nostrip", "textures/pack2", "pack2");
     }
 }
