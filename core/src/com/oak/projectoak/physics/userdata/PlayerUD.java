@@ -1,6 +1,6 @@
 package com.oak.projectoak.physics.userdata;
 
-import com.artemis.Entity;
+import com.badlogic.ashley.core.Entity;
 
 public class PlayerUD implements UserData
 {

@@ -1,6 +1,6 @@
 package com.oak.projectoak.components;
 
-import com.artemis.Component;
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

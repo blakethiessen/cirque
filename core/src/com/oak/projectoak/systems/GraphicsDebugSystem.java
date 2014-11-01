@@ -1,6 +1,6 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GraphicsDebugSystem extends VoidEntitySystem
+public class GraphicsDebugSystem extends EntitySystem
 {
     private Camera camera;
     private static ArrayList<DebugDrawable> debugDrawables;
@@ -23,7 +23,7 @@ public class GraphicsDebugSystem extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         if (!debugDrawables.isEmpty())
         {

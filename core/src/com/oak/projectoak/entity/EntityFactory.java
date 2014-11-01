@@ -1,8 +1,7 @@
 package com.oak.projectoak.entity;
 
-import com.artemis.Entity;
-import com.artemis.World;
-import com.artemis.managers.GroupManager;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,67 +31,70 @@ import com.oak.projectoak.physics.userdata.PillarUD;
 
 public class EntityFactory
 {
+    // Must be set at beginning of game!!
+    public static Engine engine;
+
     //create text with Black color
-    public static Entity createText(World world, String text, Vector2 position)
+    public static Entity createText(String text, Vector2 position)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new TextRender(text, position));
+        e.add(new TextRender(text, position));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
     //create colored text with 'color' as the parameter
-    public static Entity createText(World world, String text, Vector2 position, Color color, float scale)
+    public static Entity createText(String text, Vector2 position, Color color, float scale)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new TextRender(text, position, color, scale));
+        e.add(new TextRender(text, position, color, scale));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
     //Create aligned text
-    public static Entity createText(World world, String text, Vector2 position, float scale,
+    public static Entity createText(String text, Vector2 position, float scale,
                                     Color color, float alignmentSize, BitmapFont.HAlignment alignment)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new TextRender(text, position, color, scale, alignmentSize, alignment));
+        e.add(new TextRender(text, position, color, scale, alignmentSize, alignment));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
 
-    public static Entity createStaticImage(World world, String imagePath, Vector2 position)
+    public static Entity createStaticImage(String imagePath, Vector2 position)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new Render(imagePath, Layer.UI, position, true));
+        e.add(new Render(imagePath, Layer.UI, position, true));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
-    public static Entity createPlayer(World world, int playerNum, float radialPosition, boolean onOutsideEdge,
+    public static Entity createPlayer(int playerNum, float radialPosition, boolean onOutsideEdge,
                                       int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        e.addComponent(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
-        e.addComponent(new Platformer(Constants.PLAYER_LAT_ACCEL,
+        e.add(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
+        e.add(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-        e.addComponent(new Render(Layer.PLAYERS, twoDPosition, false));
+        e.add(new Render(Layer.PLAYERS, twoDPosition, false));
 
         boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
 
@@ -102,11 +104,10 @@ public class EntityFactory
         Entity characterPortrait;
         if (playerNum == 0)
         {
-            e.addComponent(new Animate(Constants.PIRATE_IDLE));
-            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+            e.add(new Animate(Constants.PIRATE_IDLE));
+            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
             characterPortrait =
-                    createCharacterPortrait(world, 
-                            new String[]
+                    createCharacterPortrait(new String[]
                                     {
                                             Constants.PIRATE_PORTRAIT_HEALTHY,
                                             Constants.PIRATE_PORTRAIT_BRUISED,
@@ -116,11 +117,10 @@ public class EntityFactory
         }
         else if (playerNum == 1)
         {
-            e.addComponent(new Animate(Constants.NINJA_IDLE));
-            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+            e.add(new Animate(Constants.NINJA_IDLE));
+            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
             characterPortrait =
-                    createCharacterPortrait(world,
-                            new String[]
+                    createCharacterPortrait(new String[]
                                     {
                                             Constants.NINJA_PORTRAIT_HEALTHY,
                                             Constants.NINJA_PORTRAIT_BRUISED,
@@ -130,11 +130,10 @@ public class EntityFactory
         }
         else if (playerNum == 2)
         {
-            e.addComponent(new Animate(Constants.PHARAOH_IDLE));
-            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
+            e.add(new Animate(Constants.PHARAOH_IDLE));
+            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
             characterPortrait =
-                    createCharacterPortrait(world,
-                            new String[]
+                    createCharacterPortrait(new String[]
                                     {
                                             Constants.PHARAOH_PORTRAIT_HEALTHY,
                                             Constants.PHARAOH_PORTRAIT_BRUISED,
@@ -144,11 +143,10 @@ public class EntityFactory
         }
         else
         {
-            e.addComponent(new Animate(Constants.GANGSTA_IDLE));
-            e.addComponent(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            e.add(new Animate(Constants.GANGSTA_IDLE));
+            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
             characterPortrait =
-                    createCharacterPortrait(world,
-                            new String[]
+                    createCharacterPortrait(new String[]
                                     {
                                             Constants.GANGSTA_PORTRAIT_HEALTHY,
                                             Constants.GANGSTA_PORTRAIT_BRUISED,
@@ -157,9 +155,7 @@ public class EntityFactory
                             Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
-        e.addComponent(new ArenaTransform(radialPosition, onOutsideEdge));
-
-        world.getManager(GroupManager.class).add(e, Constants.Groups.PLAYERS);
+        e.add(new ArenaTransform(radialPosition, onOutsideEdge));
 
         // Add abilities
         AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
@@ -174,35 +170,35 @@ public class EntityFactory
 
         for (int i = 0; i < chosenAbilityTypes.length; i++)
         {
-            abilityCreationComponents[i] = createAbilityCreator(world, chosenAbilityTypes[i], uiPosition);
+            abilityCreationComponents[i] = createAbilityCreator(chosenAbilityTypes[i], uiPosition);
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.addComponent(new Player(playerNum, teamNum, abilityCreationComponents, characterPortrait));
+        e.add(new Player(playerNum, teamNum, abilityCreationComponents, characterPortrait));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
-    private static Entity createCharacterPortrait(World world, String[] portraitStates,
+    private static Entity createCharacterPortrait(String[] portraitStates,
                                                   String deathPortrait, Vector2 screenPosition, String teamColor)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new UI());
-        e.addComponent(new Portrait(portraitStates, deathPortrait));
+        e.add(new UI());
+        e.add(new Portrait(portraitStates, deathPortrait));
 
         String[] imgArray = new String[]{teamColor, portraitStates[0]};
-        e.addComponent(new Render(imgArray, Layer.UI, screenPosition, true));
+        e.add(new Render(imgArray, Layer.UI, screenPosition, true));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
     // Returns abilityCreation component because that's all the player should need.
-    private static AbilityCreation createAbilityCreator(World world, AbilityType abilityType, Vector2 screenPosition)
+    private static AbilityCreation createAbilityCreator(AbilityType abilityType, Vector2 screenPosition)
     {
         String[] bubbleTextures = new String[4];
         bubbleTextures[1] = Constants.UI_ENERGY_METER_FILL;
@@ -227,11 +223,11 @@ public class EntityFactory
                 Gdx.app.error("Unknown Ability UI", "UI for an unknown ability: " + abilityType + " could not be created.");
         }
 
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
         AbilityCreation abilityCreationComponent = new AbilityCreation(abilityType);
-        e.addComponent(abilityCreationComponent);
-        e.addComponent(new UI());
+        e.add(abilityCreationComponent);
+        e.add(new UI());
         final Render render = new Render(bubbleTextures, Layer.UI, screenPosition, true);
 
         final Sprite energyFillSprite = render.sprites[1];
@@ -240,20 +236,20 @@ public class EntityFactory
         render.sprites[0].setPosition(energyFillSprite.getX() + energyOffset, energyFillSprite.getY() + energyOffset);
         energyFillSprite.setPosition(energyFillSprite.getX() + energyOffset, energyFillSprite.getY() + energyOffset);
 
-        e.addComponent(render);
+        e.add(render);
 
         final Animate animate = new Animate(Constants.UI_ENERGY_READY, 3);
         animate.playOnce = true;
-        e.addComponent(animate);
+        e.add(animate);
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return abilityCreationComponent;
     }
 
-    public static Entity createTrapRing(World world, Vector2 position, float initialSpin)
+    public static Entity createTrapRing(Vector2 position, float initialSpin)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
         DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position);
 
@@ -262,51 +258,51 @@ public class EntityFactory
 
         dynamicPhysics.body.setAngularVelocity(initialSpin);
 
-        e.addComponent(arenaRotation);
-        e.addComponent(dynamicPhysics);
-        e.addComponent(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f)));
+        e.add(arenaRotation);
+        e.add(dynamicPhysics);
+        e.add(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f)));
 
-        e.addComponent(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
+        e.add(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
 
-        e.addToWorld();
-
-        return e;
-    }
-
-    public static Entity createArenaCircle(World world, Vector2 position)
-    {
-        Entity e = world.createEntity();
-
-        e.addComponent(new Physics(PhysicsFactory.createArenaCircleBody(), position));
-
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }
 
-    public static Entity createStake(World world, Body trapRingBody, float radialPosition, boolean onOutsideEdge, Entity owner)
+    public static Entity createArenaCircle(Vector2 position)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
+
+        e.add(new Physics(PhysicsFactory.createArenaCircleBody(), position));
+
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    public static Entity createStake(Body trapRingBody, float radialPosition, boolean onOutsideEdge, Entity owner)
+    {
+        Entity e = new Entity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.STAKE_FIXTURE_DEF, Box2DDefs.getSpikeVertices(),
                 trapRingBody, twoDPosition, radialPosition, onOutsideEdge);
         trapPhysics.fixture.setUserData(new LethalUD(e));
-        e.addComponent(trapPhysics);
+        e.add(trapPhysics);
 
-        e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-        e.addComponent(new Animate(Constants.SPIKE, true));
-        e.addComponent(new Ability(owner));
+        e.add(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+        e.add(new Animate(Constants.SPIKE, true));
+        e.add(new Ability(owner));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         AssetLoader.playSound("spike");
 
         return e;
     }
 
-    public static Entity createPillar(World world, Body trapRingBody,
+    public static Entity createPillar(Body trapRingBody,
                                       float radialPosition, boolean onOutsideEdge)
     {
         Entity e = null;
@@ -343,19 +339,19 @@ public class EntityFactory
 
         if (!existingPillarFound)
         {
-            e = world.createEntity();
-            e.addComponent(new Pillar());
+            e = new Entity();
+            e.add(new Pillar());
 
             final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF,
                     Box2DDefs.getPillarVertices(1),
                     trapRingBody, twoDPosition, radialPosition, onOutsideEdge, 0);
             trapPhysics.fixture.setUserData(new PillarUD(e));
-            e.addComponent(trapPhysics);
+            e.add(trapPhysics);
 
-            e.addComponent(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-            e.addComponent(new Animate(Constants.PILLAR, true));
+            e.add(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+            e.add(new Animate(Constants.PILLAR, true));
 
-            e.addToWorld();
+            engine.addEntity(e);
         }
 
         AssetLoader.playSound("pillar");
@@ -363,9 +359,9 @@ public class EntityFactory
         return e;
     }
 
-    public static Entity createLightningBolt(World world, final float radialPosition, boolean onOutsideEdge, Entity owner)
+    public static Entity createLightningBolt(final float radialPosition, boolean onOutsideEdge, Entity owner)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
         Vector2 twoDPosition;
         if (onOutsideEdge)
@@ -413,13 +409,13 @@ public class EntityFactory
             body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2 + Constants.LIGHTNING_BOLT_ROTATION_OFFSET));
         }
 
-        e.addComponent(dynamicPhysics);
+        e.add(dynamicPhysics);
 
-        e.addComponent(new Render(Constants.LIGHTNING_BOLT, Layer.ABILITIES, Vector2.Zero, false));
-        e.addComponent(new Animate(Constants.LIGHTNING_BOLT));
-        e.addComponent(new Ability(owner));
+        e.add(new Render(Constants.LIGHTNING_BOLT, Layer.ABILITIES, Vector2.Zero, false));
+        e.add(new Animate(Constants.LIGHTNING_BOLT));
+        e.add(new Ability(owner));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         AssetLoader.playSound("lightning");
 
@@ -427,13 +423,13 @@ public class EntityFactory
     }
 
 
-    public static Entity createBackground(World world)
+    public static Entity createBackground(Engine engine)
     {
-        Entity e = world.createEntity();
+        Entity e = new Entity();
 
-        e.addComponent(new Render("background", Layer.BACKGROUND, Vector2.Zero, true));
+        e.add(new Render("background", Layer.BACKGROUND, Vector2.Zero, true));
 
-        e.addToWorld();
+        engine.addEntity(e);
 
         return e;
     }

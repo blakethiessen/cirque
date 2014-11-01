@@ -1,7 +1,7 @@
 package com.oak.projectoak.components;
 
-import com.artemis.Component;
-import com.artemis.Entity;
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.oak.projectoak.Action;
 
 /*

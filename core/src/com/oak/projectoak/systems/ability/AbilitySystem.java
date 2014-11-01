@@ -1,12 +1,12 @@
 package com.oak.projectoak.systems.ability;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Ability;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
@@ -17,12 +17,9 @@ import com.oak.projectoak.physics.userdata.LightningUD;
 import com.oak.projectoak.physics.userdata.PlayerUD;
 import com.oak.projectoak.systems.PlayerDestructionSystem;
 
-public class AbilitySystem extends EntityProcessingSystem
+public class AbilitySystem extends IteratingSystem
     implements BaseContactListener
 {
-    @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<Ability> abm;
-
     private PlayerDestructionSystem playerDestructionSystem;
     private AbilityDestructionSystem abilityDestructionSystem;
     private DeathMatchManager dmManager;
@@ -30,20 +27,20 @@ public class AbilitySystem extends EntityProcessingSystem
     public AbilitySystem(PlayerDestructionSystem playerDestructionSystem,
                          AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
     {
-        super(Aspect.getAspectForAll(Ability.class));
+        super(Family.getFor(Ability.class));
         this.playerDestructionSystem = playerDestructionSystem;
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.dmManager = dmManager;
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return false;
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
 
     }
@@ -91,7 +88,7 @@ public class AbilitySystem extends EntityProcessingSystem
     {
         Entity entity = (bodyUDB).entity;
 
-        if (!pm.get(entity).invulnerable)
+        if (!Mapper.player.get(entity).invulnerable)
         {
             Player player = entity.getComponent(Player.class);
             dmManager.addKillStatistic(player.teamNum);
@@ -101,9 +98,9 @@ public class AbilitySystem extends EntityProcessingSystem
             playerDestructionSystem.destroyEntity(entity);
         }
 
-        Player player = pm.get(abm.get((fixtureUDA).entity).owner);
+        Player player = Mapper.player.get(Mapper.ability.get((fixtureUDA).entity).owner);
         int OwnerTeamNumber = player.teamNum;
-        int VictimTeamNumber = pm.get((bodyUDB).entity).teamNum;
+        int VictimTeamNumber = Mapper.player.get((bodyUDB).entity).teamNum;
 
         if(OwnerTeamNumber == VictimTeamNumber)
             player.friendlyKills++;

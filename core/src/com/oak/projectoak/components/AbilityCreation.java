@@ -1,6 +1,6 @@
 package com.oak.projectoak.components;
 
-import com.artemis.Component;
+import com.badlogic.ashley.core.Component;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.Constants;
 

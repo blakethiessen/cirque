@@ -1,53 +1,39 @@
-package com.oak.projectoak.systems;
+package com.oak.projectoak.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.*;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.physics.DynamicPhysics;
+import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.physics.contactlisteners.BaseContactListener;
 import com.oak.projectoak.physics.userdata.UserData;
 
 import java.util.HashSet;
 
-public class FootContactListenerSystem extends EntityProcessingSystem
-        implements BaseContactListener
+public class FootContactListenerManager implements BaseContactListener, EntityListener
 {
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<Platformer> plm;
-
     private HashSet<Entity> footContactEntities;
-    private int previousActiveEntityCount;
 
-    public FootContactListenerSystem()
+    public FootContactListenerManager()
     {
-        super(Aspect.getAspectForAll(Platformer.class, DynamicPhysics.class));
-
         footContactEntities = new HashSet<Entity>();
-        previousActiveEntityCount = 0;
     }
 
     @Override
-    protected void process(Entity e)
+    public void entityAdded(Entity entity)
     {
-        footContactEntities.add(e);
+        footContactEntities.add(entity);
     }
 
     @Override
-    protected boolean checkProcessing()
+    public void entityRemoved(Entity entity)
     {
-        final int activeEntityCount = world.getEntityManager().getActiveEntityCount();
-        if (activeEntityCount != previousActiveEntityCount)
-        {
-            previousActiveEntityCount = activeEntityCount;
-            return true;
-        }
-
-        return false;
+        footContactEntities.remove(entity);
     }
 
     @Override
@@ -58,21 +44,20 @@ public class FootContactListenerSystem extends EntityProcessingSystem
 
         for (Entity e : footContactEntities)
         {
-            DynamicPhysics p = dpm.get(e);
+            DynamicPhysics p = Mapper.dynamicPhysics.get(e);
             if (p != null && p.body != null && p.body.getFixtureList().size > 1)
             {
                 final Fixture footFixture = p.body.getFixtureList().get(1);
-                Platformer plat = plm.get(e);
 
                 if (udA != null && footFixture.getUserData() == udA)
                 {
-                    plat.footContacts.add(contact.getFixtureB());
+                    Mapper.platformer.get(e).footContacts.add(contact.getFixtureB());
 
                     return true;
                 }
                 else if ((udB != null && footFixture.getUserData() == udB))
                 {
-                    plat.footContacts.add(contact.getFixtureA());
+                    Mapper.platformer.get(e).footContacts.add(contact.getFixtureA());
 
                     return true;
                 }
@@ -94,23 +79,22 @@ public class FootContactListenerSystem extends EntityProcessingSystem
             Object udB = fixtureB.getUserData();
             for (Entity e : footContactEntities)
             {
-                DynamicPhysics p = dpm.get(e);
+                DynamicPhysics p = Mapper.dynamicPhysics.get(e);
 
                 // Remove entity on the next update.
                 if (p != null && p.body != null && p.body.getFixtureList().size > 1)
                 {
                     final Fixture footFixture = p.body.getFixtureList().get(1);
-                    Platformer plat = plm.get(e);
 
                     if (udA != null && footFixture.getUserData() == udA)
                     {
-                        plat.footContacts.remove(contact.getFixtureB());
+                        Mapper.platformer.get(e).footContacts.remove(contact.getFixtureB());
 
                         return true;
                     }
                     else if ((udB != null && footFixture.getUserData() == udB))
                     {
-                        plat.footContacts.remove(contact.getFixtureA());
+                        Mapper.platformer.get(e).footContacts.remove(contact.getFixtureA());
 
                         return true;
                     }

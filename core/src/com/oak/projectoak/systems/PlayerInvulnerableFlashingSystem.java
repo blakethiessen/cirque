@@ -1,38 +1,37 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.Render;
 
-public class PlayerInvulnerableFlashingSystem extends EntityProcessingSystem
+public class PlayerInvulnerableFlashingSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<Render> rm;
-
     public PlayerInvulnerableFlashingSystem()
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Family.getFor(Player.class));
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        Player player = pm.get(e);
+        Player player = Mapper.player.get(e);
 
         if (player.invulnerable)
         {
-            Render render = rm.get(e);
+            Render render = Mapper.render.get(e);
             render.sprites[0].setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
 
             player.wasInvulnerableLastFrame = true;
         }
         else if (player.wasInvulnerableLastFrame)
         {
-            Render render = rm.get(e);
+            Render render = Mapper.render.get(e);
             render.sprites[0].setColor(1, 1, 1, 1);
 
             player.wasInvulnerableLastFrame = false;

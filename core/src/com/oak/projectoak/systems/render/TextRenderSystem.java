@@ -1,38 +1,38 @@
 package com.oak.projectoak.systems.render;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.TextRender;
 
 /*
     The RenderSystem draws all sprites onto the screen.
  */
 
-public class TextRenderSystem extends EntityProcessingSystem
+public class TextRenderSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<TextRender> trm;
-
     private SpriteBatch batch;
     private BitmapFont bitMapFont;
 
     public TextRenderSystem(SpriteBatch spriteBatch)
     {
-        super(Aspect.getAspectForAll(TextRender.class));
+        super(Family.getFor(TextRender.class));
 
         batch = spriteBatch;
         bitMapFont = new BitmapFont(Gdx.files.internal("fonts/deFonarts_96.fnt"));
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        TextRender textRender = trm.get(e);
+        TextRender textRender = Mapper.textRender.get(e);
 
         bitMapFont.setColor(textRender.color);
         bitMapFont.setScale(textRender.scale);

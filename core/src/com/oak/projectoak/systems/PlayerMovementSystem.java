@@ -1,16 +1,18 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
@@ -21,42 +23,35 @@ import com.oak.projectoak.gamemodemanagers.GameModeManager;
     component is updated with the latest player actions.
  */
 
-public class PlayerMovementSystem extends EntityProcessingSystem
+public class PlayerMovementSystem extends IteratingSystem
 {
     private final GameModeManager gmManager;
-    @Mapper ComponentMapper<Platformer> pm;
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<Render> rm;
-    @Mapper ComponentMapper<Animate> am;
-    @Mapper ComponentMapper<PlayerAnimation> pam;
-    @Mapper ComponentMapper<Player> cm;
-    @Mapper ComponentMapper<ArenaTransform> atm;
 
     public PlayerMovementSystem(GameModeManager gmManager)
     {
-        super(Aspect.getAspectForAll(PlayerAnimation.class));
+        super(Family.getFor(PlayerAnimation.class));
         this.gmManager = gmManager;
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !gmManager.isGameOver();
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
         // The following assumes runners always have the following components.
-        Player player = cm.get(e);
-        DynamicPhysics physics = dpm.get(e);
+        Player player = Mapper.player.get(e);
+        DynamicPhysics physics = Mapper.dynamicPhysics.get(e);
         Body body = physics.body;
-        final Platformer platformer = pm.get(e);
-        Render render = rm.get(e);
-        Animate animate = am.get(e);
-        PlayerAnimation playerAnimation = pam.get(e);
+        final Platformer platformer = Mapper.platformer.get(e);
+        Render render = Mapper.render.get(e);
+        Animate animate = Mapper.animate.get(e);
+        PlayerAnimation playerAnimation = Mapper.playerAnimation.get(e);
 
-        final ArenaTransform arenaTransform = atm.get(e);
+        final ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
         if (player.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprites

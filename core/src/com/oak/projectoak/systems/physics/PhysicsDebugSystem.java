@@ -1,6 +1,6 @@
 package com.oak.projectoak.systems.physics;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -11,7 +11,7 @@ import com.oak.projectoak.Constants;
     (the green and red lines).
  */
 
-public class PhysicsDebugSystem extends VoidEntitySystem
+public class PhysicsDebugSystem extends EntitySystem
 {
     private Box2DDebugRenderer debugRenderer;
 
@@ -27,7 +27,7 @@ public class PhysicsDebugSystem extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         debugRenderer.render(b2world,
                 camera.combined.cpy().scale(Constants.METERS_TO_PIXELS, Constants.METERS_TO_PIXELS, 1f));

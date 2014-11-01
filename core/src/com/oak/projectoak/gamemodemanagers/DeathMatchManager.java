@@ -1,7 +1,6 @@
 package com.oak.projectoak.gamemodemanagers;
 
-import com.artemis.Entity;
-import com.artemis.World;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -14,22 +13,22 @@ public class DeathMatchManager extends GameModeManager
 {
     private int[] livesLeft;
     private TextRender[] livesLeftText;
-    private World world;
+    private Engine engine;
 
-    public DeathMatchManager(World world, int numOfTeams, int maxDeaths)
+    public DeathMatchManager(Engine engine, int numOfTeams, int maxDeaths)
     {
-        this.world = world;
+        this.engine = engine;
         livesLeft = new int[numOfTeams];
         livesLeftText = new TextRender[numOfTeams];
 
         if (numOfTeams == 2)
         {
             String maxDeathsString = String.valueOf(maxDeaths);
-            livesLeftText[0] = EntityFactory.createText(world,
-                    maxDeathsString, new Vector2(Constants.UI_PADDING + 45, Gdx.graphics.getHeight() / 2 + 45),
+            livesLeftText[0] = EntityFactory.createText(maxDeathsString,
+                    new Vector2(Constants.UI_PADDING + 45, Gdx.graphics.getHeight() / 2 + 45),
                     new Color(1, 127f/255f, 127f/255f, 1), 1)
                         .getComponent(TextRender.class);
-            livesLeftText[1] = EntityFactory.createText(world, maxDeathsString, new Vector2(
+            livesLeftText[1] = EntityFactory.createText(maxDeathsString, new Vector2(
                     Gdx.graphics.getWidth() - Constants.UI_PADDING - 45, Gdx.graphics.getHeight() / 2 + 45),
                     new Color(110f/255f, 200f/255f, 230f/255f, 1), 1)
                         .getComponent(TextRender.class);
@@ -51,7 +50,7 @@ public class DeathMatchManager extends GameModeManager
             else
                 winner = 1;
 
-            EntityFactory.createText(world, "Team " + winner + " wins!",
+            EntityFactory.createText("Team " + winner + " wins!",
                     new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), Color.WHITE, .4f);
 
             AssetLoader.fadeMusic();

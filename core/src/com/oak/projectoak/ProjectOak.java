@@ -15,6 +15,6 @@ public class ProjectOak extends Game
     public void create()
     {
         AssetLoader.setMusic("godfighter_soundtrack.mp3");
-        setScreen(new TitleScreen(this));
+        setScreen(new GameScreen(this));
     }
 }

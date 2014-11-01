@@ -1,10 +1,11 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
@@ -23,11 +25,9 @@ import java.util.HashMap;
     that is for in-game players.
  */
 
-public class InputSystem extends EntityProcessingSystem
+public class InputSystem extends IteratingSystem
         implements InputProcessor, ControllerListener
 {
-    @Mapper ComponentMapper<Player> pm;
-
     public HashMap<Controller, Integer> controllerMap;
 
     private HashMap<Integer, PlayerAction> keyMaps;
@@ -37,7 +37,7 @@ public class InputSystem extends EntityProcessingSystem
 
     public InputSystem(OrthographicCamera camera, GameModeManager gmManager)
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Family.getFor(Player.class));
         this.camera = camera;
         this.gmManager = gmManager;
 
@@ -89,16 +89,16 @@ public class InputSystem extends EntityProcessingSystem
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !gmManager.isGameOver();
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        Player player = pm.get(e);
-        final int playerArrNum = pm.get(e).playerNum;
+        Player player = Mapper.player.get(e);
+        final int playerArrNum = player.playerNum;
 
         player.setAction(Action.MOVING_LEFT,
                 controlStates[playerArrNum].get(Action.MOVING_LEFT));

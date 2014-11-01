@@ -1,13 +1,14 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.screens.GameScreen;
 import com.oak.projectoak.screens.TitleScreen;
 
-public class CameraZoomTransitionSystem extends VoidEntitySystem
+public class CameraZoomTransitionSystem extends EntitySystem
 {
     private final OrthographicCamera camera;
     private final float finalCameraZoom;
@@ -43,7 +44,7 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         if (zoomingInwards)
             camera.zoom -= zoomVel;
@@ -54,7 +55,7 @@ public class CameraZoomTransitionSystem extends VoidEntitySystem
                 (zoomingInwards && camera.zoom < finalCameraZoom))
         {
             if (game == null)
-                world.deleteSystem(this);
+                EntityFactory.engine.removeSystem(this);
             else
             {
                 gameScreen.dispose();

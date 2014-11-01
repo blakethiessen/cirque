@@ -1,30 +1,29 @@
 package com.oak.projectoak.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.TrapPhysics;
 
-public class TrapPhysicsSystem extends EntityProcessingSystem
+public class TrapPhysicsSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Render> rm;
-    @Mapper ComponentMapper<TrapPhysics> tpm;
-
     public TrapPhysicsSystem()
     {
-        super(Aspect.getAspectForAll(TrapPhysics.class));
+        super(Family.getFor(TrapPhysics.class));
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        Render render = rm.get(e);
-        TrapPhysics trapPhysics = tpm.get(e);
+        Render render = Mapper.render.get(e);
+        TrapPhysics trapPhysics = Mapper.trapPhysics.get(e);
 
         if (trapPhysics != null)
         {

@@ -1,26 +1,21 @@
 package com.oak.projectoak.systems.ability;
 
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.VoidEntitySystem;
-import com.artemis.utils.Timer;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.oak.projectoak.components.Pillar;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.components.physics.Physics;
 import com.oak.projectoak.components.physics.TrapPhysics;
+import com.oak.projectoak.entity.EntityFactory;
 
 import java.util.ArrayList;
 
-public class AbilityDestructionSystem extends VoidEntitySystem
+public class AbilityDestructionSystem extends EntitySystem
 {
-    @Mapper ComponentMapper<Physics> pm;
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<TrapPhysics> tpm;
-
     private final World b2world;
     private ArrayList<Entity> entitiesToDestroy;
 
@@ -42,13 +37,13 @@ public class AbilityDestructionSystem extends VoidEntitySystem
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !entitiesToDestroy.isEmpty();
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         while (!entitiesToDestroy.isEmpty())
         {
@@ -58,13 +53,13 @@ public class AbilityDestructionSystem extends VoidEntitySystem
 
     private void removeEntity(final Entity e)
     {
-        if (pm.has(e))
-            b2world.destroyBody(pm.get(e).body);
-        else if (dpm.has(e))
-            b2world.destroyBody(dpm.get(e).body);
-        else if (tpm.has(e))
+        if (Mapper.physics.has(e))
+            b2world.destroyBody(Mapper.physics.get(e).body);
+        else if (Mapper.dynamicPhysics.has(e))
+            b2world.destroyBody(Mapper.dynamicPhysics.get(e).body);
+        else if (Mapper.trapPhysics.has(e))
         {
-            TrapPhysics trapPhysics = tpm.get(e);
+            TrapPhysics trapPhysics = Mapper.trapPhysics.get(e);
             Fixture fixtureToRemove = trapPhysics.fixture;
             fixtureToRemove.getBody().destroyFixture(fixtureToRemove);
 
@@ -74,7 +69,7 @@ public class AbilityDestructionSystem extends VoidEntitySystem
                 updateRelevantFootContacts(fixtureToRemove, internalPlatformers);
         }
 
-        world.deleteEntity(e);
+        EntityFactory.engine.removeEntity(e);
         entitiesToDestroy.remove(e);
     }
 

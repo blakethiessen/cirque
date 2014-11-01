@@ -1,24 +1,21 @@
 package com.oak.projectoak.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.ArenaRotation;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
-public class ArenaRotationSystem extends EntityProcessingSystem
+public class ArenaRotationSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<DynamicPhysics> pm;
-    @Mapper ComponentMapper<ArenaRotation> am;
-
     private boolean increaseRotationalVelocity;
 
     public ArenaRotationSystem()
     {
-        super(Aspect.getAspectForAll(ArenaRotation.class));
+        super(Family.getFor(ArenaRotation.class));
         increaseRotationalVelocity = false;
     }
 
@@ -29,18 +26,15 @@ public class ArenaRotationSystem extends EntityProcessingSystem
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        DynamicPhysics physics = pm.get(e);
-        ArenaRotation arenaRotation = am.get(e);
+        DynamicPhysics physics = Mapper.dynamicPhysics.get(e);
+        ArenaRotation arenaRotation = Mapper.arenaRotation.get(e);
 
         arenaRotation.rotationVelocity += Constants.ROTATIONAL_VELOCITY_INCREASE_PER_KILL;
-        physics.body.setAngularVelocity(am.get(e).rotationVelocity);
-    }
+        physics.body.setAngularVelocity(arenaRotation.rotationVelocity);
 
-    @Override
-    protected void end()
-    {
+        // TODO: Refactor this to be for one circle?
         increaseRotationalVelocity = false;
     }
 

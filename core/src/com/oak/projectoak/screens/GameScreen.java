@@ -1,20 +1,19 @@
 package com.oak.projectoak.screens;
 
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
-import com.artemis.World;
-import com.artemis.managers.GroupManager;
-import com.artemis.utils.ImmutableBag;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.oak.projectoak.AbilityType;
 import com.oak.projectoak.AssetLoader;
@@ -23,6 +22,7 @@ import com.oak.projectoak.components.Platformer;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.DeathMatchManager;
 import com.oak.projectoak.input.InputManager;
+import com.oak.projectoak.physics.FootContactListenerManager;
 import com.oak.projectoak.physics.PhysicsFactory;
 import com.oak.projectoak.physics.contactlisteners.GFContactListener;
 import com.oak.projectoak.systems.*;
@@ -42,8 +42,8 @@ import com.oak.projectoak.systems.render.*;
 public class GameScreen implements Screen
 {
     private final Game game;
-    private World world;
-    private com.badlogic.gdx.physics.box2d.World b2world;
+    private Engine engine;
+    private World b2world;
     OrthographicCamera camera;
 
     public GameScreen(Game game)
@@ -56,26 +56,28 @@ public class GameScreen implements Screen
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0;
 
-        // Setup Entity world
-        world = new World();
+        // Setup Entity engine
+        engine = new Engine();
+        EntityFactory.engine = engine;
 
         // Setup appropriate game setting
         DeathMatchManager deathMatchManager =
-                new DeathMatchManager(world, Constants.DEATHMATCH_NUM_TEAMS, Constants.DEATHMATCH_KILLS_TO_WIN);
+                new DeathMatchManager(engine, Constants.DEATHMATCH_NUM_TEAMS, Constants.DEATHMATCH_KILLS_TO_WIN);
 
         // Setup physics
-        b2world = new com.badlogic.gdx.physics.box2d.World(Constants.GRAVITY, true);
+        b2world = new World(Constants.GRAVITY, true);
 
         // Box2D Collisions setup
         GFContactListener contactListener = new GFContactListener();
 
-        final FootContactListenerSystem footContactListenerSystem = new FootContactListenerSystem();
-        contactListener.addContactListener(footContactListenerSystem);
+        FootContactListenerManager footContactListenerManager = new FootContactListenerManager();
+        contactListener.addContactListener(footContactListenerManager);
+        engine.addEntityListener(Family.getFor(Platformer.class), footContactListenerManager);
 
         final ArenaRotationSystem arenaRotationSystem = new ArenaRotationSystem();
 
         PhysicsFactory.setWorld(b2world);
-        final Entity trapRing = EntityFactory.createTrapRing(world, Constants.ARENA_CENTER, 0);
+        final Entity trapRing = EntityFactory.createTrapRing(Constants.ARENA_CENTER, 0);
 
         final PlayerDestructionSystem playerDestructionSystem =
                 new PlayerDestructionSystem(b2world, deathMatchManager, Constants.RESPAWN_TIME_SEC, arenaRotationSystem);
@@ -91,71 +93,65 @@ public class GameScreen implements Screen
         final InputManager inputManager = new InputManager();
 
         // Setup systems
-        world.setSystem(new CameraZoomTransitionSystem(camera,
+        engine.addSystem(new CameraZoomTransitionSystem(camera,
                 (float) Constants.CAMERA_ZOOM_TO_RESOLUTION_SCALE /
                         ((float) Gdx.graphics.getHeight() - Constants.ZOOM_RING_PADDING)));
 
-        world.setSystem(new DynamicPhysicsSystem());
-        world.setSystem(new TrapPhysicsSystem());
-        world.setSystem(new RenderOffsetSystem());
-        world.setSystem(new GravitySystem(Constants.ARENA_CENTER));
+        engine.addSystem(new DynamicPhysicsSystem());
+        engine.addSystem(new TrapPhysicsSystem());
+        engine.addSystem(new RenderOffsetSystem());
+        engine.addSystem(new GravitySystem(Constants.ARENA_CENTER));
 
         InputSystem inputSystem = new InputSystem(camera, deathMatchManager);
         inputManager.addInputProcessor(inputSystem);
         Controllers.addListener(inputSystem);
-        world.setSystem(inputSystem);
+        engine.addSystem(inputSystem);
 
-        world.setSystem(new CameraSystem(camera, true));
-        world.setSystem(arenaRotationSystem);
+        engine.addSystem(new CameraSystem(camera, true));
+        engine.addSystem(arenaRotationSystem);
 
-        world.setSystem(footContactListenerSystem);
-        world.setSystem(new PlayerMovementSystem(deathMatchManager));
+        engine.addSystem(new PlayerMovementSystem(deathMatchManager));
 
-        world.setSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
+        engine.addSystem(new AbilityCreationSystem(abilityDestructionSystem, deathMatchManager, trapRing));
 
-        world.setSystem(new PillarSystem(abilityDestructionSystem));
+        engine.addSystem(new PillarSystem(abilityDestructionSystem));
 
-//        world.setSystem(new PhysicsDebugSystem(b2world, camera));
-        world.setSystem(new PhysicsStepSystem(b2world));
-        world.setSystem(abilitySystem);
-        world.setSystem(new AnimationSystem());
-        world.setSystem(new PlayerInvulnerableFlashingSystem());
-        world.setSystem(new UIEnergyUpdateSystem());
+        engine.addSystem(new PhysicsDebugSystem(b2world, camera));
+        engine.addSystem(new PhysicsStepSystem(b2world));
+        engine.addSystem(abilitySystem);
+        engine.addSystem(new AnimationSystem());
+        engine.addSystem(new PlayerInvulnerableFlashingSystem());
+        engine.addSystem(new UIEnergyUpdateSystem());
 
         SpriteBatch uiSpriteBatch = new SpriteBatch();
 
-        world.setSystem(new RenderSystem(camera, "background"));
-        world.setSystem(new SpriteBatchStarter(uiSpriteBatch));
-        world.setSystem(new UIRenderSystem(uiSpriteBatch));
-        world.setSystem(new TextRenderSystem(uiSpriteBatch));
-        world.setSystem(new SpriteBatchEnder(uiSpriteBatch));
-        world.setSystem(new GraphicsDebugSystem(camera));
+        engine.addSystem(new RenderSystem(camera, "background"));
+        engine.addSystem(new SpriteBatchStarter(uiSpriteBatch));
+        engine.addSystem(new UIRenderSystem(uiSpriteBatch));
+        engine.addSystem(new TextRenderSystem(uiSpriteBatch));
+        engine.addSystem(new SpriteBatchEnder(uiSpriteBatch));
+        engine.addSystem(new GraphicsDebugSystem(camera));
 
-        world.setSystem(playerDestructionSystem);
-        world.setSystem(abilityDestructionSystem);
+        engine.addSystem(playerDestructionSystem);
+        engine.addSystem(abilityDestructionSystem);
 
-        world.setSystem(new GameOverSystem(deathMatchManager, this, game, camera));
+        engine.addSystem(new GameOverSystem(deathMatchManager, this, game, camera));
 
-        world.setManager(new GroupManager());
+        EntityFactory.createArenaCircle(Constants.ARENA_CENTER);
 
-        world.setDelta(.01f);
-        world.initialize();
-
-        EntityFactory.createArenaCircle(world, Constants.ARENA_CENTER);
-
-        final Entity player1 = EntityFactory.createPlayer(world, 0, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(),
+        final Entity player1 = EntityFactory.createPlayer(0, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
 
-        final Entity player2 = EntityFactory.createPlayer(world, 1, 0, false, 1, Constants.P2_UI_POSITION.cpy(),
+        final Entity player2 = EntityFactory.createPlayer(1, 0, false, 1, Constants.P2_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
 
-        final Entity player3 = EntityFactory.createPlayer(world, 2, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(),
+        final Entity player3 = EntityFactory.createPlayer(2, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), false);
 
-        final Entity player4 = EntityFactory.createPlayer(world, 3, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(),
+        final Entity player4 = EntityFactory.createPlayer(3, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(),
                 new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT});
         abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), true);
 
@@ -172,13 +168,13 @@ public class GameScreen implements Screen
 	public void dispose()
     {
         b2world.dispose();
-        ImmutableBag<EntitySystem> systems = world.getSystems();
+        ImmutableArray<EntitySystem> systems = engine.getSystems();
         for (int i = 0; i < systems.size(); i++)
         {
-            world.deleteSystem(systems.get(i));
+            engine.removeSystem(systems.get(i));
         }
 
-        world = null;
+        engine = null;
     }
 
 	@Override
@@ -190,7 +186,7 @@ public class GameScreen implements Screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        world.process();
+        engine.update(delta);
 	}
 
     @Override

@@ -1,11 +1,12 @@
 package com.oak.projectoak.systems;
 
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Player;
 import com.oak.projectoak.components.TextRender;
 import com.oak.projectoak.entity.EntityFactory;
@@ -25,11 +27,8 @@ import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameOverSystem extends EntityProcessingSystem implements InputProcessor
+public class GameOverSystem extends IteratingSystem implements InputProcessor
 {
-    @Mapper ComponentMapper<Player> pm;
-    @Mapper ComponentMapper<TextRender> tm;
-
     private final GameModeManager gmManager;
     private final GameScreen gameScreen;
     private final Game game;
@@ -49,7 +48,7 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
 
     public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera)
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Family.getFor(Player.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
@@ -66,16 +65,16 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
 
     //SHOULD WE DO RUN processSystem()??
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !hasRun && gmManager.isGameOver();
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
         //Grab the player entity and determine its team number
-        Player p = pm.get(e);
+        Player p = Mapper.player.get(e);
 
         //BUILD STRING UP
         //make player strings by player number
@@ -148,6 +147,11 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
 //                                     (float)maxWidth,
 //                                     BitmapFont.HAlignment.CENTER);
         }
+
+        // TODO: Should run at end.
+        hasRun = true;
+
+        Gdx.input.setInputProcessor(this);
     }
 
     private int getMaxWidthOfText()
@@ -172,14 +176,6 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
     }
 
     @Override
-    protected void end()
-    {
-        hasRun = true;
-
-        Gdx.input.setInputProcessor(this);
-    }
-
-    @Override
     public boolean keyDown(int keycode)
     {
         return false;
@@ -190,11 +186,11 @@ public class GameOverSystem extends EntityProcessingSystem implements InputProce
     {
         if (keycode == Input.Keys.ENTER)
         {
-            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
+            EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
         }
         else if (keycode == Input.Keys.ESCAPE)
         {
-            world.setSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false));
+            EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false));
         }
 
         return false;

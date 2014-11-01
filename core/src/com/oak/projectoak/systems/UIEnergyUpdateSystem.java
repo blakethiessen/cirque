@@ -1,34 +1,32 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.oak.projectoak.AssetLoader;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.AbilityCreation;
 import com.oak.projectoak.components.Animate;
 import com.oak.projectoak.components.Render;
 
-public class UIEnergyUpdateSystem extends EntityProcessingSystem
+public class UIEnergyUpdateSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<AbilityCreation> acm;
-    @Mapper ComponentMapper<Render> rm;
-    @Mapper ComponentMapper<Animate> am;
-
     public UIEnergyUpdateSystem()
     {
-        super(Aspect.getAspectForAll(AbilityCreation.class));
+        super(Family.getFor(AbilityCreation.class));
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        AbilityCreation abilityCreation = acm.get(e);
-        Render render = rm.get(e);
-        Animate animate = am.get(e);
+        AbilityCreation abilityCreation = Mapper.abilityCreation.get(e);
+        Render render = Mapper.render.get(e);
+        Animate animate = Mapper.animate.get(e);
 
         Sprite energyLevelSprite = render.sprites[1];
 

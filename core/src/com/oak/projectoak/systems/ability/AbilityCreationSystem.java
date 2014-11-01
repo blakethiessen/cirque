@@ -1,36 +1,29 @@
 package com.oak.projectoak.systems.ability;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Action;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 import com.oak.projectoak.entity.EntityFactory;
 import com.oak.projectoak.gamemodemanagers.GameModeManager;
 
-public class AbilityCreationSystem extends EntityProcessingSystem
+public class AbilityCreationSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Player> playm;
-    @Mapper ComponentMapper<Platformer> platm;
-    @Mapper ComponentMapper<ArenaTransform> cpm;
-    @Mapper ComponentMapper<Animate> am;
-    @Mapper ComponentMapper<PlayerAnimation> pam;
-
     private final AbilityDestructionSystem abilityDestructionSystem;
     private final GameModeManager gmManager;
     private final Body trapRingBody;
 
     public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, GameModeManager gmManager, Entity trapRing)
     {
-        super(Aspect.getAspectForAll(Player.class));
+        super(Family.getFor(Player.class));
 
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.gmManager = gmManager;
@@ -38,16 +31,16 @@ public class AbilityCreationSystem extends EntityProcessingSystem
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !gmManager.isGameOver();
     }
 
     @Override
-    protected void process(final Entity e)
+    protected void processEntity(final Entity e, float deltaTime)
     {
-        final Player player = playm.get(e);
-        Platformer platformer = platm.get(e);
+        final Player player = Mapper.player.get(e);
+        Platformer platformer = Mapper.platformer.get(e);
 
         AbilityCreation[] abilities = player.abilities;
 
@@ -61,9 +54,9 @@ public class AbilityCreationSystem extends EntityProcessingSystem
 
                 if (!curAbility.justUsed && platformer.isOnGround() && curAbility.enoughEnergyForUse())
                 {
-                    final ArenaTransform arenaTransform = cpm.get(e);
-                    Animate animate = am.get(e);
-                    final PlayerAnimation playerAnimation = pam.get(e);
+                    final ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
+                    Animate animate = Mapper.animate.get(e);
+                    final PlayerAnimation playerAnimation = Mapper.playerAnimation.get(e);
 
                     animate.setAnimation(playerAnimation.layTrap, true);
 
@@ -75,7 +68,7 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                             switch (curAbility.abilityType)
                             {
                                 case STAKE:
-                                    scheduleEntityForDestruction(EntityFactory.createStake(world, trapRingBody,
+                                    scheduleEntityForDestruction(EntityFactory.createStake(trapRingBody,
                                             arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
                                                     Constants.ABILITY_SPAWN_OFFSET :
                                                     arenaTransform.radialPosition + Constants.ABILITY_SPAWN_OFFSET,
@@ -83,17 +76,17 @@ public class AbilityCreationSystem extends EntityProcessingSystem
                                     break;
                                 case PILLAR:
                                     // Pillar destruction is managed in the PillarSystem.
-                                    EntityFactory.createPillar(world, trapRingBody,
+                                    EntityFactory.createPillar(trapRingBody,
                                             arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
                                                     Constants.ABILITY_SPAWN_OFFSET :
                                                     arenaTransform.radialPosition + Constants.ABILITY_SPAWN_OFFSET,
                                             !arenaTransform.onOutsideEdge);
                                     break;
                                 case LIGHTNING_BOLT:
-                                    EntityFactory.createLightningBolt(world,
-                                            arenaTransform.onOutsideEdge ? arenaTransform.radialPosition -
-                                                    Constants.ABILITY_SPAWN_OFFSET :
-                                                    arenaTransform.radialPosition - Constants.INSIDE_LIGHTNING_SPAWN_OFFSET,
+                                    EntityFactory.createLightningBolt(arenaTransform.onOutsideEdge ?
+                                                    arenaTransform.radialPosition - Constants.ABILITY_SPAWN_OFFSET :
+                                                    arenaTransform.radialPosition -
+                                                            Constants.INSIDE_LIGHTNING_SPAWN_OFFSET,
                                             !arenaTransform.onOutsideEdge, e);
                                     break;
                                 default:

@@ -1,14 +1,16 @@
 package com.oak.projectoak.systems.ability;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Pillar;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.physics.TrapPhysics;
@@ -17,24 +19,20 @@ import com.oak.projectoak.physics.Box2DDefs;
 /*
     Manages the updating of pillar segment additions and removals.
  */
-public class PillarSystem extends EntityProcessingSystem
+public class PillarSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Pillar> pm;
-    @Mapper ComponentMapper<TrapPhysics> tpm;
-    @Mapper ComponentMapper<Render> rm;
-
     private final AbilityDestructionSystem abilityDestructionSystem;
 
     public PillarSystem(AbilityDestructionSystem abilityDestructionSystem)
     {
-        super(Aspect.getAspectForAll(Pillar.class));
+        super(Family.getFor(Pillar.class));
         this.abilityDestructionSystem = abilityDestructionSystem;
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        Pillar pillar = pm.get(e);
+        Pillar pillar = Mapper.pillar.get(e);
 
         long now = System.currentTimeMillis();
 
@@ -56,11 +54,11 @@ public class PillarSystem extends EntityProcessingSystem
 
     private void addPillarSegments(Entity e, Pillar pillar)
     {
-        TrapPhysics trapPhysics = tpm.get(e);
+        TrapPhysics trapPhysics = Mapper.trapPhysics.get(e);
 
         changeFixtureSize(pillar, trapPhysics);
 
-        Render render = rm.get(e);
+        Render render = Mapper.render.get(e);
         Sprite curSprite = render.sprites[0];
 
         // TODO: Repeat the texture.
@@ -77,10 +75,10 @@ public class PillarSystem extends EntityProcessingSystem
             abilityDestructionSystem.destroyEntity(e);
         else
         {
-            TrapPhysics trapPhysics = tpm.get(e);
+            TrapPhysics trapPhysics = Mapper.trapPhysics.get(e);
             changeFixtureSize(pillar, trapPhysics);
 
-            Render render = rm.get(e);
+            Render render = Mapper.render.get(e);
             Sprite curSprite = render.sprites[0];
 
             // TODO: Repeat the texture.

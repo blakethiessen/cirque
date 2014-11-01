@@ -1,6 +1,6 @@
 package com.oak.projectoak.systems.physics;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.physics.box2d.World;
 import com.oak.projectoak.Constants;
 
@@ -9,7 +9,7 @@ import com.oak.projectoak.Constants;
     all entities running.
  */
 
-public class PhysicsStepSystem extends VoidEntitySystem
+public class PhysicsStepSystem extends EntitySystem
 {
     World b2world;
 
@@ -19,7 +19,7 @@ public class PhysicsStepSystem extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         b2world.step(1/60f, 6, 2);
     }

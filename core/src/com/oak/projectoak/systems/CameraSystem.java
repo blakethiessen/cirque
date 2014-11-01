@@ -1,13 +1,13 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /*
     The CameraSystem updates the camera every game loop.
  */
 
-public class CameraSystem extends VoidEntitySystem
+public class CameraSystem extends EntitySystem
 {
     private OrthographicCamera camera;
     private boolean enabled;
@@ -19,13 +19,13 @@ public class CameraSystem extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         camera.update();
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return enabled;
     }

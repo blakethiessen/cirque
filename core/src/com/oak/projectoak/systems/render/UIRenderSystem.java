@@ -1,11 +1,13 @@
 package com.oak.projectoak.systems.render;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.UI;
 
@@ -13,22 +15,20 @@ import com.oak.projectoak.components.UI;
     The RenderSystem draws all sprites onto the screen.
  */
 
-public class UIRenderSystem extends EntityProcessingSystem
+public class UIRenderSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Render> sm;
-
     private SpriteBatch batch;
 
     public UIRenderSystem(SpriteBatch spriteBatch)
     {
-        super(Aspect.getAspectForAll(Render.class, UI.class));
+        super(Family.getFor(Render.class, UI.class));
 
         batch = spriteBatch;
     }
 
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        Render render = sm.get(e);
+        Render render = Mapper.render.get(e);
 
         if (render.isVisible)
         {

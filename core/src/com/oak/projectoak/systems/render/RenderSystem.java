@@ -1,32 +1,27 @@
 package com.oak.projectoak.systems.render;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
-import com.artemis.annotations.Mapper;
-import com.artemis.utils.ImmutableBag;
+import com.badlogic.ashley.core.*;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Bits;
 import com.oak.projectoak.AssetLoader;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.UI;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /*
     The RenderSystem draws all sprites onto the screen.
  */
 
-public class RenderSystem extends EntitySystem
+public class RenderSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<Render> sm;
-
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
@@ -34,11 +29,12 @@ public class RenderSystem extends EntitySystem
     final int BACKGROUND_X;
     final int BACKGROUND_Y;
 
-    private List<Entity> sortedEntities;
+    private Array<Entity> renderQueue;
+    private Comparator<Entity> comparator;
 
     public RenderSystem(OrthographicCamera camera, String backgroundTextureName)
     {
-        super(Aspect.getAspectForAll(Render.class).exclude(UI.class));
+        super(Family.getFor(ComponentType.getBitsFor(Render.class), new Bits(0), ComponentType.getBitsFor(UI.class)));
 
         batch = new SpriteBatch();
         this.camera = camera;
@@ -46,33 +42,29 @@ public class RenderSystem extends EntitySystem
         backgroundTexture = AssetLoader.getTextureRegion(backgroundTextureName);
         BACKGROUND_X = (Gdx.graphics.getWidth() - backgroundTexture.getRegionWidth()) / 2;
         BACKGROUND_Y = (Gdx.graphics.getHeight() - backgroundTexture.getRegionHeight()) / 2;
-    }
 
-    @Override
-    protected void initialize()
-    {
-        sortedEntities = new ArrayList<Entity>();
-    }
+        renderQueue = new Array<Entity>();
 
-    @Override
-    protected boolean checkProcessing()
-    {
-        return true;
-    }
-
-    @Override
-    protected void processEntities(ImmutableBag<Entity> entities)
-    {
-        // Ignore passed in bag, use sorted entities to achieve layering.
-        for (Entity e : sortedEntities)
+        comparator = new Comparator<Entity>()
         {
-            process(e);
-        }
+            @Override
+            public int compare(Entity entityA, Entity entityB)
+            {
+                return (int)Math.signum(Mapper.render.get(entityA).layer.getLayerId() -
+                        Mapper.render.get(entityB).layer.getLayerId());
+            }
+        };
     }
 
     @Override
-    protected void begin()
+    public void update(float deltaTime)
     {
+        // Still do the normal update
+        // TODO: Can we do this in a way that doesn't resort every frame?
+        super.update(deltaTime);
+
+        renderQueue.sort(comparator);
+
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
@@ -80,11 +72,22 @@ public class RenderSystem extends EntitySystem
         batch.disableBlending();
         batch.draw(backgroundTexture, BACKGROUND_X, BACKGROUND_Y);
         batch.enableBlending();
+
+        // Ignore passed in bag, use sorted entities to achieve layering.
+        for (int i = renderQueue.size - 1; i >= 0; i--)
+        {
+            renderSprite(renderQueue.get(i));
+        }
+
+        batch.end();
+
+        renderQueue.clear();
+
     }
 
-    protected void process(Entity e)
+    private void renderSprite(Entity e)
     {
-        Render render = sm.get(e);
+        Render render = Mapper.render.get(e);
 
         if (render != null && render.isVisible)
         {
@@ -103,30 +106,9 @@ public class RenderSystem extends EntitySystem
         }
     }
 
-    protected void end()
-    {
-        batch.end();
-    }
-
     @Override
-    protected void inserted(Entity e)
+    protected void processEntity(Entity entity, float deltaTime)
     {
-        sortedEntities.add(e);
-        Collections.sort(sortedEntities, new Comparator<Entity>()
-        {
-            @Override
-            public int compare(Entity e1, Entity e2)
-            {
-                Render s1 = sm.get(e1);
-                Render s2 = sm.get(e2);
-                return s1.layer.compareTo(s2.layer);
-            }
-        });
-    }
-
-    @Override
-    protected void removed(Entity e)
-    {
-        sortedEntities.remove(e);
+        renderQueue.add(entity);
     }
 }

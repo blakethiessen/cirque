@@ -1,6 +1,6 @@
 package com.oak.projectoak.physics;
 
-import com.artemis.Entity;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import com.oak.projectoak.physics.userdata.*;
 

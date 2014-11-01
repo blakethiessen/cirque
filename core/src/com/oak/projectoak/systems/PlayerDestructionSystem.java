@@ -1,13 +1,14 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.*;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
@@ -17,15 +18,8 @@ import com.oak.projectoak.systems.physics.ArenaRotationSystem;
 
 import java.util.ArrayList;
 
-public class PlayerDestructionSystem extends VoidEntitySystem
+public class PlayerDestructionSystem extends EntitySystem
 {
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<Platformer> platm;
-    @Mapper ComponentMapper<Player> playm;
-    @Mapper ComponentMapper<ArenaTransform> am;
-    @Mapper ComponentMapper<Animate> anm;
-    @Mapper ComponentMapper<PlayerAnimation> pam;
-
     private final GameModeManager deathMatchManager;
     private final ArenaRotationSystem arenaRotationSystem;
     private final int respawnTime;
@@ -48,21 +42,21 @@ public class PlayerDestructionSystem extends VoidEntitySystem
     }
 
     @Override
-    protected boolean checkProcessing()
+    public boolean checkProcessing()
     {
         return !entitiesToDestroy.isEmpty();
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         while (!entitiesToDestroy.isEmpty())
         {
             final Entity e = entitiesToDestroy.get(0);
 
-            Animate animate = anm.get(e);
-            animate.setAnimation(pam.get(e).death, true);
-            final Player player = playm.get(e);
+            Animate animate = Mapper.animate.get(e);
+            animate.setAnimation(Mapper.playerAnimation.get(e).death, true);
+            final Player player = Mapper.player.get(e);
             player.invulnerable = true;
             player.deaths++;
             player.portraitRender.setNewSpriteImage(player.portraitPortrait.deathPortrait, 1);
@@ -72,10 +66,10 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                 @Override
                 public void run()
                 {
-                    if (dpm.has(e))
-                        b2world.destroyBody(dpm.get(e).body);
+                    if (Mapper.dynamicPhysics.has(e))
+                        b2world.destroyBody(Mapper.dynamicPhysics.get(e).body);
 
-                    e.disable();
+                    // TODO: Find a way to e.disable();
 
                     if (!deathMatchManager.isGameOver())
                         setupPlayerRespawnTimer(e);
@@ -96,13 +90,13 @@ public class PlayerDestructionSystem extends VoidEntitySystem
             public void run()
             {
                 Body runnerBody = PhysicsFactory.createRunnerBody(e);
-                ArenaTransform arenaTransform = am.get(e);
+                ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
                 runnerBody.setTransform(Constants.ConvertRadialTo2DPosition(
                         (float) (arenaTransform.radialPosition + Math.PI), arenaTransform.onOutsideEdge), 0);
 
-                dpm.get(e).body = runnerBody;
-                platm.get(e).footContacts.clear();
-                final Player player = playm.get(e);
+                Mapper.dynamicPhysics.get(e).body = runnerBody;
+                Mapper.platformer.get(e).footContacts.clear();
+                final Player player = Mapper.player.get(e);
                 player.resetActions();
                 player.invulnerable = true;
 
@@ -122,7 +116,7 @@ public class PlayerDestructionSystem extends VoidEntitySystem
                     }
                 }, Constants.RESPAWN_INVULNERABLE_PERIOD_SEC);
 
-                e.enable();
+                // TODO: Find a way to e.enable();
             }
         }, respawnTime);
     }

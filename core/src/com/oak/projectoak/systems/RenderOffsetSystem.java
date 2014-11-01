@@ -1,30 +1,29 @@
 package com.oak.projectoak.systems;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.Render;
 import com.oak.projectoak.components.RenderOffset;
 
-public class RenderOffsetSystem extends EntityProcessingSystem
+public class RenderOffsetSystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<RenderOffset> rom;
-    @Mapper ComponentMapper<Render> rm;
-
     public RenderOffsetSystem()
     {
-        super(Aspect.getAspectForAll(RenderOffset.class, Render.class));
+        super(Family.getFor(RenderOffset.class, Render.class));
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        RenderOffset renderOffset = rom.get(e);
-        Render render = rm.get(e);
+        RenderOffset renderOffset = Mapper.renderOffset.get(e);
+        Render render = Mapper.render.get(e);
         Sprite mainSprite = render.sprites[0];
 
         render.setPosition(new Vector2(mainSprite.getX() - renderOffset.pxOffset.x, mainSprite.getY() - renderOffset.pxOffset.y));

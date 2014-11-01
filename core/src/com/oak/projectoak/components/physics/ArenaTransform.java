@@ -1,6 +1,6 @@
 package com.oak.projectoak.components.physics;
 
-import com.artemis.Component;
+import com.badlogic.ashley.core.Component;
 
 public class ArenaTransform extends Component
 {

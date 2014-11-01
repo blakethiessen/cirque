@@ -1,9 +1,9 @@
 package com.oak.projectoak.systems.render;
 
-import com.artemis.systems.VoidEntitySystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class SpriteBatchStarter extends VoidEntitySystem
+public class SpriteBatchStarter extends EntitySystem
 {
     private final SpriteBatch spriteBatch;
 
@@ -13,7 +13,7 @@ public class SpriteBatchStarter extends VoidEntitySystem
     }
 
     @Override
-    protected void processSystem()
+    public void update(float deltaTime)
     {
         spriteBatch.begin();
     }

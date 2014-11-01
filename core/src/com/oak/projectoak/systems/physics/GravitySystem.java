@@ -1,34 +1,33 @@
 package com.oak.projectoak.systems.physics;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.annotations.Mapper;
-import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oak.projectoak.Constants;
+import com.oak.projectoak.Mapper;
 import com.oak.projectoak.components.physics.ArenaTransform;
 import com.oak.projectoak.components.physics.DynamicPhysics;
 
-public class GravitySystem extends EntityProcessingSystem
+public class GravitySystem extends IteratingSystem
 {
-    @Mapper ComponentMapper<DynamicPhysics> dpm;
-    @Mapper ComponentMapper<ArenaTransform> ctm;
-
     private final Vector2 arenaCenter;
 
     public GravitySystem(Vector2 arenaCenter)
     {
-        super(Aspect.getAspectForAll(ArenaTransform.class, DynamicPhysics.class));
+        super(Family.getFor(ArenaTransform.class, DynamicPhysics.class));
         this.arenaCenter = arenaCenter;
     }
 
     @Override
-    protected void process(Entity e)
+    protected void processEntity(Entity e, float deltaTime)
     {
-        DynamicPhysics physics = dpm.get(e);
-        ArenaTransform arenaTransform = ctm.get(e);
+        DynamicPhysics physics = Mapper.dynamicPhysics.get(e);
+        ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
 
         Body body = physics.body;
         Vector2 position = body.getPosition();
