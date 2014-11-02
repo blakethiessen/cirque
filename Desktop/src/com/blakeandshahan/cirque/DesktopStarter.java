@@ -24,18 +24,18 @@ public class DesktopStarter
         // Pass in the argument "nopack" to not run the image packer.
         if (args.length > 0)
         {
-            if (!args[0].equals("nopack"))
-                ImagePacker.run();
-            if (args.length > 1 && args[1].equals("f"))
+            for (String arg : args)
             {
-                cfg.width = (int)screenSize.getWidth();
-                cfg.height = (int)screenSize.getHeight();
-                cfg.fullscreen = true;
+                if (arg.equals("pack"))
+                    ImagePacker.run();
+                if (arg.equals("f"))
+                {
+                    cfg.width = (int)screenSize.getWidth();
+                    cfg.height = (int)screenSize.getHeight();
+                    cfg.fullscreen = true;
+                }
             }
         }
-        else
-            ImagePacker.run();
-
 
         new LwjglApplication(new Cirque(), cfg);
     }
