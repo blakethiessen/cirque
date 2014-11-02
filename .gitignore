@@ -63,7 +63,4 @@ build/
 .DS_Store
 
 ## Custom
-core/assets/textures/pack1
-core/assets/textures/pack2
-core/assets/textures/pack3
-core/assets/textures/pack4
+core/assets/textures/pack*
