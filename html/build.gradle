@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.oak.projectoak.GdxDefinition'
-    devModules 'com.oak.projectoak.GdxDefinitionSuperdev'
+    modules 'com.blakeandshahan.cirque.GdxDefinition'
+    devModules 'com.blakeandshahan.cirque.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {
