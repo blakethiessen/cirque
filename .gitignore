@@ -20,6 +20,7 @@ www-test/
 workspace.xml
 tasks.xml
 out/
+*.iml
 com_crashlytics_export_strings.xml
 
 ## Gradle
