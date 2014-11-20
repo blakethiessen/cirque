@@ -24,6 +24,9 @@ com_crashlytics_export_strings.xml
 
 ## Gradle
 .gradle
+.idea/artifacts/
+.idea/libraries/
+.idea/gradle.xml
 
 ## OS Specific
 .DS_Store
