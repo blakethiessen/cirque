@@ -18,8 +18,6 @@ public class Player extends Component
     public float mouseX;
     public float mouseY;
 
-    public AbilityCreation[] abilities;
-
     public int teamNum;
 
     public boolean invulnerable;
@@ -36,10 +34,9 @@ public class Player extends Component
     public int enemyKills, deaths, friendlyKills;
 
     public Player(
-            int playerNum, int teamNum, AbilityCreation[] abilityCreationComponents, Entity characterPortrait)
+            int playerNum, int teamNum, Entity characterPortrait)
     {
         this.teamNum = teamNum;
-        this.abilities = abilityCreationComponents;
         this.portraitRender = characterPortrait.getComponent(Render.class);
         this.portraitPortrait = characterPortrait.getComponent(Portrait.class);
 

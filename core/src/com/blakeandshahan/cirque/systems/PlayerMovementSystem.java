@@ -41,6 +41,7 @@ public class PlayerMovementSystem extends IteratingSystem
     {
         // The following assumes runners always have the following components.
         Player player = Mapper.player.get(e);
+        AbilityUser abilityUser = Mapper.abilityUser.get(e);
         DynamicPhysics physics = Mapper.dynamicPhysics.get(e);
         Body body = physics.body;
         final Platformer platformer = Mapper.platformer.get(e);
@@ -58,7 +59,7 @@ public class PlayerMovementSystem extends IteratingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
-            increaseEnergy(player, arenaTransform);
+            increaseEnergy(abilityUser, player, arenaTransform);
         }
         else if (player.isActionOn(Action.MOVING_RIGHT))
         {
@@ -68,7 +69,7 @@ public class PlayerMovementSystem extends IteratingSystem
                 animate.setAnimation(playerAnimation.walk);
 
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, platformer.latAccel);
-            increaseEnergy(player, arenaTransform);
+            increaseEnergy(abilityUser, player, arenaTransform);
         }
         else
         {
@@ -114,17 +115,20 @@ public class PlayerMovementSystem extends IteratingSystem
         }
     }
 
-    private void increaseEnergy(Player player, ArenaTransform arenaTransform)
+    private void increaseEnergy(AbilityUser abilityUser, Player player, ArenaTransform arenaTransform)
     {
 //        if (player.isMovingRight && player.lastLateralChangePosition >= arenaTransform.radialPosition)
 //            player.energyIncreaseMultiplier *=2;
 
-        for (AbilityCreation ability : player.abilities)
+        if (abilityUser != null)
         {
-            if (ability.energyAmt <= 1f)
-                ability.energyAmt += ability.energyIncreasePerFrame * player.energyIncreaseMultiplier;
-            else
-                ability.energyAmt = 1f;
+            for (AbilityCreation ability : abilityUser.abilities)
+            {
+                if (ability.energyAmt <= 1f)
+                    ability.energyAmt += ability.energyIncreasePerFrame * player.energyIncreaseMultiplier;
+                else
+                    ability.energyAmt = 1f;
+            }
         }
     }
 

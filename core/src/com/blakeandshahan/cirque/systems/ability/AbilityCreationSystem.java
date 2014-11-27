@@ -23,7 +23,7 @@ public class AbilityCreationSystem extends IteratingSystem
 
     public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, GameModeManager gmManager, Entity trapRing)
     {
-        super(Family.getFor(Player.class));
+        super(Family.getFor(AbilityUser.class));
 
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.gmManager = gmManager;
@@ -40,9 +40,10 @@ public class AbilityCreationSystem extends IteratingSystem
     protected void processEntity(final Entity e, float deltaTime)
     {
         final Player player = Mapper.player.get(e);
+        final AbilityUser abilityUser = Mapper.abilityUser.get(e);
         Platformer platformer = Mapper.platformer.get(e);
 
-        AbilityCreation[] abilities = player.abilities;
+        AbilityCreation[] abilities = abilityUser.abilities;
 
         for (int i = Action.ABILITY_1.getId(); i <= Action.ABILITY_3.getId(); i++)
         {

@@ -28,4 +28,5 @@ public class Mapper
     public static final ComponentMapper<RenderOffset> renderOffset = ComponentMapper.getFor(RenderOffset.class);
     public static final ComponentMapper<TextRender> textRender = ComponentMapper.getFor(TextRender.class);
     public static final ComponentMapper<UI> ui = ComponentMapper.getFor(UI.class);
+    public static final ComponentMapper<AbilityUser> abilityUser = ComponentMapper.getFor(AbilityUser.class);
 }

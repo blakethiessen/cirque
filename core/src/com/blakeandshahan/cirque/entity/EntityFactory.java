@@ -174,7 +174,8 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.add(new Player(playerNum, teamNum, abilityCreationComponents, characterPortrait));
+        e.add(new Player(playerNum, teamNum, characterPortrait));
+        e.add(new AbilityUser(abilityCreationComponents));
 
         engine.addEntity(e);
 
