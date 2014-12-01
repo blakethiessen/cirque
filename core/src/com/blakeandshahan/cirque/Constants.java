@@ -137,6 +137,8 @@ public class Constants
 
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
     public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
+    public static final float MIN_CAMERA_ZOOM = (float) CAMERA_ZOOM_TO_RESOLUTION_SCALE /
+            ((float) Gdx.graphics.getHeight() - ZOOM_RING_PADDING);
 
     public class Groups
     {
@@ -163,6 +165,9 @@ public class Constants
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
 
     // ABILITY CONSTANTS
+    public static final AbilityType[] DEFAULT_ABILITIES =
+            new AbilityType[]{AbilityType.STAKE, AbilityType.PILLAR, AbilityType.LIGHTNING_BOLT};
+
     public static final float ABILITY_SPAWN_OFFSET = .09f;
     public static final float INSIDE_LIGHTNING_SPAWN_OFFSET = .05f;
     public static final float OUTER_LIGHTNING_ROTATION_OFFSET = .03f;
@@ -245,7 +250,7 @@ public class Constants
     }
 
     // CONTROL CONSTANTS
-    public static final int NUM_OF_CONTROLS = 3;
+    public static final int NUM_OF_CONTROLS = 7;
 
     public static final int P1_LEFT_KEY = Input.Keys.A;
     public static final int P1_RIGHT_KEY = Input.Keys.D;
@@ -253,6 +258,7 @@ public class Constants
     public static final int P1_ABILITY_1_KEY = Input.Keys.Q;
     public static final int P1_ABILITY_2_KEY = Input.Keys.E;
     public static final int P1_ABILITY_3_KEY = Input.Keys.Z;
+    public static final int P1_START_KEY = Input.Keys.NUM_1;
 
     public static final int P2_LEFT_KEY = Input.Keys.LEFT;
     public static final int P2_RIGHT_KEY = Input.Keys.RIGHT;
@@ -260,6 +266,7 @@ public class Constants
     public static final int P2_ABILITY_1_KEY = Input.Keys.SLASH;
     public static final int P2_ABILITY_2_KEY = Input.Keys.APOSTROPHE;
     public static final int P2_ABILITY_3_KEY = Input.Keys.RIGHT_BRACKET;
+    public static final int P2_START_KEY = Input.Keys.NUM_2;
 
     // Currently for debug
     public static final int P3_LEFT_KEY = Input.Keys.F;
@@ -268,6 +275,7 @@ public class Constants
     public static final int P3_ABILITY_1_KEY = Input.Keys.R;
     public static final int P3_ABILITY_2_KEY = Input.Keys.Y;
     public static final int P3_ABILITY_3_KEY = Input.Keys.V;
+    public static final int P3_START_KEY = Input.Keys.NUM_3;
 
     public static final int P4_LEFT_KEY = Input.Keys.J;
     public static final int P4_RIGHT_KEY = Input.Keys.L;
@@ -275,4 +283,5 @@ public class Constants
     public static final int P4_ABILITY_1_KEY = Input.Keys.U;
     public static final int P4_ABILITY_2_KEY = Input.Keys.O;
     public static final int P4_ABILITY_3_KEY = Input.Keys.N;
+    public static final int P4_START_KEY = Input.Keys.NUM_4;
 }

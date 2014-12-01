@@ -30,11 +30,12 @@ public class PlayerMovementSystem extends IteratingSystem
         this.gmManager = gmManager;
     }
 
-    @Override
-    public boolean checkProcessing()
-    {
-        return !gmManager.isGameOver();
-    }
+    // TODO: Should we stop movement here?
+//    @Override
+//    public boolean checkProcessing()
+//    {
+//        return !gmManager.isGameOver();
+//    }
 
     @Override
     protected void processEntity(Entity e, float deltaTime)

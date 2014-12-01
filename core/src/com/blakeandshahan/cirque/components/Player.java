@@ -15,6 +15,7 @@ public class Player extends Component
 
     public byte actionMask;
 
+    // TODO: Remove these
     public float mouseX;
     public float mouseY;
 

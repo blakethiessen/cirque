@@ -13,7 +13,8 @@ public enum Action
     JUMPING(2),
     ABILITY_1(3),
     ABILITY_2(4),
-    ABILITY_3(5);
+    ABILITY_3(5),
+    START(6);
 
     private final int id;
 

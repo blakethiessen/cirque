@@ -1,6 +1,7 @@
 package com.blakeandshahan.cirque;
 
 import com.badlogic.gdx.Game;
+import com.blakeandshahan.cirque.screens.GameScreen;
 import com.blakeandshahan.cirque.screens.TitleScreen;
 
 /*
@@ -14,6 +15,6 @@ public class Cirque extends Game
     public void create()
     {
         AssetLoader.setMusic("godfighter_soundtrack.mp3");
-        setScreen(new TitleScreen(this));
+        setScreen(new GameScreen(this));
     }
 }

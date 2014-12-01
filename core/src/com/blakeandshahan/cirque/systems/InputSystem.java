@@ -48,6 +48,7 @@ public class InputSystem extends IteratingSystem
         keyMaps.put(Constants.P1_ABILITY_1_KEY, new PlayerAction(1, Action.ABILITY_1));
         keyMaps.put(Constants.P1_ABILITY_2_KEY, new PlayerAction(1, Action.ABILITY_2));
         keyMaps.put(Constants.P1_ABILITY_3_KEY, new PlayerAction(1, Action.ABILITY_3));
+        keyMaps.put(Constants.P1_START_KEY, new PlayerAction(1, Action.START));
 
         keyMaps.put(Constants.P2_LEFT_KEY, new PlayerAction(2, Action.MOVING_LEFT));
         keyMaps.put(Constants.P2_RIGHT_KEY, new PlayerAction(2, Action.MOVING_RIGHT));
@@ -55,6 +56,7 @@ public class InputSystem extends IteratingSystem
         keyMaps.put(Constants.P2_ABILITY_1_KEY, new PlayerAction(2, Action.ABILITY_1));
         keyMaps.put(Constants.P2_ABILITY_2_KEY, new PlayerAction(2, Action.ABILITY_2));
         keyMaps.put(Constants.P2_ABILITY_3_KEY, new PlayerAction(2, Action.ABILITY_3));
+        keyMaps.put(Constants.P2_START_KEY, new PlayerAction(2, Action.START));
 
         keyMaps.put(Constants.P3_LEFT_KEY, new PlayerAction(3, Action.MOVING_LEFT));
         keyMaps.put(Constants.P3_RIGHT_KEY, new PlayerAction(3, Action.MOVING_RIGHT));
@@ -62,6 +64,7 @@ public class InputSystem extends IteratingSystem
         keyMaps.put(Constants.P3_ABILITY_1_KEY, new PlayerAction(3, Action.ABILITY_1));
         keyMaps.put(Constants.P3_ABILITY_2_KEY, new PlayerAction(3, Action.ABILITY_2));
         keyMaps.put(Constants.P3_ABILITY_3_KEY, new PlayerAction(3, Action.ABILITY_3));
+        keyMaps.put(Constants.P3_START_KEY, new PlayerAction(3, Action.START));
 
         keyMaps.put(Constants.P4_LEFT_KEY, new PlayerAction(4, Action.MOVING_LEFT));
         keyMaps.put(Constants.P4_RIGHT_KEY, new PlayerAction(4, Action.MOVING_RIGHT));
@@ -69,6 +72,7 @@ public class InputSystem extends IteratingSystem
         keyMaps.put(Constants.P4_ABILITY_1_KEY, new PlayerAction(4, Action.ABILITY_1));
         keyMaps.put(Constants.P4_ABILITY_2_KEY, new PlayerAction(4, Action.ABILITY_2));
         keyMaps.put(Constants.P4_ABILITY_3_KEY, new PlayerAction(4, Action.ABILITY_3));
+        keyMaps.put(Constants.P4_START_KEY, new PlayerAction(4, Action.START));
 
         controlStates = new HashMap[Constants.MAX_NUM_OF_PLAYERS];
 
@@ -82,14 +86,15 @@ public class InputSystem extends IteratingSystem
             controlStates[i].put(Action.ABILITY_1, false);
             controlStates[i].put(Action.ABILITY_2, false);
             controlStates[i].put(Action.ABILITY_3, false);
+            controlStates[i].put(Action.START, false);
         }
     }
 
-    @Override
-    public boolean checkProcessing()
-    {
-        return !gmManager.isGameOver();
-    }
+//    @Override
+//    public boolean checkProcessing()
+//    {
+//        return !gmManager.isGameOver();
+//    }
 
     @Override
     protected void processEntity(Entity e, float deltaTime)
@@ -109,6 +114,8 @@ public class InputSystem extends IteratingSystem
                 controlStates[playerArrNum].get(Action.ABILITY_2));
         player.setAction(Action.ABILITY_3,
                 controlStates[playerArrNum].get(Action.ABILITY_3));
+        player.setAction(Action.START,
+                controlStates[playerArrNum].get(Action.START));
     }
 
     @Override
@@ -202,6 +209,7 @@ public class InputSystem extends IteratingSystem
             controlStates[curPlayer].put(Action.ABILITY_2, true);
         else if (buttonCode == 1)
             controlStates[curPlayer].put(Action.ABILITY_3, true);
+        // TODO: Add button code for start
 
         return false;
     }

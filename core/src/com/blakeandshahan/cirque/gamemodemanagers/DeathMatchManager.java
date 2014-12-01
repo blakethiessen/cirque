@@ -18,6 +18,9 @@ public class DeathMatchManager extends GameModeManager
         livesLeft = new int[numOfTeams];
         livesLeftText = new TextRender[numOfTeams];
 
+        // Setting winner to 0 at first in order to make the game seem ended.
+        winner = 0;
+
         if (numOfTeams == 2)
         {
             String maxDeathsString = String.valueOf(maxDeaths);

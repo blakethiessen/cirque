@@ -83,6 +83,8 @@ public class EntityFactory
         return e;
     }
 
+    // Generates a player entity. Note if parameter chosenAbilityTypes is
+    // null, the AbilityUser component is not added to the player.
     public static Entity createPlayer(int playerNum, float radialPosition, boolean onOutsideEdge,
                                       int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
     {
@@ -96,7 +98,7 @@ public class EntityFactory
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         e.add(new Render(Layer.PLAYERS, twoDPosition, false));
 
-        boolean uiOnRightSide = uiPosition.equals(Constants.P2_UI_POSITION) || uiPosition.equals(Constants.P4_UI_POSITION);
+        boolean uiOnRightSide = uiPosition.x > Gdx.graphics.getWidth() / 2;
 
         if (uiOnRightSide)
             uiPosition.x -= Constants.PORTRAIT_WIDTH;
@@ -155,13 +157,27 @@ public class EntityFactory
                             Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
+        e.add(new Player(playerNum, teamNum, characterPortrait));
         e.add(new ArenaTransform(radialPosition, onOutsideEdge));
+        
+        if (chosenAbilityTypes != null)
+            addAbilities(e, chosenAbilityTypes);
+
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    public static void addAbilities(Entity playerEntity, AbilityType[] chosenAbilityTypes)
+    {
+        Sprite portraitSprite = playerEntity.getComponent(Player.class).portraitRender.sprites[0];
+        Vector2 uiPosition = new Vector2(portraitSprite.getX(), portraitSprite.getY());
 
         // Add abilities
         AbilityCreation[] abilityCreationComponents = new AbilityCreation[chosenAbilityTypes.length];
 
         // If the position is on the right side, move our uiPosition origin to the left to compensate.
-        if (uiOnRightSide)
+        if (uiPosition.x > Gdx.graphics.getWidth() / 2)
             uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
         else
             uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
@@ -174,12 +190,7 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        e.add(new Player(playerNum, teamNum, characterPortrait));
-        e.add(new AbilityUser(abilityCreationComponents));
-
-        engine.addEntity(e);
-
-        return e;
+        playerEntity.add(new AbilityUser(abilityCreationComponents));
     }
 
     private static Entity createCharacterPortrait(String[] portraitStates,

@@ -1,28 +1,32 @@
 package com.blakeandshahan.cirque.systems;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.Game;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.blakeandshahan.cirque.Constants;
+import com.blakeandshahan.cirque.components.Player;
 import com.blakeandshahan.cirque.entity.EntityFactory;
-import com.blakeandshahan.cirque.screens.GameScreen;
-import com.blakeandshahan.cirque.screens.TitleScreen;
+import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 
 public class CameraZoomTransitionSystem extends EntitySystem
 {
     private final OrthographicCamera camera;
-    private final float finalCameraZoom;
-    private Game game;
-    private GameScreen gameScreen;
-    private boolean restartGame;
+    private float finalCameraZoom;
+    private final GameModeManager gmManager;
+
+    private TransitionType transitionType;
 
     private float zoomVel;
     private boolean zoomingInwards;
 
-    public CameraZoomTransitionSystem(OrthographicCamera camera, float finalCameraZoom)
+    public CameraZoomTransitionSystem(TransitionType transitionType,
+                                      OrthographicCamera camera, float finalCameraZoom, GameModeManager gmManager)
     {
         this.camera = camera;
         this.finalCameraZoom = finalCameraZoom;
+        this.gmManager = gmManager;
         zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
 
         if (finalCameraZoom < camera.zoom)
@@ -30,17 +34,7 @@ public class CameraZoomTransitionSystem extends EntitySystem
         else
             zoomingInwards = false;
 
-        restartGame = false;
-    }
-
-    public CameraZoomTransitionSystem(
-            OrthographicCamera camera, float finalCameraZoom, Game game, GameScreen gameScreen, boolean restartGame)
-    {
-        this(camera, finalCameraZoom);
-
-        this.game = game;
-        this.gameScreen = gameScreen;
-        this.restartGame = restartGame;
+        this.transitionType = transitionType;
     }
 
     @Override
@@ -54,15 +48,30 @@ public class CameraZoomTransitionSystem extends EntitySystem
         if ((!zoomingInwards && camera.zoom >= finalCameraZoom) ||
                 (zoomingInwards && camera.zoom < finalCameraZoom))
         {
-            if (game == null)
-                EntityFactory.engine.removeSystem(this);
-            else
+            switch (transitionType)
             {
-                gameScreen.dispose();
-                if (restartGame)
-                    game.setScreen(new GameScreen(game));
-                else
-                    game.setScreen(new TitleScreen(game));
+                case INITIAL_LOAD:
+                    EntityFactory.engine.removeSystem(this);
+                    break;
+                case RESTART:
+                    if (zoomingInwards)
+                    {
+                        ImmutableArray playerEntities = EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
+                        for (int i = 0; i < playerEntities.size(); i++)
+                        {
+                            EntityFactory.addAbilities((Entity)playerEntities.get(i), Constants.DEFAULT_ABILITIES);
+                        }
+                        gmManager.resetGame();
+
+                        zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
+                        zoomingInwards = false;
+                        finalCameraZoom = Constants.MIN_CAMERA_ZOOM;
+                    }
+                    else
+                    {
+                        EntityFactory.engine.removeSystem(this);
+                    }
+                    break;
             }
         }
         else if ((!zoomingInwards && camera.zoom >= finalCameraZoom / 2 + .01f) ||
@@ -72,5 +81,11 @@ public class CameraZoomTransitionSystem extends EntitySystem
         }
         else
             zoomVel += Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
+    }
+
+    public enum TransitionType
+    {
+        INITIAL_LOAD,
+        RESTART
     }
 }
