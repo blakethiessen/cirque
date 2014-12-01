@@ -15,11 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.blakeandshahan.cirque.Action;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
+import com.blakeandshahan.cirque.components.Platformer;
 import com.blakeandshahan.cirque.components.Player;
 import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.screens.GameScreen;
+import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +32,19 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
     private final GameScreen gameScreen;
     private final Game game;
     private final OrthographicCamera camera;
+    private final AbilityDestructionSystem abilityDestructionSystem;
 
     private boolean hasRun;
 
-    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera)
+    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera,
+                          AbilityDestructionSystem abilityDestructionSystem)
     {
-        super(Family.getFor(Player.class));
+        super(Family.getFor(PlayerController.class));
         this.gmManager = gmManager;
         this.gameScreen = gameScreen;
         this.game = game;
         this.camera = camera;
+        this.abilityDestructionSystem = abilityDestructionSystem;
 
         hasRun = false;
     }
@@ -63,8 +68,37 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
             // 4. Set energy to original levels.
             // 5. Setup scores.
 
-            EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
-                    CameraZoomTransitionSystem.TransitionType.RESTART, camera, 0, gmManager));
+            // If we haven't initialized this player...
+            if (!Mapper.player.has(e))
+            {
+                switch (controller.controllerNum)
+                {
+                    case 0:
+                        EntityFactory.createPlayerFromController(
+                                e, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(), null);
+                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                        break;
+                    case 1:
+                        EntityFactory.createPlayerFromController(e, 0, false, 1, Constants.P2_UI_POSITION.cpy(), null);
+                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                        break;
+                    case 2:
+                        EntityFactory.createPlayerFromController(
+                                e, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(), null);
+                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                        break;
+                    case 3:
+                        EntityFactory.createPlayerFromController(
+                                e, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(), null);
+                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                        break;
+                }
+            }
+            else
+            {
+                EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
+                        CameraZoomTransitionSystem.TransitionType.RESTART, camera, 0, gmManager));
+            }
         }
     }
 

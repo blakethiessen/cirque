@@ -83,31 +83,42 @@ public class EntityFactory
         return e;
     }
 
-    // Generates a player entity. Note if parameter chosenAbilityTypes is
-    // null, the AbilityUser component is not added to the player.
-    public static Entity createPlayer(int playerNum, float radialPosition, boolean onOutsideEdge,
-                                      int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
+    // Creates a slot for controller input. Extends into a Player after pressing "Start" with a controller.
+    public static Entity createController(int playerNum)
     {
         Entity e = new Entity();
+        e.add(new PlayerController(playerNum));
 
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    // Generates a player entity. Requires a controllerEntity created via above. Note if
+    // parameter chosenAbilityTypes is null, the AbilityUser component is not added to the player.
+    public static void createPlayerFromController(Entity controllerEntity, float radialPosition,
+            boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
+    {
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        e.add(new DynamicPhysics(PhysicsFactory.createRunnerBody(e), twoDPosition));
-        e.add(new Platformer(Constants.PLAYER_LAT_ACCEL,
+        controllerEntity.add(new DynamicPhysics(PhysicsFactory.createRunnerBody(controllerEntity), twoDPosition));
+        controllerEntity.add(new Platformer(Constants.PLAYER_LAT_ACCEL,
                 Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
-        e.add(new Render(Layer.PLAYERS, twoDPosition, false));
+        controllerEntity.add(new Render(Layer.PLAYERS, twoDPosition, false));
 
         boolean uiOnRightSide = uiPosition.x > Gdx.graphics.getWidth() / 2;
 
         if (uiOnRightSide)
             uiPosition.x -= Constants.PORTRAIT_WIDTH;
 
+        final int playerNum = controllerEntity.getComponent(PlayerController.class).controllerNum;
+
         Entity characterPortrait;
         if (playerNum == 0)
         {
-            e.add(new Animate(Constants.PIRATE_IDLE));
-            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+            controllerEntity.add(new Animate(Constants.PIRATE_IDLE));
+            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -119,8 +130,8 @@ public class EntityFactory
         }
         else if (playerNum == 1)
         {
-            e.add(new Animate(Constants.NINJA_IDLE));
-            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+            controllerEntity.add(new Animate(Constants.NINJA_IDLE));
+            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -132,8 +143,8 @@ public class EntityFactory
         }
         else if (playerNum == 2)
         {
-            e.add(new Animate(Constants.PHARAOH_IDLE));
-            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
+            controllerEntity.add(new Animate(Constants.PHARAOH_IDLE));
+            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -145,8 +156,8 @@ public class EntityFactory
         }
         else
         {
-            e.add(new Animate(Constants.GANGSTA_IDLE));
-            e.add(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            controllerEntity.add(new Animate(Constants.GANGSTA_IDLE));
+            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -157,16 +168,11 @@ public class EntityFactory
                             Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
-        e.add(new PlayerController(playerNum));
-        e.add(new Player(teamNum, characterPortrait));
-        e.add(new ArenaTransform(radialPosition, onOutsideEdge));
+        controllerEntity.add(new Player(teamNum, characterPortrait));
+        controllerEntity.add(new ArenaTransform(radialPosition, onOutsideEdge));
         
         if (chosenAbilityTypes != null)
-            addAbilities(e, chosenAbilityTypes);
-
-        engine.addEntity(e);
-
-        return e;
+            addAbilities(controllerEntity, chosenAbilityTypes);
     }
 
     public static void addAbilities(Entity playerEntity, AbilityType[] chosenAbilityTypes)

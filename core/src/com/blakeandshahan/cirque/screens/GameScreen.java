@@ -133,25 +133,15 @@ public class GameScreen implements Screen
         engine.addSystem(playerDestructionSystem);
         engine.addSystem(abilityDestructionSystem);
 
-        GameOverSystem gameOverSystem = new GameOverSystem(deathMatchManager, this, game, camera);
+        GameOverSystem gameOverSystem = new GameOverSystem(
+                deathMatchManager, this, game, camera, abilityDestructionSystem);
         engine.addSystem(gameOverSystem);
 
         EntityFactory.createArenaCircle(Constants.ARENA_CENTER);
 
-        final Entity player1 = EntityFactory.createPlayer(
-                0, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(), null);
-        abilityDestructionSystem.addFootContactUser(player1.getComponent(Platformer.class), true);
-
-        final Entity player2 = EntityFactory.createPlayer(1, 0, false, 1, Constants.P2_UI_POSITION.cpy(), null);
-        abilityDestructionSystem.addFootContactUser(player2.getComponent(Platformer.class), false);
-
-        final Entity player3 = EntityFactory.createPlayer(
-                2, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(), null);
-        abilityDestructionSystem.addFootContactUser(player3.getComponent(Platformer.class), false);
-
-        final Entity player4 = EntityFactory.createPlayer(
-                3, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(), null);
-        abilityDestructionSystem.addFootContactUser(player4.getComponent(Platformer.class), true);
+        // TODO: Is this the right way to create controllers? Or should we do it below?
+        for (int i = 0; i < Constants.MAX_NUM_OF_PLAYERS; i++)
+            EntityFactory.createController(i);
 
         Array<Controller> controllers = Controllers.getControllers();
         for (int i = 0; i < controllers.size; i++)
