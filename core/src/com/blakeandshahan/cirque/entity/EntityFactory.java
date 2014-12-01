@@ -157,7 +157,8 @@ public class EntityFactory
                             Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
-        e.add(new Player(playerNum, teamNum, characterPortrait));
+        e.add(new PlayerController(playerNum));
+        e.add(new Player(teamNum, characterPortrait));
         e.add(new ArenaTransform(radialPosition, onOutsideEdge));
         
         if (chosenAbilityTypes != null)

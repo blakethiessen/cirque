@@ -39,7 +39,7 @@ public class AbilityCreationSystem extends IteratingSystem
     @Override
     protected void processEntity(final Entity e, float deltaTime)
     {
-        final Player player = Mapper.player.get(e);
+        final PlayerController controller = Mapper.playerController.get(e);
         final AbilityUser abilityUser = Mapper.abilityUser.get(e);
         Platformer platformer = Mapper.platformer.get(e);
 
@@ -49,7 +49,7 @@ public class AbilityCreationSystem extends IteratingSystem
         {
             final int adjustedIndex = i - Action.ABILITY_1.getId();
 
-            if (player.isActionOn(i))
+            if (controller.isActionOn(i))
             {
                 final AbilityCreation curAbility = abilities[adjustedIndex];
 

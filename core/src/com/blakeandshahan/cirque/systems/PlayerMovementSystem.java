@@ -41,6 +41,7 @@ public class PlayerMovementSystem extends IteratingSystem
     protected void processEntity(Entity e, float deltaTime)
     {
         // The following assumes runners always have the following components.
+        PlayerController controller = Mapper.playerController.get(e);
         Player player = Mapper.player.get(e);
         AbilityUser abilityUser = Mapper.abilityUser.get(e);
         DynamicPhysics physics = Mapper.dynamicPhysics.get(e);
@@ -51,7 +52,7 @@ public class PlayerMovementSystem extends IteratingSystem
         PlayerAnimation playerAnimation = Mapper.playerAnimation.get(e);
 
         final ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
-        if (player.isActionOn(Action.MOVING_LEFT))
+        if (controller.isActionOn(Action.MOVING_LEFT))
         {
             // Flip the sprites
             render.flipped = true;
@@ -62,7 +63,7 @@ public class PlayerMovementSystem extends IteratingSystem
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
             increaseEnergy(abilityUser, player, arenaTransform);
         }
-        else if (player.isActionOn(Action.MOVING_RIGHT))
+        else if (controller.isActionOn(Action.MOVING_RIGHT))
         {
             render.flipped = false;
 
@@ -85,7 +86,7 @@ public class PlayerMovementSystem extends IteratingSystem
             }
         }
 
-        if (player.isActionOn(Action.JUMPING) && platformer.isOnGround() && !animate.playWithNoInterrupts)
+        if (controller.isActionOn(Action.JUMPING) && platformer.isOnGround() && !animate.playWithNoInterrupts)
             if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.

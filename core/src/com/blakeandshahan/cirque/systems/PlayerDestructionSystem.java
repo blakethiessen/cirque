@@ -9,6 +9,7 @@ import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.Animate;
 import com.blakeandshahan.cirque.components.Player;
+import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.components.physics.ArenaTransform;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.physics.PhysicsFactory;
@@ -94,8 +95,9 @@ public class PlayerDestructionSystem extends EntitySystem
 
                 Mapper.dynamicPhysics.get(e).body = runnerBody;
                 Mapper.platformer.get(e).footContacts.clear();
+                final PlayerController controller = Mapper.playerController.get(e);
                 final Player player = Mapper.player.get(e);
-                player.resetActions();
+                controller.resetActions();
                 player.invulnerable = true;
 
                 // Portrait state is determined by how many times the player has died.

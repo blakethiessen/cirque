@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.blakeandshahan.cirque.Action;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
-import com.blakeandshahan.cirque.components.Player;
+import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class InputSystem extends IteratingSystem
 
     public InputSystem(OrthographicCamera camera, GameModeManager gmManager)
     {
-        super(Family.getFor(Player.class));
+        super(Family.getFor(PlayerController.class));
         this.camera = camera;
         this.gmManager = gmManager;
 
@@ -99,22 +99,22 @@ public class InputSystem extends IteratingSystem
     @Override
     protected void processEntity(Entity e, float deltaTime)
     {
-        Player player = Mapper.player.get(e);
-        final int playerArrNum = player.playerNum;
+        PlayerController controller = Mapper.playerController.get(e);
+        final int playerArrNum = controller.controllerNum;
 
-        player.setAction(Action.MOVING_LEFT,
+        controller.setAction(Action.MOVING_LEFT,
                 controlStates[playerArrNum].get(Action.MOVING_LEFT));
-        player.setAction(Action.MOVING_RIGHT,
+        controller.setAction(Action.MOVING_RIGHT,
                 controlStates[playerArrNum].get(Action.MOVING_RIGHT));
-        player.setAction(Action.JUMPING,
+        controller.setAction(Action.JUMPING,
                 controlStates[playerArrNum].get(Action.JUMPING));
-        player.setAction(Action.ABILITY_1,
+        controller.setAction(Action.ABILITY_1,
                 controlStates[playerArrNum].get(Action.ABILITY_1));
-        player.setAction(Action.ABILITY_2,
+        controller.setAction(Action.ABILITY_2,
                 controlStates[playerArrNum].get(Action.ABILITY_2));
-        player.setAction(Action.ABILITY_3,
+        controller.setAction(Action.ABILITY_3,
                 controlStates[playerArrNum].get(Action.ABILITY_3));
-        player.setAction(Action.START,
+        controller.setAction(Action.START,
                 controlStates[playerArrNum].get(Action.START));
     }
 

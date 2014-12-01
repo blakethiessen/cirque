@@ -16,6 +16,7 @@ import com.blakeandshahan.cirque.Action;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.Player;
+import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.screens.GameScreen;
@@ -53,9 +54,9 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
     @Override
     protected void processEntity(Entity e, float deltaTime)
     {
-        final Player player = Mapper.player.get(e);
+        final PlayerController controller = Mapper.playerController.get(e);
 
-        if (player.isActionOn(Action.START))
+        if (controller.isActionOn(Action.START))
         {
             // TODO: If we have enough players:
             // 3. Reset positions to defaults.
