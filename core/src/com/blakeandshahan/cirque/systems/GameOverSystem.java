@@ -6,25 +6,17 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.blakeandshahan.cirque.Action;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.Platformer;
-import com.blakeandshahan.cirque.components.Player;
 import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.screens.GameScreen;
 import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameOverSystem extends IteratingSystem implements InputProcessor
 {
@@ -63,42 +55,73 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
 
         if (controller.isActionOn(Action.START))
         {
-            // TODO: If we have enough players:
-            // 3. Reset positions to defaults.
-            // 4. Set energy to original levels.
-            // 5. Setup scores.
+            if (!controller.startButtonHeld)
+            {
+                // TODO: If we have enough players:
+                // 3. Reset positions to defaults.
+                // 4. Set energy to original levels.
+                // 5. Setup scores.
 
-            // If we haven't initialized this player...
-            if (!Mapper.player.has(e))
-            {
-                switch (controller.controllerNum)
+                // If we haven't initialized this player...
+                if (!Mapper.player.has(e))
                 {
-                    case 0:
-                        EntityFactory.createPlayerFromController(
-                                e, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(), null);
-                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
-                        break;
-                    case 1:
-                        EntityFactory.createPlayerFromController(e, 0, false, 1, Constants.P2_UI_POSITION.cpy(), null);
-                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
-                        break;
-                    case 2:
-                        EntityFactory.createPlayerFromController(
-                                e, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(), null);
-                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
-                        break;
-                    case 3:
-                        EntityFactory.createPlayerFromController(
-                                e, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(), null);
-                        abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
-                        break;
+                    switch (controller.controllerNum)
+                    {
+                        case 0:
+                            EntityFactory.createPlayerFromController(
+                                    e, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(), null);
+                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                            break;
+                        case 1:
+                            EntityFactory.createPlayerFromController(e, 0, false, 1, Constants.P2_UI_POSITION.cpy(), null);
+                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                            break;
+                        case 2:
+                            EntityFactory.createPlayerFromController(
+                                    e, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(), null);
+                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                            break;
+                        case 3:
+                            EntityFactory.createPlayerFromController(
+                                    e, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(), null);
+                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                            break;
+                    }
                 }
+                else
+                {
+                    controller.readyToBegin = true;
+
+                    boolean allPlayersReady = true;
+                    int numOfPlayersReady = 0;
+                    ImmutableArray<Entity> controllerEntities = getEntities();
+                    for (int i = 0; i < controllerEntities.size(); i++)
+                    {
+                        if (Mapper.player.has(controllerEntities.get(i)))
+                        {
+                            numOfPlayersReady++;
+
+                            if (!Mapper.playerController.get(controllerEntities.get(i)).readyToBegin)
+                            {
+                                allPlayersReady = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (allPlayersReady && numOfPlayersReady % 2 == 0)
+                    {
+                        EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
+                                CameraZoomTransitionSystem.TransitionType.RESTART, camera, 0, gmManager));
+                    }
+                }
+
+                controller.startButtonHeld = true;
             }
-            else
-            {
-                EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
-                        CameraZoomTransitionSystem.TransitionType.RESTART, camera, 0, gmManager));
-            }
+        }
+        else
+        {
+            controller.startButtonHeld = false;
         }
     }
 

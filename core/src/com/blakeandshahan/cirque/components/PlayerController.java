@@ -8,11 +8,17 @@ public class PlayerController extends Component
     public int controllerNum;
     public byte actionMask;
 
+    public boolean startButtonHeld;
+
+    public boolean readyToBegin;
+
     public PlayerController(int controllerNum)
     {
         this.controllerNum = controllerNum;
 
         actionMask = 0;
+        startButtonHeld = false;
+        readyToBegin = false;
     }
 
     public void setAction(Action action, boolean state)
