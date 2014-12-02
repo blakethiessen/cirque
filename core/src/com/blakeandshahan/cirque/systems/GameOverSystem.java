@@ -18,7 +18,7 @@ import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.screens.GameScreen;
 import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 
-public class GameOverSystem extends IteratingSystem implements InputProcessor
+public class GameOverSystem extends IteratingSystem
 {
     private final GameModeManager gmManager;
     private final GameScreen gameScreen;
@@ -57,34 +57,26 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
         {
             if (!controller.startButtonHeld)
             {
-                // TODO: If we have enough players:
-                // 3. Reset positions to defaults.
-                // 4. Set energy to original levels.
-                // 5. Setup scores.
-
                 // If we haven't initialized this player...
                 if (!Mapper.player.has(e))
                 {
                     switch (controller.controllerNum)
                     {
                         case 0:
-                            EntityFactory.createPlayerFromController(
-                                    e, (float) Math.PI, true, 0, Constants.P1_UI_POSITION.cpy(), null);
-                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                            EntityFactory.createPlayerFromController(e, (float) Math.PI, true, 0,
+                                    Constants.P1_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                         case 1:
-                            EntityFactory.createPlayerFromController(e, 0, false, 1, Constants.P2_UI_POSITION.cpy(), null);
-                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                            EntityFactory.createPlayerFromController(e, 0, false, 1,
+                                    Constants.P2_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                         case 2:
-                            EntityFactory.createPlayerFromController(
-                                    e, (float) Math.PI * 3 / 2, false, 0, Constants.P3_UI_POSITION.cpy(), null);
-                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), false);
+                            EntityFactory.createPlayerFromController(e, (float) Math.PI * 3 / 2, false, 0,
+                                    Constants.P3_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                         case 3:
-                            EntityFactory.createPlayerFromController(
-                                    e, (float) Math.PI / 2, true, 1, Constants.P4_UI_POSITION.cpy(), null);
-                            abilityDestructionSystem.addFootContactUser(e.getComponent(Platformer.class), true);
+                            EntityFactory.createPlayerFromController(e, (float) Math.PI / 2, true, 1,
+                                    Constants.P4_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                     }
                 }
@@ -123,62 +115,5 @@ public class GameOverSystem extends IteratingSystem implements InputProcessor
         {
             controller.startButtonHeld = false;
         }
-    }
-
-    @Override
-    public boolean keyDown(int keycode)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode)
-    {
-//        if (keycode == Input.Keys.ENTER)
-//        {
-//            EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, true));
-//        }
-//        else if (keycode == Input.Keys.ESCAPE)
-//        {
-//            EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(camera, 0, game, gameScreen, false));
-//        }
-
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount)
-    {
-        return false;
     }
 }

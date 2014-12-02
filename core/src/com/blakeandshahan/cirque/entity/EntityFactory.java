@@ -23,6 +23,7 @@ import com.blakeandshahan.cirque.physics.Box2DDefs;
 import com.blakeandshahan.cirque.physics.PhysicsFactory;
 import com.blakeandshahan.cirque.physics.userdata.LethalUD;
 import com.blakeandshahan.cirque.physics.userdata.PillarUD;
+import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 
 /*
     The EntityFactory is where all entities
@@ -97,15 +98,19 @@ public class EntityFactory
     // Generates a player entity. Requires a controllerEntity created via above. Note if
     // parameter chosenAbilityTypes is null, the AbilityUser component is not added to the player.
     public static void createPlayerFromController(Entity controllerEntity, float radialPosition,
-            boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes)
+            boolean onOutsideEdge, int teamNum, Vector2 uiPosition, AbilityType[] chosenAbilityTypes,
+            AbilityDestructionSystem abilityDestructionSystem)
     {
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
         controllerEntity.add(new DynamicPhysics(PhysicsFactory.createRunnerBody(controllerEntity), twoDPosition));
-        controllerEntity.add(new Platformer(Constants.PLAYER_LAT_ACCEL,
-                Constants.PLAYER_LAT_MAX_VEL,
-                onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL));
         controllerEntity.add(new Render(Layer.PLAYERS, twoDPosition, false));
+
+        Platformer platformer = new Platformer(Constants.PLAYER_LAT_ACCEL,
+                Constants.PLAYER_LAT_MAX_VEL,
+                onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL);
+        controllerEntity.add(platformer);
+        abilityDestructionSystem.addFootContactUser(platformer, onOutsideEdge);
 
         boolean uiOnRightSide = uiPosition.x > Gdx.graphics.getWidth() / 2;
 

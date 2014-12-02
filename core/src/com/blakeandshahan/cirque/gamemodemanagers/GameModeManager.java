@@ -17,9 +17,5 @@ public abstract class GameModeManager
     public void resetGame()
     {
         winner = -1;
-        // Zoom in camera
-        // Remove all player & trap entities
-        // Display ability select UI
-        // Enable ability select control
     }
 }

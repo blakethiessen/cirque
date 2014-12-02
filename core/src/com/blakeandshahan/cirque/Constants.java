@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import javafx.util.Pair;
 
 public class Constants
 {
@@ -102,7 +104,7 @@ public class Constants
     public static final int NUM_OF_PORTRAIT_STATES = 4;
 
     public static final int DEATHMATCH_NUM_TEAMS = 2;
-    public static final int DEATHMATCH_KILLS_TO_WIN = 8;
+    public static final int DEATHMATCH_KILLS_TO_WIN = 2;
     public static final int DEATHMATCH_LIVES_AT_EACH_PORTRAIT_STATE =
             DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1) > 0
                     ? DEATHMATCH_KILLS_TO_WIN / (NUM_OF_PORTRAIT_STATES - 1) : 1;
@@ -163,6 +165,15 @@ public class Constants
 
     public static final int INNER_PLAYER_JUMP_ACCEL = 20;
     public static final int OUTER_PLAYER_JUMP_ACCEL = 25;
+
+    // Radial spawn position consists of the radial position and an onOutsideEdge boolean
+    public static final Array<Pair<Float, Boolean>> PLAYER_RADIAL_SPAWN_POSITION = new Array<Pair<Float, Boolean>>()
+            {{
+                    add(new Pair<Float, Boolean>((float)Math.PI, true));
+                    add(new Pair<Float, Boolean>(0f, false));
+                    add(new Pair<Float, Boolean>((float)Math.PI * 3 / 2, false));
+                    add(new Pair<Float, Boolean>((float)Math.PI / 2, true));
+            }};
 
     // ABILITY CONSTANTS
     public static final AbilityType[] DEFAULT_ABILITIES =

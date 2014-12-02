@@ -20,6 +20,11 @@ public class AbilityCreation extends Component
         this.abilityType = abilityType;
         justUsed = false;
 
+        resetAbility();
+    }
+
+    public void resetAbility()
+    {
         numUsesAvailable = 0;
 
         switch (abilityType)

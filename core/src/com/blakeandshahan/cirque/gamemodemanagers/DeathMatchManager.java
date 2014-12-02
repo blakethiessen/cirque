@@ -1,5 +1,6 @@
 package com.blakeandshahan.cirque.gamemodemanagers;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -10,28 +11,44 @@ import com.blakeandshahan.cirque.entity.EntityFactory;
 
 public class DeathMatchManager extends GameModeManager
 {
+    private final int numOfTeams;
+    private final int maxDeaths;
+
     private int[] livesLeft;
     private TextRender[] livesLeftText;
 
     public DeathMatchManager(int numOfTeams, int maxDeaths)
     {
+        this.numOfTeams = numOfTeams;
+        this.maxDeaths = maxDeaths;
         livesLeft = new int[numOfTeams];
         livesLeftText = new TextRender[numOfTeams];
 
         // Setting winner to 0 at first in order to make the game seem ended.
         winner = 0;
+    }
+
+    @Override
+    public void resetGame()
+    {
+        super.resetGame();
 
         if (numOfTeams == 2)
         {
             String maxDeathsString = String.valueOf(maxDeaths);
-            livesLeftText[0] = EntityFactory.createText(maxDeathsString,
-                    new Vector2(Constants.UI_PADDING + 45, Gdx.graphics.getHeight() / 2 + 45),
-                    new Color(1, 127f/255f, 127f/255f, 1), 1)
+
+            if (livesLeftText[0] == null)
+            {
+                livesLeftText[0] = EntityFactory.createText(maxDeathsString,
+                        new Vector2(Constants.UI_PADDING + 45, Gdx.graphics.getHeight() / 2 + 45),
+                        new Color(1, 127f/255f, 127f/255f, 1), 1)
                         .getComponent(TextRender.class);
-            livesLeftText[1] = EntityFactory.createText(maxDeathsString, new Vector2(
-                    Gdx.graphics.getWidth() - Constants.UI_PADDING - 45, Gdx.graphics.getHeight() / 2 + 45),
-                    new Color(110f/255f, 200f/255f, 230f/255f, 1), 1)
+                livesLeftText[1] = EntityFactory.createText(maxDeathsString, new Vector2(
+                                Gdx.graphics.getWidth() - Constants.UI_PADDING - 45, Gdx.graphics.getHeight() / 2 + 45),
+                        new Color(110f/255f, 200f/255f, 230f/255f, 1), 1)
                         .getComponent(TextRender.class);
+            }
+
             livesLeft[0] = maxDeaths;
             livesLeft[1] = maxDeaths;
         }

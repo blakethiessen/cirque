@@ -133,9 +133,8 @@ public class GameScreen implements Screen
         engine.addSystem(playerDestructionSystem);
         engine.addSystem(abilityDestructionSystem);
 
-        GameOverSystem gameOverSystem = new GameOverSystem(
-                deathMatchManager, this, game, camera, abilityDestructionSystem);
-        engine.addSystem(gameOverSystem);
+        engine.addSystem(new GameOverSystem(
+                deathMatchManager, this, game, camera, abilityDestructionSystem));
 
         EntityFactory.createArenaCircle(Constants.ARENA_CENTER);
 

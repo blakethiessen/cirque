@@ -5,10 +5,15 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.blakeandshahan.cirque.Constants;
+import com.blakeandshahan.cirque.Mapper;
+import com.blakeandshahan.cirque.components.AbilityCreation;
+import com.blakeandshahan.cirque.components.AbilityUser;
 import com.blakeandshahan.cirque.components.Player;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
+import javafx.util.Pair;
 
 public class CameraZoomTransitionSystem extends EntitySystem
 {
@@ -59,8 +64,27 @@ public class CameraZoomTransitionSystem extends EntitySystem
                         ImmutableArray playerEntities = EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
                         for (int i = 0; i < playerEntities.size(); i++)
                         {
-                            EntityFactory.addAbilities((Entity)playerEntities.get(i), Constants.DEFAULT_ABILITIES);
+                            Entity e = (Entity)playerEntities.get(i);
+                            // Add abilities/reset abilities
+                            AbilityUser abilityUser = Mapper.abilityUser.get(e);
+                            if (abilityUser == null)
+                                EntityFactory.addAbilities(e, Constants.DEFAULT_ABILITIES);
+                            else
+                            {
+                                for (AbilityCreation abilityCreation : abilityUser.abilities)
+                                    abilityCreation.resetAbility();
+                            }
+
+                            // Move players back to spawn points.
+                            Pair<Float, Boolean> spawnPosition = Constants.PLAYER_RADIAL_SPAWN_POSITION.get(i);
+                            Vector2 twoDSpawnPosition = Constants.ConvertRadialTo2DPosition(
+                                    spawnPosition.getKey(), spawnPosition.getValue());
+                            Mapper.dynamicPhysics.get(e).body.setTransform(twoDSpawnPosition, 0);
+
+                            // Reset readyToBegin flags.
+                            Mapper.playerController.get(e).readyToBegin = false;
                         }
+
                         gmManager.resetGame();
 
                         zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
