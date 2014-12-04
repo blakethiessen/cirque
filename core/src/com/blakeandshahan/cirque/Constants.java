@@ -142,6 +142,8 @@ public class Constants
     public static final float MIN_CAMERA_ZOOM = (float) CAMERA_ZOOM_TO_RESOLUTION_SCALE /
             ((float) Gdx.graphics.getHeight() - ZOOM_RING_PADDING);
 
+    public static final float WIN_TEXT_SCALE = .4f;
+
     public class Groups
     {
         public static final String PLAYERS = "players";

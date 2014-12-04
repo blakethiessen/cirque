@@ -73,7 +73,8 @@ public class DeathMatchManager extends GameModeManager
                 winner = 1;
 
             winText = EntityFactory.createText("Team " + winner + " wins!",
-                    new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), Color.WHITE, .4f);
+                    new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2),
+                    Color.WHITE, Constants.WIN_TEXT_SCALE);
 
             AssetLoader.fadeMusic();
         }

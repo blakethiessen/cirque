@@ -14,7 +14,8 @@ public class TextRender extends Component
     public float alignmentSize;
     public BitmapFont.HAlignment alignment;
 
-    public TextRender(String text, Vector2 position, Color color, float scale, float alignmentSize, BitmapFont.HAlignment alignment)
+    public TextRender(String text, Vector2 position, Color color,
+                      float scale, float alignmentSize, BitmapFont.HAlignment alignment)
     {
         this.text = text;
         this.position = position;
@@ -24,15 +25,9 @@ public class TextRender extends Component
         this.alignment = alignment;
     }
 
-
     public TextRender(String text, Vector2 position, Color color, float scale)
     {
-        this.text = text;
-        this.position = position;
-        this.color = color;
-        this.scale = scale;
-        this.alignmentSize = 0;
-        this.alignment = BitmapFont.HAlignment.CENTER;
+        this(text, position, color, scale, 0, BitmapFont.HAlignment.CENTER);
     }
 
     public TextRender(String text, Vector2 position)

@@ -35,55 +35,6 @@ public class EntityFactory
     // Must be set at beginning of game!!
     public static Engine engine;
 
-    //create text with Black color
-    public static Entity createText(String text, Vector2 position)
-    {
-        Entity e = new Entity();
-
-        e.add(new TextRender(text, position));
-
-        engine.addEntity(e);
-
-        return e;
-    }
-
-    //create colored text with 'color' as the parameter
-    public static Entity createText(String text, Vector2 position, Color color, float scale)
-    {
-        Entity e = new Entity();
-
-        e.add(new TextRender(text, position, color, scale));
-
-        engine.addEntity(e);
-
-        return e;
-    }
-
-    //Create aligned text
-    public static Entity createText(String text, Vector2 position, float scale,
-                                    Color color, float alignmentSize, BitmapFont.HAlignment alignment)
-    {
-        Entity e = new Entity();
-
-        e.add(new TextRender(text, position, color, scale, alignmentSize, alignment));
-
-        engine.addEntity(e);
-
-        return e;
-    }
-
-
-    public static Entity createStaticImage(String imagePath, Vector2 position)
-    {
-        Entity e = new Entity();
-
-        e.add(new Render(imagePath, Layer.UI, position, true));
-
-        engine.addEntity(e);
-
-        return e;
-    }
-
     // Creates a slot for controller input. Extends into a Player after pressing "Start" with a controller.
     public static Entity createController(int playerNum)
     {
@@ -458,4 +409,51 @@ public class EntityFactory
         return e;
     }
 
+    //create text with Black color
+    public static Entity createText(String text, Vector2 position)
+    {
+        Entity e = new Entity();
+
+        e.add(new TextRender(text, position));
+
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    //create colored text with 'color' as the parameter
+    public static Entity createText(String text, Vector2 position, Color color, float scale)
+    {
+        Entity e = new Entity();
+
+        e.add(new TextRender(text, position, color, scale));
+
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    //Create aligned text
+    public static Entity createText(String text, Vector2 position, float scale,
+                                    Color color, float alignmentSize, BitmapFont.HAlignment alignment)
+    {
+        Entity e = new Entity();
+
+        e.add(new TextRender(text, position, color, scale, alignmentSize, alignment));
+
+        engine.addEntity(e);
+
+        return e;
+    }
+
+    public static Entity createStaticImage(String imagePath, Vector2 position)
+    {
+        Entity e = new Entity();
+
+        e.add(new Render(imagePath, Layer.UI, position, true));
+
+        engine.addEntity(e);
+
+        return e;
+    }
 }
