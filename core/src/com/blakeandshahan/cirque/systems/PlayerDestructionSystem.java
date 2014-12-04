@@ -7,9 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
-import com.blakeandshahan.cirque.components.Animate;
-import com.blakeandshahan.cirque.components.Player;
-import com.blakeandshahan.cirque.components.PlayerController;
+import com.blakeandshahan.cirque.components.*;
 import com.blakeandshahan.cirque.components.physics.ArenaTransform;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.physics.PhysicsFactory;
@@ -24,14 +22,18 @@ public class PlayerDestructionSystem extends EntitySystem
     private final int respawnTime;
     private final ArrayList<Entity> entitiesToDestroy;
     private final World b2world;
+    
+    private ArrayList<PlayerToRespawn> deadPlayers;
 
     public PlayerDestructionSystem(World b2world, GameModeManager gameModeManager, int respawnTime, ArenaRotationSystem arenaRotationSystem)
     {
         this.deathMatchManager = gameModeManager;
         this.arenaRotationSystem = arenaRotationSystem;
-        entitiesToDestroy = new ArrayList<Entity>();
+        entitiesToDestroy = new ArrayList<Entity>(Constants.MAX_NUM_OF_PLAYERS);
         this.b2world = b2world;
         this.respawnTime = respawnTime;
+        
+        deadPlayers = new ArrayList<PlayerToRespawn>(Constants.MAX_NUM_OF_PLAYERS);
     }
 
     public void destroyEntity(Entity entity)
@@ -68,10 +70,13 @@ public class PlayerDestructionSystem extends EntitySystem
                     if (Mapper.dynamicPhysics.has(e))
                         b2world.destroyBody(Mapper.dynamicPhysics.get(e).body);
 
-                    // TODO: Find a way to e.disable();
+                    Render render = (Render)e.remove(Render.class);
+                    PlayerAnimation playerAnimation = (PlayerAnimation)e.remove(PlayerAnimation.class);
 
                     if (!deathMatchManager.isGameOver())
-                        setupPlayerRespawnTimer(e);
+                        setupPlayerRespawnTimer(new PlayerToRespawn(e, render, playerAnimation));
+                    else
+                        deadPlayers.add(new PlayerToRespawn(e, render, playerAnimation));
 
                     arenaRotationSystem.increaseArenaRotationalVelocity();
                 }
@@ -81,22 +86,22 @@ public class PlayerDestructionSystem extends EntitySystem
         }
     }
 
-    private void setupPlayerRespawnTimer(final Entity e)
+    private void setupPlayerRespawnTimer(final PlayerToRespawn playerToRespawn)
     {
         Timer.schedule(new Timer.Task()
         {
             @Override
             public void run()
             {
-                Body runnerBody = PhysicsFactory.createRunnerBody(e);
-                ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
+                Body runnerBody = PhysicsFactory.createRunnerBody(playerToRespawn.e);
+                ArenaTransform arenaTransform = Mapper.arenaTransform.get(playerToRespawn.e);
                 runnerBody.setTransform(Constants.ConvertRadialTo2DPosition(
                         (float) (arenaTransform.radialPosition + Math.PI), arenaTransform.onOutsideEdge), 0);
 
-                Mapper.dynamicPhysics.get(e).body = runnerBody;
-                Mapper.platformer.get(e).footContacts.clear();
-                final PlayerController controller = Mapper.playerController.get(e);
-                final Player player = Mapper.player.get(e);
+                Mapper.dynamicPhysics.get(playerToRespawn.e).body = runnerBody;
+                Mapper.platformer.get(playerToRespawn.e).footContacts.clear();
+                final PlayerController controller = Mapper.playerController.get(playerToRespawn.e);
+                final Player player = Mapper.player.get(playerToRespawn.e);
                 controller.resetActions();
                 player.invulnerable = true;
 
@@ -116,8 +121,50 @@ public class PlayerDestructionSystem extends EntitySystem
                     }
                 }, Constants.RESPAWN_INVULNERABLE_PERIOD_SEC);
 
-                // TODO: Find a way to e.enable();
+                playerToRespawn.addRemovedComponents();
             }
         }, respawnTime);
+    }
+
+    public void respawnDeadPlayers()
+    {
+        for (PlayerToRespawn playerToRespawn : deadPlayers)
+        {
+            Body runnerBody = PhysicsFactory.createRunnerBody(playerToRespawn.e);
+
+            Mapper.dynamicPhysics.get(playerToRespawn.e).body = runnerBody;
+            Mapper.platformer.get(playerToRespawn.e).footContacts.clear();
+            final PlayerController controller = Mapper.playerController.get(playerToRespawn.e);
+            controller.resetActions();
+
+            final Player player = Mapper.player.get(playerToRespawn.e);
+            player.portraitRender.setNewSpriteImage(
+                    player.portraitPortrait.portraitPairs[0].normal, 1);
+            player.reset();
+
+            playerToRespawn.addRemovedComponents();
+        }
+
+        deadPlayers.clear();
+    }
+    
+    private class PlayerToRespawn
+    {
+        final Entity e;
+        final Render removedRender;
+        final PlayerAnimation removedPlayerAnimation;
+        
+        public PlayerToRespawn(Entity e, Render removedRender, PlayerAnimation removedPlayerAnimation)
+        {
+            this.e = e;
+            this.removedRender = removedRender;
+            this.removedPlayerAnimation = removedPlayerAnimation;
+        }
+        
+        public void addRemovedComponents()
+        {
+            e.add(removedRender);
+            e.add(removedPlayerAnimation);
+        }
     }
 }

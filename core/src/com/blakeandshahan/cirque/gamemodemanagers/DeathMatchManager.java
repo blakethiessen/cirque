@@ -17,6 +17,8 @@ public class DeathMatchManager extends GameModeManager
     private int[] livesLeft;
     private TextRender[] livesLeftText;
 
+    private Entity winText;
+
     public DeathMatchManager(int numOfTeams, int maxDeaths)
     {
         this.numOfTeams = numOfTeams;
@@ -32,6 +34,9 @@ public class DeathMatchManager extends GameModeManager
     public void resetGame()
     {
         super.resetGame();
+
+        if (winText != null)
+            EntityFactory.engine.removeEntity(winText);
 
         if (numOfTeams == 2)
         {
@@ -67,7 +72,7 @@ public class DeathMatchManager extends GameModeManager
             else
                 winner = 1;
 
-            EntityFactory.createText("Team " + winner + " wins!",
+            winText = EntityFactory.createText("Team " + winner + " wins!",
                     new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), Color.WHITE, .4f);
 
             AssetLoader.fadeMusic();

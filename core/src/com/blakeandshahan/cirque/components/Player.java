@@ -2,7 +2,6 @@ package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
-import com.blakeandshahan.cirque.Action;
 
 /*
     The Player component is attached to entities
@@ -39,6 +38,11 @@ public class Player extends Component
         this.mouseX = 0f;
         this.mouseY = 0f;
 
+        reset();
+    }
+
+    public void reset()
+    {
         invulnerable = false;
         wasInvulnerableLastFrame = false;
         energyIncreaseMultiplier = 1;

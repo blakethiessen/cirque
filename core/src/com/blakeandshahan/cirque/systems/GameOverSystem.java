@@ -21,21 +21,20 @@ import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 public class GameOverSystem extends IteratingSystem
 {
     private final GameModeManager gmManager;
-    private final GameScreen gameScreen;
-    private final Game game;
     private final OrthographicCamera camera;
+    private final PlayerDestructionSystem playerDestructionSystem;
     private final AbilityDestructionSystem abilityDestructionSystem;
 
     private boolean hasRun;
 
-    public GameOverSystem(GameModeManager gmManager, GameScreen gameScreen, Game game, OrthographicCamera camera,
+    public GameOverSystem(GameModeManager gmManager, OrthographicCamera camera,
+                          PlayerDestructionSystem playerDestructionSystem,
                           AbilityDestructionSystem abilityDestructionSystem)
     {
         super(Family.getFor(PlayerController.class));
         this.gmManager = gmManager;
-        this.gameScreen = gameScreen;
-        this.game = game;
         this.camera = camera;
+        this.playerDestructionSystem = playerDestructionSystem;
         this.abilityDestructionSystem = abilityDestructionSystem;
 
         hasRun = false;
@@ -104,7 +103,8 @@ public class GameOverSystem extends IteratingSystem
                     if (allPlayersReady && numOfPlayersReady % 2 == 0)
                     {
                         EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
-                                CameraZoomTransitionSystem.TransitionType.RESTART, camera, 0, gmManager));
+                                CameraZoomTransitionSystem.TransitionType.RESTART, camera,
+                                0, gmManager, playerDestructionSystem));
                     }
                 }
 

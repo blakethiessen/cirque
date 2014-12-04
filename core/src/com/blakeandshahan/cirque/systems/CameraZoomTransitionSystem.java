@@ -20,18 +20,20 @@ public class CameraZoomTransitionSystem extends EntitySystem
     private final OrthographicCamera camera;
     private float finalCameraZoom;
     private final GameModeManager gmManager;
+    private final PlayerDestructionSystem playerDestructionSystem;
 
     private TransitionType transitionType;
 
     private float zoomVel;
     private boolean zoomingInwards;
 
-    public CameraZoomTransitionSystem(TransitionType transitionType,
-                                      OrthographicCamera camera, float finalCameraZoom, GameModeManager gmManager)
+    public CameraZoomTransitionSystem(TransitionType transitionType, OrthographicCamera camera, float finalCameraZoom,
+                                      GameModeManager gmManager, PlayerDestructionSystem playerDestructionSystem)
     {
         this.camera = camera;
         this.finalCameraZoom = finalCameraZoom;
         this.gmManager = gmManager;
+        this.playerDestructionSystem = playerDestructionSystem;
         zoomVel = Constants.CAMERA_TRANSITION_ZOOM_ACCEL;
 
         if (finalCameraZoom < camera.zoom)
@@ -61,6 +63,8 @@ public class CameraZoomTransitionSystem extends EntitySystem
                 case RESTART:
                     if (zoomingInwards)
                     {
+                        playerDestructionSystem.respawnDeadPlayers();
+
                         ImmutableArray playerEntities = EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
                         for (int i = 0; i < playerEntities.size(); i++)
                         {

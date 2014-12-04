@@ -93,7 +93,7 @@ public class GameScreen implements Screen
 
         // Setup systems
         engine.addSystem(new CameraZoomTransitionSystem(CameraZoomTransitionSystem.TransitionType.INITIAL_LOAD, camera,
-                Constants.MIN_CAMERA_ZOOM, deathMatchManager));
+                Constants.MIN_CAMERA_ZOOM, deathMatchManager, playerDestructionSystem));
 
         engine.addSystem(new DynamicPhysicsSystem());
         engine.addSystem(new TrapPhysicsSystem());
@@ -134,7 +134,7 @@ public class GameScreen implements Screen
         engine.addSystem(abilityDestructionSystem);
 
         engine.addSystem(new GameOverSystem(
-                deathMatchManager, this, game, camera, abilityDestructionSystem));
+                deathMatchManager, camera, playerDestructionSystem, abilityDestructionSystem));
 
         EntityFactory.createArenaCircle(Constants.ARENA_CENTER);
 

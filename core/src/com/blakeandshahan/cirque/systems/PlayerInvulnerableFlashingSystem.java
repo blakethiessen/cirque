@@ -22,7 +22,8 @@ public class PlayerInvulnerableFlashingSystem extends IteratingSystem
         if (player.invulnerable)
         {
             Render render = Mapper.render.get(e);
-            render.sprites[0].setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
+            if (render != null)
+                render.sprites[0].setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
 
             player.wasInvulnerableLastFrame = true;
         }
