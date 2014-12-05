@@ -42,6 +42,9 @@ public class DeathMatchManager extends GameModeManager
         {
             String maxDeathsString = String.valueOf(maxDeaths);
 
+            livesLeft[0] = maxDeaths;
+            livesLeft[1] = maxDeaths;
+
             if (livesLeftText[0] == null)
             {
                 livesLeftText[0] = EntityFactory.createText(maxDeathsString,
@@ -53,9 +56,11 @@ public class DeathMatchManager extends GameModeManager
                         new Color(110f/255f, 200f/255f, 230f/255f, 1), 1)
                         .getComponent(TextRender.class);
             }
-
-            livesLeft[0] = maxDeaths;
-            livesLeft[1] = maxDeaths;
+            else
+            {
+                for (int i = 0; i < livesLeftText.length; i++)
+                    livesLeftText[i].text = String.valueOf(livesLeft[i]);
+            }
         }
         else
         {

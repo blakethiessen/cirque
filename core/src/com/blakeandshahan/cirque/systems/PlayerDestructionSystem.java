@@ -2,6 +2,7 @@ package com.blakeandshahan.cirque.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
@@ -141,6 +142,9 @@ public class PlayerDestructionSystem extends EntitySystem
             player.portraitRender.setNewSpriteImage(
                     player.portraitPortrait.portraitPairs[0].normal, 1);
             player.reset();
+
+            // Reset player colors
+            playerToRespawn.removedRender.sprites[0].setColor(Color.WHITE);
 
             playerToRespawn.addRemovedComponents();
         }
