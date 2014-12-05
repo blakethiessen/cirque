@@ -53,7 +53,8 @@ public class GameScreen implements Screen
         camera.zoom = 0;
 
         // Setup Entity engine
-        engine = new PooledEngine();
+        engine = new PooledEngine(Constants.ENTITY_POOL_INITIAL_SIZE, Constants.ENTITY_POOL_MAX_SIZE,
+                Constants.COMPONENT_POOL_INITIAL_SIZE, Constants.COMPONENT_POOL_MAX_SIZE);
         EntityFactory.engine = engine;
 
         // Setup appropriate game setting

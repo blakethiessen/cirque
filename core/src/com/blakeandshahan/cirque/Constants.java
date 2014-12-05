@@ -137,6 +137,11 @@ public class Constants
     public static int curPlayersActive = 0;
     public static final int MAX_NUM_OF_PLAYERS = 4;
 
+    public static final int ENTITY_POOL_INITIAL_SIZE = MAX_NUM_OF_PLAYERS * 13;
+    public static final int ENTITY_POOL_MAX_SIZE = MAX_NUM_OF_PLAYERS * 20;
+    public static final int COMPONENT_POOL_INITIAL_SIZE = MAX_NUM_OF_PLAYERS;
+    public static final int COMPONENT_POOL_MAX_SIZE = MAX_NUM_OF_PLAYERS * 14;
+
     public static final int CAMERA_ZOOM_TO_RESOLUTION_SCALE = 1080;
     public static final float CAMERA_TRANSITION_ZOOM_ACCEL = .0003f;
     public static final float MIN_CAMERA_ZOOM = (float) CAMERA_ZOOM_TO_RESOLUTION_SCALE /
