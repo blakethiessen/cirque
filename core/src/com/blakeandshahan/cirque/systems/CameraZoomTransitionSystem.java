@@ -10,6 +10,7 @@ import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.AbilityCreation;
 import com.blakeandshahan.cirque.components.AbilityUser;
+import com.blakeandshahan.cirque.components.ArenaRotation;
 import com.blakeandshahan.cirque.components.Player;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
@@ -65,10 +66,21 @@ public class CameraZoomTransitionSystem extends EntitySystem
                     {
                         playerDestructionSystem.respawnDeadPlayers();
 
-                        ImmutableArray playerEntities = EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
+                        // Reset arena rotation.
+                        ImmutableArray<Entity> arenaEntities =
+                                EntityFactory.engine.getEntitiesFor(Family.getFor(ArenaRotation.class));
+                        for (int i = 0; i < arenaEntities.size(); i++)
+                        {
+                            Entity e = arenaEntities.get(i);
+                            Mapper.arenaRotation.get(e).rotationVelocity = 0;
+                            Mapper.dynamicPhysics.get(e).body.setAngularVelocity(0);
+                        }
+
+                        ImmutableArray<Entity> playerEntities =
+                                EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
                         for (int i = 0; i < playerEntities.size(); i++)
                         {
-                            Entity e = (Entity)playerEntities.get(i);
+                            Entity e = playerEntities.get(i);
                             // Add abilities/reset abilities
                             AbilityUser abilityUser = Mapper.abilityUser.get(e);
                             if (abilityUser == null)
