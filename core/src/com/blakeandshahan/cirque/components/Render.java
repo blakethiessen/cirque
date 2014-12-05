@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.AssetLoader;
 import com.blakeandshahan.cirque.Constants;
 
@@ -14,7 +15,7 @@ import com.blakeandshahan.cirque.Constants;
     representation.
  */
 
-public class Render extends Component
+public class Render extends Component implements Pool.Poolable
 {
     public Sprite[] sprites;
 
@@ -23,7 +24,7 @@ public class Render extends Component
     public Layer layer;
     public boolean isVisible;
 
-    public Render(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
+    public Render init(String[] textureNames, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
         sprites = new Sprite[textureNames.length];
         for (int i = 0; i < sprites.length; i++)
@@ -50,23 +51,18 @@ public class Render extends Component
         this.flipped = false;
 
         this.isVisible = true;
+
+        return this;
     }
 
-    public Render(String textureName, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
+    public Render init(String textureName, Layer layer, Vector2 position, boolean rotationOriginAtCenter)
     {
-        sprites = new Sprite[1];
+        return init(new String[]{textureName}, layer, position, rotationOriginAtCenter);
+    }
 
-        sprites[0] = new Sprite(getTexture(textureName));
-
-        sprites[0].setPosition(position.x, position.y);
-
-        if (!rotationOriginAtCenter)
-            sprites[0].setOrigin(0, 0);
-
-        this.layer = layer;
-        this.flipped = false;
-
-        isVisible = true;
+    public Render init(Layer layer, Vector2 position, boolean rotationOriginAtCenter)
+    {
+        return init(Constants.SHAHAN_IDLE, layer, position, rotationOriginAtCenter);
     }
 
     private TextureRegion getTexture(String textureName)
@@ -83,21 +79,6 @@ public class Render extends Component
         }
 
         return null;
-    }
-
-    public Render(Layer layer, Vector2 position, boolean rotationOriginAtCenter)
-    {
-        sprites = new Sprite[1];
-        sprites[0] = new Sprite(AssetLoader.getAnimation(Constants.SHAHAN_IDLE).getKeyFrame(0));
-        sprites[0].setPosition(position.x, position.y);
-
-        if (!rotationOriginAtCenter)
-            sprites[0].setOrigin(0, 0);
-
-        this.layer = layer;
-        this.flipped = false;
-
-        isVisible = true;
     }
 
     public void draw(SpriteBatch batch)
@@ -131,6 +112,9 @@ public class Render extends Component
         for (Sprite sprite : sprites)
             sprite.flip(xFlip, yFlip);
     }
+
+    @Override
+    public void reset() {}
 
     public enum Layer
     {

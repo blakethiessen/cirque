@@ -1,7 +1,7 @@
 package com.blakeandshahan.cirque.entity;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -33,13 +33,13 @@ import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 public class EntityFactory
 {
     // Must be set at beginning of game!!
-    public static Engine engine;
+    public static PooledEngine engine;
 
     // Creates a slot for controller input. Extends into a Player after pressing "Start" with a controller.
     public static Entity createController(int playerNum)
     {
-        Entity e = new Entity();
-        e.add(new PlayerController(playerNum));
+        Entity e = engine.createEntity();
+        e.add(engine.createComponent(PlayerController.class).init(playerNum));
 
         engine.addEntity(e);
 
@@ -54,11 +54,12 @@ public class EntityFactory
     {
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        controllerEntity.add(new DynamicPhysics(PhysicsFactory.createRunnerBody(controllerEntity), twoDPosition));
-        controllerEntity.add(new Render(Layer.PLAYERS, twoDPosition, false));
+        controllerEntity.add(engine.createComponent(DynamicPhysics.class)
+                .init(PhysicsFactory.createRunnerBody(controllerEntity), twoDPosition));
+        controllerEntity.add(engine.createComponent(Render.class).init(Layer.PLAYERS, twoDPosition, false));
 
-        Platformer platformer = new Platformer(Constants.PLAYER_LAT_ACCEL,
-                Constants.PLAYER_LAT_MAX_VEL,
+        Platformer platformer = engine.createComponent(Platformer.class).init(
+                Constants.PLAYER_LAT_ACCEL, Constants.PLAYER_LAT_MAX_VEL,
                 onOutsideEdge ? Constants.OUTER_PLAYER_JUMP_ACCEL : Constants.INNER_PLAYER_JUMP_ACCEL);
         controllerEntity.add(platformer);
         abilityDestructionSystem.addFootContactUser(platformer, onOutsideEdge);
@@ -71,10 +72,12 @@ public class EntityFactory
         final int playerNum = controllerEntity.getComponent(PlayerController.class).controllerNum;
 
         Entity characterPortrait;
+        // TODO: This should be cleaner.
         if (playerNum == 0)
         {
-            controllerEntity.add(new Animate(Constants.PIRATE_IDLE));
-            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PIRATE));
+            controllerEntity.add(engine.createComponent(Animate.class).init(Constants.PIRATE_IDLE));
+            controllerEntity.add(
+                    engine.createComponent(PlayerAnimation.class).init(PlayerAnimation.AnimationSet.PIRATE));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -86,8 +89,9 @@ public class EntityFactory
         }
         else if (playerNum == 1)
         {
-            controllerEntity.add(new Animate(Constants.NINJA_IDLE));
-            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.NINJA));
+            controllerEntity.add(engine.createComponent(Animate.class).init(Constants.NINJA_IDLE));
+            controllerEntity.add(
+                    engine.createComponent(PlayerAnimation.class).init(PlayerAnimation.AnimationSet.NINJA));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -99,8 +103,9 @@ public class EntityFactory
         }
         else if (playerNum == 2)
         {
-            controllerEntity.add(new Animate(Constants.PHARAOH_IDLE));
-            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.PHARAOH));
+            controllerEntity.add(engine.createComponent(Animate.class).init(Constants.PHARAOH_IDLE));
+            controllerEntity.add(
+                    engine.createComponent(PlayerAnimation.class).init(PlayerAnimation.AnimationSet.PHARAOH));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -112,8 +117,9 @@ public class EntityFactory
         }
         else
         {
-            controllerEntity.add(new Animate(Constants.GANGSTA_IDLE));
-            controllerEntity.add(new PlayerAnimation(PlayerAnimation.AnimationSet.GANGSTA));
+            controllerEntity.add(engine.createComponent(Animate.class).init(Constants.GANGSTA_IDLE));
+            controllerEntity.add(
+                    engine.createComponent(PlayerAnimation.class).init(PlayerAnimation.AnimationSet.GANGSTA));
             characterPortrait =
                     createCharacterPortrait(new String[]
                                     {
@@ -124,8 +130,8 @@ public class EntityFactory
                             Constants.GANGSTA_PORTRAIT_DEAD, uiPosition, Constants.PORTRAIT_TEAM_BLUE);
         }
 
-        controllerEntity.add(new Player(teamNum, characterPortrait));
-        controllerEntity.add(new ArenaTransform(radialPosition, onOutsideEdge));
+        controllerEntity.add(engine.createComponent(Player.class).init(teamNum, characterPortrait));
+        controllerEntity.add(engine.createComponent(ArenaTransform.class).init(radialPosition, onOutsideEdge));
         
         if (chosenAbilityTypes != null)
             addAbilities(controllerEntity, chosenAbilityTypes);
@@ -141,7 +147,10 @@ public class EntityFactory
 
         // If the position is on the right side, move our uiPosition origin to the left to compensate.
         if (uiPosition.x > Gdx.graphics.getWidth() / 2)
-            uiPosition.x -= Constants.ENERGY_METER_WIDTH * abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
+        {
+            uiPosition.x -= Constants.ENERGY_METER_WIDTH *
+                    abilityCreationComponents.length + Constants.PORTRAIT_ENERGY_METER_PADDING;
+        }
         else
             uiPosition.x += Constants.PORTRAIT_WIDTH + Constants.PORTRAIT_ENERGY_METER_PADDING;
 
@@ -153,19 +162,19 @@ public class EntityFactory
             uiPosition.x += Constants.ENERGY_METER_WIDTH;
         }
 
-        playerEntity.add(new AbilityUser(abilityCreationComponents));
+        playerEntity.add(engine.createComponent(AbilityUser.class).init(abilityCreationComponents));
     }
 
     private static Entity createCharacterPortrait(String[] portraitStates,
                                                   String deathPortrait, Vector2 screenPosition, String teamColor)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new UI());
-        e.add(new Portrait(portraitStates, deathPortrait));
+        e.add(engine.createComponent(UI.class).init());
+        e.add(engine.createComponent(Portrait.class).init(portraitStates, deathPortrait));
 
         String[] imgArray = new String[]{teamColor, portraitStates[0]};
-        e.add(new Render(imgArray, Layer.UI, screenPosition, true));
+        e.add(engine.createComponent(Render.class).init(imgArray, Layer.UI, screenPosition, true));
 
         engine.addEntity(e);
 
@@ -195,15 +204,16 @@ public class EntityFactory
                 bubbleTextures[2] = Constants.UI_ENERGY_METER_2_LEVEL;
                 break;
             default:
-                Gdx.app.error("Unknown Ability UI", "UI for an unknown ability: " + abilityType + " could not be created.");
+                Gdx.app.error(
+                        "Unknown Ability UI", "UI for an unknown ability: " + abilityType + " could not be created.");
         }
 
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        AbilityCreation abilityCreationComponent = new AbilityCreation(abilityType);
+        AbilityCreation abilityCreationComponent = engine.createComponent(AbilityCreation.class).init(abilityType);
         e.add(abilityCreationComponent);
-        e.add(new UI());
-        final Render render = new Render(bubbleTextures, Layer.UI, screenPosition, true);
+        e.add(engine.createComponent(UI.class).init());
+        final Render render = engine.createComponent(Render.class).init(bubbleTextures, Layer.UI, screenPosition, true);
 
         final Sprite energyFillSprite = render.sprites[1];
         float energyOffset = (render.sprites[2].getHeight() - energyFillSprite.getHeight()) / 2;
@@ -213,7 +223,7 @@ public class EntityFactory
 
         e.add(render);
 
-        final Animate animate = new Animate(Constants.UI_ENERGY_READY, 3);
+        final Animate animate = engine.createComponent(Animate.class).init(Constants.UI_ENERGY_READY, 3);
         animate.playOnce = true;
         e.add(animate);
 
@@ -224,20 +234,22 @@ public class EntityFactory
 
     public static Entity createTrapRing(Vector2 position, float initialSpin)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createTrapRingBody(), position);
+        DynamicPhysics dynamicPhysics =
+                engine.createComponent(DynamicPhysics.class).init(PhysicsFactory.createTrapRingBody(), position);
 
-        ArenaRotation arenaRotation = new ArenaRotation();
+        ArenaRotation arenaRotation = engine.createComponent(ArenaRotation.class).init();
         arenaRotation.rotationVelocity = initialSpin;
 
         dynamicPhysics.body.setAngularVelocity(initialSpin);
 
         e.add(arenaRotation);
         e.add(dynamicPhysics);
-        e.add(new RenderOffset(new Vector2(Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f)));
+        e.add(engine.createComponent(RenderOffset.class).init(new Vector2(Constants.ARENA_OUTER_RADIUS +
+                Constants.ARENA_EDGE_WIDTH - .1f, Constants.ARENA_OUTER_RADIUS + Constants.ARENA_EDGE_WIDTH - .1f)));
 
-        e.add(new Render(Constants.OUTER_RING, Layer.ARENA, position, true));
+        e.add(engine.createComponent(Render.class).init(Constants.OUTER_RING, Layer.ARENA, position, true));
 
         engine.addEntity(e);
 
@@ -246,9 +258,9 @@ public class EntityFactory
 
     public static Entity createArenaCircle(Vector2 position)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new Physics(PhysicsFactory.createArenaCircleBody(), position));
+        e.add(engine.createComponent(Physics.class).init(PhysicsFactory.createArenaCircleBody(), position));
 
         engine.addEntity(e);
 
@@ -257,18 +269,19 @@ public class EntityFactory
 
     public static Entity createStake(Body trapRingBody, float radialPosition, boolean onOutsideEdge, Entity owner)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
         Vector2 twoDPosition = Constants.ConvertRadialTo2DPosition(radialPosition, onOutsideEdge);
 
-        final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.STAKE_FIXTURE_DEF, Box2DDefs.getSpikeVertices(),
-                trapRingBody, twoDPosition, radialPosition, onOutsideEdge);
+        final TrapPhysics trapPhysics = engine.createComponent(TrapPhysics.class).init(Box2DDefs.STAKE_FIXTURE_DEF,
+                Box2DDefs.getSpikeVertices(), trapRingBody, twoDPosition, radialPosition, onOutsideEdge);
         trapPhysics.fixture.setUserData(new LethalUD(e));
         e.add(trapPhysics);
 
-        e.add(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-        e.add(new Animate(Constants.SPIKE, true));
-        e.add(new Ability(owner));
+        e.add(engine.createComponent(Render.class)
+                .init(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+        e.add(engine.createComponent(Animate.class).init(Constants.SPIKE, true));
+        e.add(engine.createComponent(Ability.class).init(owner));
 
         engine.addEntity(e);
 
@@ -314,17 +327,18 @@ public class EntityFactory
 
         if (!existingPillarFound)
         {
-            e = new Entity();
-            e.add(new Pillar());
+            e = engine.createEntity();
+            e.add(engine.createComponent(Pillar.class).init());
 
-            final TrapPhysics trapPhysics = new TrapPhysics(Box2DDefs.PILLAR_FIXTURE_DEF,
+            final TrapPhysics trapPhysics = engine.createComponent(TrapPhysics.class).init(Box2DDefs.PILLAR_FIXTURE_DEF,
                     Box2DDefs.getPillarVertices(1),
                     trapRingBody, twoDPosition, radialPosition, onOutsideEdge, 0);
             trapPhysics.fixture.setUserData(new PillarUD(e));
             e.add(trapPhysics);
 
-            e.add(new Render(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
-            e.add(new Animate(Constants.PILLAR, true));
+            e.add(engine.createComponent(Render.class)
+                    .init(Layer.ABILITIES, twoDPosition.scl(Constants.METERS_TO_PIXELS), false));
+            e.add(engine.createComponent(Animate.class).init(Constants.PILLAR, true));
 
             engine.addEntity(e);
         }
@@ -336,7 +350,7 @@ public class EntityFactory
 
     public static Entity createLightningBolt(final float radialPosition, boolean onOutsideEdge, Entity owner)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
         Vector2 twoDPosition;
         if (onOutsideEdge)
@@ -347,7 +361,8 @@ public class EntityFactory
                     radialPosition, onOutsideEdge,
                     Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
 
-        DynamicPhysics dynamicPhysics = new DynamicPhysics(PhysicsFactory.createLightningBoltBody(e), twoDPosition);
+        DynamicPhysics dynamicPhysics = engine.createComponent(DynamicPhysics.class)
+                .init(PhysicsFactory.createLightningBoltBody(e), twoDPosition);
         final Body body = dynamicPhysics.body;
         final Vector2 position = body.getPosition();
         if (onOutsideEdge)
@@ -380,15 +395,18 @@ public class EntityFactory
                     radialPosition + Constants.LIGHTNING_BOLT_ROTATION_OFFSET, onOutsideEdge,
                     Constants.LIGHTNING_BOLT_SPAWN_HEIGHT_OFFSET);
 
-            body.setLinearVelocity(Constants.ARENA_CENTER.cpy().sub(twoDVelocityPosition).scl(Constants.LIGHTNING_BOLT_INSIDE_SPEED_SCALE_FACTOR));
-            body.setTransform(position.x, position.y, (float)(radialPosition + Math.PI / 2 + Constants.LIGHTNING_BOLT_ROTATION_OFFSET));
+            body.setLinearVelocity(Constants.ARENA_CENTER.cpy()
+                    .sub(twoDVelocityPosition).scl(Constants.LIGHTNING_BOLT_INSIDE_SPEED_SCALE_FACTOR));
+            body.setTransform(position.x, position.y,
+                    (float)(radialPosition + Math.PI / 2 + Constants.LIGHTNING_BOLT_ROTATION_OFFSET));
         }
 
         e.add(dynamicPhysics);
 
-        e.add(new Render(Constants.LIGHTNING_BOLT, Layer.ABILITIES, Vector2.Zero, false));
-        e.add(new Animate(Constants.LIGHTNING_BOLT));
-        e.add(new Ability(owner));
+        e.add(engine.createComponent(Render.class)
+                .init(Constants.LIGHTNING_BOLT, Layer.ABILITIES, Vector2.Zero, false));
+        e.add(engine.createComponent(Animate.class).init(Constants.LIGHTNING_BOLT));
+        e.add(engine.createComponent(Ability.class).init(owner));
 
         engine.addEntity(e);
 
@@ -397,24 +415,12 @@ public class EntityFactory
         return e;
     }
 
-
-    public static Entity createBackground(Engine engine)
-    {
-        Entity e = new Entity();
-
-        e.add(new Render("background", Layer.BACKGROUND, Vector2.Zero, true));
-
-        engine.addEntity(e);
-
-        return e;
-    }
-
     //create text with Black color
     public static Entity createText(String text, Vector2 position)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new TextRender(text, position));
+        e.add(engine.createComponent(TextRender.class).init(text, position));
 
         engine.addEntity(e);
 
@@ -424,9 +430,9 @@ public class EntityFactory
     //create colored text with 'color' as the parameter
     public static Entity createText(String text, Vector2 position, Color color, float scale)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new TextRender(text, position, color, scale));
+        e.add(engine.createComponent(TextRender.class).init(text, position, color, scale));
 
         engine.addEntity(e);
 
@@ -437,9 +443,9 @@ public class EntityFactory
     public static Entity createText(String text, Vector2 position, float scale,
                                     Color color, float alignmentSize, BitmapFont.HAlignment alignment)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new TextRender(text, position, color, scale, alignmentSize, alignment));
+        e.add(engine.createComponent(TextRender.class).init(text, position, color, scale, alignmentSize, alignment));
 
         engine.addEntity(e);
 
@@ -448,9 +454,9 @@ public class EntityFactory
 
     public static Entity createStaticImage(String imagePath, Vector2 position)
     {
-        Entity e = new Entity();
+        Entity e = engine.createEntity();
 
-        e.add(new Render(imagePath, Layer.UI, position, true));
+        e.add(engine.createComponent(Render.class).init(imagePath, Layer.UI, position, true));
 
         engine.addEntity(e);
 

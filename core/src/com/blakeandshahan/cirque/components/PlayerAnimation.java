@@ -1,9 +1,10 @@
 package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Constants;
 
-public class PlayerAnimation extends Component
+public class PlayerAnimation extends Component implements Pool.Poolable
 {
     public String idle;
     public String walk;
@@ -11,7 +12,7 @@ public class PlayerAnimation extends Component
     public String layTrap;
     public String death;
 
-    public PlayerAnimation(AnimationSet animationSet)
+    public PlayerAnimation init(AnimationSet animationSet)
     {
        switch (animationSet)
        {
@@ -48,7 +49,12 @@ public class PlayerAnimation extends Component
                walk = Constants.SHAHAN_WALK;
                break;
        }
+
+        return this;
     }
+
+    @Override
+    public void reset() {}
 
     public enum AnimationSet
     {

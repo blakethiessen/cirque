@@ -1,9 +1,10 @@
 package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Action;
 
-public class PlayerController extends Component
+public class PlayerController extends Component implements Pool.Poolable
 {
     public int controllerNum;
     public byte actionMask;
@@ -12,13 +13,15 @@ public class PlayerController extends Component
 
     public boolean readyToBegin;
 
-    public PlayerController(int controllerNum)
+    public PlayerController init(int controllerNum)
     {
         this.controllerNum = controllerNum;
 
         actionMask = 0;
         startButtonHeld = false;
         readyToBegin = false;
+
+        return this;
     }
 
     public void setAction(Action action, boolean state)
@@ -43,4 +46,7 @@ public class PlayerController extends Component
     {
         return (actionMask & (1L << actionId)) != 0;
     }
+
+    @Override
+    public void reset() {}
 }

@@ -4,8 +4,9 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 
-public class TextRender extends Component
+public class TextRender extends Component implements Pool.Poolable
 {
     public Vector2 position;
     public String text;
@@ -14,7 +15,7 @@ public class TextRender extends Component
     public float alignmentSize;
     public BitmapFont.HAlignment alignment;
 
-    public TextRender(String text, Vector2 position, Color color,
+    public TextRender init(String text, Vector2 position, Color color,
                       float scale, float alignmentSize, BitmapFont.HAlignment alignment)
     {
         this.text = text;
@@ -23,18 +24,21 @@ public class TextRender extends Component
         this.scale = scale;
         this.alignmentSize = alignmentSize;
         this.alignment = alignment;
+
+        return this;
     }
 
-    public TextRender(String text, Vector2 position, Color color, float scale)
+    public TextRender init(String text, Vector2 position, Color color, float scale)
     {
-        this(text, position, color, scale, 0, BitmapFont.HAlignment.CENTER);
+        return init(text, position, color, scale, 0, BitmapFont.HAlignment.CENTER);
     }
 
-    public TextRender(String text, Vector2 position)
+    public TextRender init(String text, Vector2 position)
     {
-        this(text, position, Color.BLACK, 1, 0, BitmapFont.HAlignment.CENTER);
+        return init(text, position, Color.BLACK, 1, 0, BitmapFont.HAlignment.CENTER);
     }
 
 
-
+    @Override
+    public void reset() {}
 }

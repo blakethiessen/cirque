@@ -2,6 +2,7 @@ package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.AssetLoader;
 
 /*
@@ -9,7 +10,7 @@ import com.blakeandshahan.cirque.AssetLoader;
     that has animations it can run.
  */
 
-public class Animate extends Component
+public class Animate extends Component implements Pool.Poolable
 {
     private Animation animation;
 
@@ -20,27 +21,29 @@ public class Animate extends Component
 
     public boolean playOnce;
 
-    public Animate(String initialAnimation, boolean playOnce)
+    public Animate init(String initialAnimation, int animationArrayLocation, boolean playOnce)
     {
         animation = AssetLoader.getAnimation(initialAnimation);
-        this.playOnce = playOnce;
-        animationArrayLocation = 0;
-    }
-
-    public Animate(String initialAnimation, int animationArrayLocation)
-    {
-        animation = AssetLoader.getAnimation(initialAnimation);
-        playWithNoInterrupts = false;
-        playOnce = false;
         this.animationArrayLocation = animationArrayLocation;
+        this.playOnce = playOnce;
+        playWithNoInterrupts = false;
+
+        return this;
     }
 
-    public Animate(String initialAnimation)
+    public Animate init(String initialAnimation, boolean playOnce)
     {
-        animation = AssetLoader.getAnimation(initialAnimation);
-        playWithNoInterrupts = false;
-        playOnce = false;
-        animationArrayLocation = 0;
+        return init(initialAnimation, 0, playOnce);
+    }
+
+    public Animate init(String initialAnimation, int animationArrayLocation)
+    {
+        return init(initialAnimation, animationArrayLocation, false);
+    }
+
+    public Animate init(String initialAnimation)
+    {
+        return init(initialAnimation, 0, false);
     }
 
     public void setAnimation(String animationString, boolean playFull)
@@ -84,4 +87,7 @@ public class Animate extends Component
             }
         }
     }
+
+    @Override
+    public void reset() {}
 }

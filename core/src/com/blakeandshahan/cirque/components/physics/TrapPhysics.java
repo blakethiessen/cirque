@@ -6,33 +6,27 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.physics.PhysicsFactory;
 
-public class TrapPhysics extends Component
+public class TrapPhysics extends Component implements Pool.Poolable
 {
     public Fixture fixture;
-    public final float initialRadialPosition;
+    public float initialRadialPosition;
 
     public boolean onOutsideEdge;
-    public final float initialRotation;
+    public float initialRotation;
     public float trapHeight;
 
-    public final Vector2 localPosition;
+    public Vector2 localPosition;
 
-    public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
+    public TrapPhysics init(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
                        Vector2 position, float radialPosition, boolean onOutsideEdge, float trapHeight)
-    {
-        this(trapFixtureDef, shapeVertices, trapRingBody, position, radialPosition, onOutsideEdge);
-        this.trapHeight = trapHeight;
-    }
-
-    public TrapPhysics(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
-                       Vector2 position, float radialPosition, boolean onOutsideEdge)
     {
         this.onOutsideEdge = onOutsideEdge;
         this.initialRadialPosition = radialPosition - trapRingBody.getAngle();
-        this.trapHeight = 0;
+        this.trapHeight = trapHeight;
 
         PolygonShape shape = new PolygonShape();
 
@@ -45,5 +39,16 @@ public class TrapPhysics extends Component
         shape.set(shapeVertices);
 
         fixture = PhysicsFactory.createTrapFixture(trapFixtureDef, trapRingBody, shape);
+
+        return this;
     }
+
+    public TrapPhysics init(FixtureDef trapFixtureDef, Vector2[] shapeVertices, Body trapRingBody,
+                       Vector2 position, float radialPosition, boolean onOutsideEdge)
+    {
+        return init(trapFixtureDef, shapeVertices, trapRingBody, position, radialPosition, onOutsideEdge, 0);
+    }
+
+    @Override
+    public void reset() {}
 }

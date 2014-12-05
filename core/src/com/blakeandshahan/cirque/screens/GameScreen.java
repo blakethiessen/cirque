@@ -1,9 +1,6 @@
 package com.blakeandshahan.cirque.screens;
 
-import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -41,7 +38,7 @@ import com.blakeandshahan.cirque.systems.render.*;
 public class GameScreen implements Screen
 {
     private final Game game;
-    private Engine engine;
+    private PooledEngine engine;
     private World b2world;
     OrthographicCamera camera;
 
@@ -56,7 +53,7 @@ public class GameScreen implements Screen
         camera.zoom = 0;
 
         // Setup Entity engine
-        engine = new Engine();
+        engine = new PooledEngine();
         EntityFactory.engine = engine;
 
         // Setup appropriate game setting

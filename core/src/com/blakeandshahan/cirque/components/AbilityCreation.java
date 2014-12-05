@@ -1,10 +1,11 @@
 package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.AbilityType;
 import com.blakeandshahan.cirque.Constants;
 
-public class AbilityCreation extends Component
+public class AbilityCreation extends Component implements Pool.Poolable
 {
     public AbilityType abilityType;
 
@@ -15,12 +16,14 @@ public class AbilityCreation extends Component
 
     public int numUsesAvailable;
 
-    public AbilityCreation(AbilityType abilityType)
+    public AbilityCreation init(AbilityType abilityType)
     {
         this.abilityType = abilityType;
         justUsed = false;
 
         resetAbility();
+
+        return this;
     }
 
     public void resetAbility()
@@ -48,4 +51,7 @@ public class AbilityCreation extends Component
     {
         return energyAmt >= energyCostPerUse;
     }
+
+    @Override
+    public void reset() {}
 }

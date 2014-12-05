@@ -1,13 +1,14 @@
 package com.blakeandshahan.cirque.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 
-public class Portrait extends Component
+public class Portrait extends Component implements Pool.Poolable
 {
     public PortraitPair[] portraitPairs;
     public String deathPortrait;
 
-    public Portrait(String[] portraitStates, String deathPortraitTextureName)
+    public Portrait init(String[] portraitStates, String deathPortraitTextureName)
     {
         portraitPairs = new PortraitPair[portraitStates.length];
         for (int i = 0; i < portraitStates.length; i++)
@@ -16,7 +17,12 @@ public class Portrait extends Component
         }
 
         deathPortrait = deathPortraitTextureName;
+
+        return this;
     }
+
+    @Override
+    public void reset() {}
 
     public class PortraitPair
     {
