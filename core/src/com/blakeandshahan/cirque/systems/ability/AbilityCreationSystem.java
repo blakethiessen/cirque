@@ -27,7 +27,7 @@ public class AbilityCreationSystem extends IteratingSystem
 
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.gmManager = gmManager;
-        trapRingBody = trapRing.getComponent(DynamicPhysics.class).body;
+        trapRingBody = Mapper.dynamicPhysics.get(trapRing).body;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.blakeandshahan.cirque.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.Pool;
+import com.blakeandshahan.cirque.Mapper;
 
 /*
     The Player component is attached to entities
@@ -33,8 +34,8 @@ public class Player extends Component implements Pool.Poolable
     public Player init(int teamNum, Entity characterPortrait)
     {
         this.teamNum = teamNum;
-        this.portraitRender = characterPortrait.getComponent(Render.class);
-        this.portraitPortrait = characterPortrait.getComponent(Portrait.class);
+        this.portraitRender = Mapper.render.get(characterPortrait);
+        this.portraitPortrait = Mapper.portrait.get(characterPortrait);
 
         this.mouseX = 0f;
         this.mouseY = 0f;

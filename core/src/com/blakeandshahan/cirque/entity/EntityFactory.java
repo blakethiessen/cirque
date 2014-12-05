@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.blakeandshahan.cirque.AbilityType;
 import com.blakeandshahan.cirque.AssetLoader;
 import com.blakeandshahan.cirque.Constants;
+import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.*;
 import com.blakeandshahan.cirque.components.Render.Layer;
 import com.blakeandshahan.cirque.components.physics.ArenaTransform;
@@ -69,7 +70,7 @@ public class EntityFactory
         if (uiOnRightSide)
             uiPosition.x -= Constants.PORTRAIT_WIDTH;
 
-        final int playerNum = controllerEntity.getComponent(PlayerController.class).controllerNum;
+        final int playerNum = Mapper.playerController.get(controllerEntity).controllerNum;
 
         Entity characterPortrait;
         // TODO: This should be cleaner.
@@ -139,7 +140,7 @@ public class EntityFactory
 
     public static void addAbilities(Entity playerEntity, AbilityType[] chosenAbilityTypes)
     {
-        Sprite portraitSprite = playerEntity.getComponent(Player.class).portraitRender.sprites[0];
+        Sprite portraitSprite = Mapper.player.get(playerEntity).portraitRender.sprites[0];
         Vector2 uiPosition = new Vector2(portraitSprite.getX(), portraitSprite.getY());
 
         // Add abilities
@@ -307,13 +308,13 @@ public class EntityFactory
             {
                 Entity pillarEntity = ((PillarUD) userData).entity;
 
-                final TrapPhysics trapPhysics = pillarEntity.getComponent(TrapPhysics.class);
+                final TrapPhysics trapPhysics = Mapper.trapPhysics.get(pillarEntity);
                 // TODO: NullPointerException
                 final float curTrapPos = trapPhysics.initialRadialPosition + trapRingBody.getAngle();
                 if (curTrapPos - Constants.PILLAR_STACK_RANGE < radialPosition &&
                     curTrapPos + Constants.PILLAR_STACK_RANGE > radialPosition)
                 {
-                    Pillar pillar = pillarEntity.getComponent(Pillar.class);
+                    Pillar pillar = Mapper.pillar.get(pillarEntity);
 
                     pillar.numOfPillarSegments++;
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.blakeandshahan.cirque.AssetLoader;
 import com.blakeandshahan.cirque.Constants;
+import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.TextRender;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 
@@ -47,14 +48,12 @@ public class DeathMatchManager extends GameModeManager
 
             if (livesLeftText[0] == null)
             {
-                livesLeftText[0] = EntityFactory.createText(maxDeathsString,
+                livesLeftText[0] = Mapper.textRender.get(EntityFactory.createText(maxDeathsString,
                         new Vector2(Constants.UI_PADDING + 45, Gdx.graphics.getHeight() / 2 + 45),
-                        new Color(1, 127f/255f, 127f/255f, 1), 1)
-                        .getComponent(TextRender.class);
-                livesLeftText[1] = EntityFactory.createText(maxDeathsString, new Vector2(
+                        new Color(1, 127f/255f, 127f/255f, 1), 1));
+                livesLeftText[1] = Mapper.textRender.get(EntityFactory.createText(maxDeathsString, new Vector2(
                                 Gdx.graphics.getWidth() - Constants.UI_PADDING - 45, Gdx.graphics.getHeight() / 2 + 45),
-                        new Color(110f/255f, 200f/255f, 230f/255f, 1), 1)
-                        .getComponent(TextRender.class);
+                        new Color(110f/255f, 200f/255f, 230f/255f, 1), 1));
             }
             else
             {

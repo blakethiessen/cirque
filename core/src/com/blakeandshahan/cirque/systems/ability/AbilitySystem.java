@@ -89,7 +89,7 @@ public class AbilitySystem extends IteratingSystem
 
         if (!Mapper.player.get(entity).invulnerable)
         {
-            Player player = entity.getComponent(Player.class);
+            Player player = Mapper.player.get(entity);
             dmManager.addKillStatistic(player.teamNum);
 
             AssetLoader.playSound("death");
