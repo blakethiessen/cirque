@@ -70,11 +70,11 @@ public class GameOverSystem extends IteratingSystem
                                     Constants.P2_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                         case 2:
-                            EntityFactory.createPlayerFromController(e, (float) Math.PI * 3 / 2, false, 0,
+                            EntityFactory.createPlayerFromController(e, (float) Math.PI * 3 / 2, true, 0,
                                     Constants.P3_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                         case 3:
-                            EntityFactory.createPlayerFromController(e, (float) Math.PI / 2, true, 1,
+                            EntityFactory.createPlayerFromController(e, (float) Math.PI / 2, false, 1,
                                     Constants.P4_UI_POSITION.cpy(), null, abilityDestructionSystem);
                             break;
                     }
