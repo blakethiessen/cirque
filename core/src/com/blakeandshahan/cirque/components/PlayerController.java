@@ -8,8 +8,7 @@ public class PlayerController extends Component implements Pool.Poolable
 {
     public int controllerNum;
     public byte actionMask;
-
-    public boolean startButtonHeld;
+    public byte previousUpdateActionMask;
 
     public boolean readyToBegin;
 
@@ -18,7 +17,6 @@ public class PlayerController extends Component implements Pool.Poolable
         this.controllerNum = controllerNum;
 
         actionMask = 0;
-        startButtonHeld = false;
         readyToBegin = false;
 
         return this;
@@ -37,14 +35,29 @@ public class PlayerController extends Component implements Pool.Poolable
         actionMask = 0;
     }
 
-    public boolean isActionOn(Action action)
+    public boolean actionHeld(Action action)
     {
-        return (actionMask & (1L << action.getId())) != 0;
+        return checkMaskBit(actionMask, action.getId());
     }
 
-    public boolean isActionOn(int actionId)
+    public boolean actionHeld(int actionId)
     {
-        return (actionMask & (1L << actionId)) != 0;
+        return checkMaskBit(actionMask, actionId);
+    }
+
+    public boolean actionDownOnce(Action action)
+    {
+        return actionHeld(action) && !checkMaskBit(previousUpdateActionMask, action.getId());
+    }
+
+    public boolean actionDownOnce(int actionId)
+    {
+        return actionHeld(actionId) && !checkMaskBit(previousUpdateActionMask, actionId);
+    }
+
+    private boolean checkMaskBit(byte mask, int actionId)
+    {
+        return (mask & (1L << actionId)) != 0;
     }
 
     @Override

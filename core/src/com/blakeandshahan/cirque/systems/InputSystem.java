@@ -102,6 +102,8 @@ public class InputSystem extends IteratingSystem
         PlayerController controller = Mapper.playerController.get(e);
         final int playerArrNum = controller.controllerNum;
 
+        controller.previousUpdateActionMask = controller.actionMask;
+
         controller.setAction(Action.MOVING_LEFT,
                 controlStates[playerArrNum].get(Action.MOVING_LEFT));
         controller.setAction(Action.MOVING_RIGHT,

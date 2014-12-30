@@ -5,17 +5,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.blakeandshahan.cirque.Action;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
-import com.blakeandshahan.cirque.components.Platformer;
 import com.blakeandshahan.cirque.components.PlayerController;
 import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
-import com.blakeandshahan.cirque.screens.GameScreen;
 import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 
 public class GameOverSystem extends IteratingSystem
@@ -52,68 +48,59 @@ public class GameOverSystem extends IteratingSystem
     {
         final PlayerController controller = Mapper.playerController.get(e);
 
-        if (controller.isActionOn(Action.START))
+        if (controller.actionDownOnce(Action.START))
         {
-            if (!controller.startButtonHeld)
+            // If we haven't initialized this player...
+            if (!Mapper.player.has(e))
             {
-                // If we haven't initialized this player...
-                if (!Mapper.player.has(e))
+                switch (controller.controllerNum)
                 {
-                    switch (controller.controllerNum)
-                    {
-                        case 0:
-                            EntityFactory.createPlayerFromController(e, (float) Math.PI, true, 0,
-                                    Constants.P1_UI_POSITION.cpy(), null, abilityDestructionSystem);
-                            break;
-                        case 1:
-                            EntityFactory.createPlayerFromController(e, 0, false, 1,
-                                    Constants.P2_UI_POSITION.cpy(), null, abilityDestructionSystem);
-                            break;
-                        case 2:
-                            EntityFactory.createPlayerFromController(e, (float) Math.PI * 3 / 2, true, 0,
-                                    Constants.P3_UI_POSITION.cpy(), null, abilityDestructionSystem);
-                            break;
-                        case 3:
-                            EntityFactory.createPlayerFromController(e, (float) Math.PI / 2, false, 1,
-                                    Constants.P4_UI_POSITION.cpy(), null, abilityDestructionSystem);
-                            break;
-                    }
+                    case 0:
+                        EntityFactory.createPlayerFromController(e, (float) Math.PI, true, 0,
+                                Constants.P1_UI_POSITION.cpy(), null, abilityDestructionSystem);
+                        break;
+                    case 1:
+                        EntityFactory.createPlayerFromController(e, 0, false, 1,
+                                Constants.P2_UI_POSITION.cpy(), null, abilityDestructionSystem);
+                        break;
+                    case 2:
+                        EntityFactory.createPlayerFromController(e, (float) Math.PI * 3 / 2, true, 0,
+                                Constants.P3_UI_POSITION.cpy(), null, abilityDestructionSystem);
+                        break;
+                    case 3:
+                        EntityFactory.createPlayerFromController(e, (float) Math.PI / 2, false, 1,
+                                Constants.P4_UI_POSITION.cpy(), null, abilityDestructionSystem);
+                        break;
                 }
-                else
+            }
+            else
+            {
+                controller.readyToBegin = true;
+
+                boolean allPlayersReady = true;
+                int numOfPlayersReady = 0;
+                ImmutableArray<Entity> controllerEntities = getEntities();
+                for (int i = 0; i < controllerEntities.size(); i++)
                 {
-                    controller.readyToBegin = true;
-
-                    boolean allPlayersReady = true;
-                    int numOfPlayersReady = 0;
-                    ImmutableArray<Entity> controllerEntities = getEntities();
-                    for (int i = 0; i < controllerEntities.size(); i++)
+                    if (Mapper.player.has(controllerEntities.get(i)))
                     {
-                        if (Mapper.player.has(controllerEntities.get(i)))
-                        {
-                            numOfPlayersReady++;
+                        numOfPlayersReady++;
 
-                            if (!Mapper.playerController.get(controllerEntities.get(i)).readyToBegin)
-                            {
-                                allPlayersReady = false;
-                                break;
-                            }
+                        if (!Mapper.playerController.get(controllerEntities.get(i)).readyToBegin)
+                        {
+                            allPlayersReady = false;
+                            break;
                         }
                     }
-
-                    if (allPlayersReady && numOfPlayersReady % 2 == 0)
-                    {
-                        EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
-                                CameraZoomTransitionSystem.TransitionType.RESTART, camera,
-                                0, gmManager, playerDestructionSystem));
-                    }
                 }
 
-                controller.startButtonHeld = true;
+                if (allPlayersReady && numOfPlayersReady % 2 == 0)
+                {
+                    EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
+                            CameraZoomTransitionSystem.TransitionType.RESTART, camera,
+                            0, gmManager, playerDestructionSystem));
+                }
             }
-        }
-        else
-        {
-            controller.startButtonHeld = false;
         }
     }
 }

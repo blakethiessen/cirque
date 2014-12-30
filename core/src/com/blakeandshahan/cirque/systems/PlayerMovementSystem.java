@@ -52,7 +52,7 @@ public class PlayerMovementSystem extends IteratingSystem
         PlayerAnimation playerAnimation = Mapper.playerAnimation.get(e);
 
         final ArenaTransform arenaTransform = Mapper.arenaTransform.get(e);
-        if (controller.isActionOn(Action.MOVING_LEFT))
+        if (controller.actionHeld(Action.MOVING_LEFT))
         {
             // Flip the sprites
             render.flipped = true;
@@ -63,7 +63,7 @@ public class PlayerMovementSystem extends IteratingSystem
             moveAlongArenaEdgeWithSpeedLimit(body, platformer.latMaxVel, -platformer.latAccel);
             increaseEnergy(abilityUser, player, arenaTransform);
         }
-        else if (controller.isActionOn(Action.MOVING_RIGHT))
+        else if (controller.actionHeld(Action.MOVING_RIGHT))
         {
             render.flipped = false;
 
@@ -86,7 +86,7 @@ public class PlayerMovementSystem extends IteratingSystem
             }
         }
 
-        if (controller.isActionOn(Action.JUMPING) && platformer.isOnGround() && !animate.playWithNoInterrupts)
+        if (controller.actionHeld(Action.JUMPING) && platformer.isOnGround() && !animate.playWithNoInterrupts)
             if (platformer.jumpTimeoutOver)
             {
                 // Apply jump force in the opposite direction of gravity.
