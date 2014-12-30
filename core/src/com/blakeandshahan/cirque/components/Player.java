@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Mapper;
+import com.blakeandshahan.cirque.entity.EntityFactory;
 
 /*
     The Player component is attached to entities
@@ -25,6 +26,7 @@ public class Player extends Component implements Pool.Poolable
     public float lastLateralChangePosition;
     public boolean isMovingRight;
 
+    public Entity portrait;
     public Render portraitRender;
     public Portrait portraitPortrait;
 
@@ -33,14 +35,17 @@ public class Player extends Component implements Pool.Poolable
 
     public Player init(int teamNum, Entity characterPortrait)
     {
+        reset();
+
         this.teamNum = teamNum;
+
+        this.portrait = characterPortrait;
         this.portraitRender = Mapper.render.get(characterPortrait);
         this.portraitPortrait = Mapper.portrait.get(characterPortrait);
 
         this.mouseX = 0f;
         this.mouseY = 0f;
 
-        reset();
 
         return this;
     }
@@ -55,5 +60,8 @@ public class Player extends Component implements Pool.Poolable
         isMovingRight = true;
 
         friendlyKills = enemyKills = deaths = 0;
+
+        if (portrait != null)
+            EntityFactory.engine.removeEntity(portrait);
     }
 }

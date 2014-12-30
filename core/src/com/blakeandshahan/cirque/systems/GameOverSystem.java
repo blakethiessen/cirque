@@ -1,6 +1,7 @@
 package com.blakeandshahan.cirque.systems;
 
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -50,7 +51,7 @@ public class GameOverSystem extends IteratingSystem
 
         if (controller.actionDownOnce(Action.START))
         {
-            // If we haven't initialized this player...
+            // If we haven't initialized this player, add him/her.
             if (!Mapper.player.has(e))
             {
                 switch (controller.controllerNum)
@@ -73,33 +74,50 @@ public class GameOverSystem extends IteratingSystem
                         break;
                 }
             }
+            // Otherwise, we've added the player and we want to remove him/her.
             else
             {
-                controller.readyToBegin = true;
-
-                boolean allPlayersReady = true;
-                int numOfPlayersReady = 0;
-                ImmutableArray<Entity> controllerEntities = getEntities();
-                for (int i = 0; i < controllerEntities.size(); i++)
+                ImmutableArray<Component> components = e.getComponents();
+                for (int i = 0; i < components.size(); i++)
                 {
-                    if (Mapper.player.has(controllerEntities.get(i)))
+                    Component curComponent = components.get(i);
+                    Class<? extends Component> curComponentClass = curComponent.getClass();
+                    if (!curComponentClass.equals(PlayerController.class))
                     {
-                        numOfPlayersReady++;
-
-                        if (!Mapper.playerController.get(controllerEntities.get(i)).readyToBegin)
-                        {
-                            allPlayersReady = false;
-                            break;
-                        }
+                        e.remove(curComponentClass);
                     }
                 }
+            }
+        }
 
-                if (allPlayersReady && numOfPlayersReady % 2 == 0)
+        if (controller.actionDownOnce(Action.ABILITY_1) && Mapper.player.has(e))
+        {
+            controller.readyToBegin = true;
+
+            // Check to see if all players are ready.
+            boolean allPlayersReady = true;
+            int numOfPlayersReady = 0;
+            ImmutableArray<Entity> controllerEntities = getEntities();
+            for (int i = 0; i < controllerEntities.size(); i++)
+            {
+                if (Mapper.player.has(controllerEntities.get(i)))
                 {
-                    EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
-                            CameraZoomTransitionSystem.TransitionType.RESTART, camera,
-                            0, gmManager, playerDestructionSystem));
+                    numOfPlayersReady++;
+
+                    if (!Mapper.playerController.get(controllerEntities.get(i)).readyToBegin)
+                    {
+                        allPlayersReady = false;
+                        break;
+                    }
                 }
+            }
+
+            if (allPlayersReady && numOfPlayersReady % 2 == 0)
+            {
+                // Transition to the game.
+                EntityFactory.engine.addSystem(new CameraZoomTransitionSystem(
+                        CameraZoomTransitionSystem.TransitionType.RESTART, camera,
+                        0, gmManager, playerDestructionSystem));
             }
         }
     }
