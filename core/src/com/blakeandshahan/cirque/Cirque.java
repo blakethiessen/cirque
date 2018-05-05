@@ -15,6 +15,6 @@ public class Cirque extends Game
     public void create()
     {
         AssetLoader.setMusic("godfighter_soundtrack.mp3");
-        setScreen(new GameScreen(this));
+        setScreen(new TitleScreen(this));
     }
 }

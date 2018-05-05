@@ -21,7 +21,7 @@ public class DesktopStarter
         cfg.height = 720;
         cfg.vSyncEnabled = true;
 
-        // Pass in the argument "nopack" to not run the image packer.
+        // Pass in the argument "pack" to run the image packer.
         if (args.length > 0)
         {
             for (String arg : args)

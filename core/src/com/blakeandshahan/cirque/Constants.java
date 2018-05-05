@@ -18,6 +18,7 @@ public class Constants
 
     public static final String PORTRAIT_TEAM_RED = "characterPortraits/TEAMCOLORS/red";
     public static final String PORTRAIT_TEAM_BLUE = "characterPortraits/TEAMCOLORS/blue";
+
     public static final String GAME_OVER_TEXT = "Press Enter to restart game or Escape to re-choose abilities";
 
     public static final String PIRATE_IDLE = "characters/pirate/idle/idle";
