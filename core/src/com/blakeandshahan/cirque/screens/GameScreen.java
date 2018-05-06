@@ -69,7 +69,7 @@ public class GameScreen implements Screen
 
         FootContactListenerManager footContactListenerManager = new FootContactListenerManager();
         contactListener.addContactListener(footContactListenerManager);
-        engine.addEntityListener(Family.getFor(Platformer.class), footContactListenerManager);
+        engine.addEntityListener(Family.all(Platformer.class).get(), footContactListenerManager);
 
         final ArenaRotationSystem arenaRotationSystem = new ArenaRotationSystem();
 

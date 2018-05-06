@@ -20,7 +20,7 @@ public class TextRenderSystem extends IteratingSystem
 
     public TextRenderSystem(SpriteBatch spriteBatch)
     {
-        super(Family.getFor(TextRender.class));
+        super(Family.all(TextRender.class).get());
 
         batch = spriteBatch;
         bitMapFont = new BitmapFont(Gdx.files.internal("fonts/deFonarts_96.fnt"));

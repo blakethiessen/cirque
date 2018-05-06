@@ -13,7 +13,7 @@ public class RenderOffsetSystem extends IteratingSystem
 {
     public RenderOffsetSystem()
     {
-        super(Family.getFor(RenderOffset.class, Render.class));
+        super(Family.all(RenderOffset.class, Render.class).get());
     }
 
     @Override

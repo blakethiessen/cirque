@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Constants;
 
-public class PlayerAnimation extends Component implements Pool.Poolable
+public class PlayerAnimation implements Component, Pool.Poolable
 {
     public String idle;
     public String walk;

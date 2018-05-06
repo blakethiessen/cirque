@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.AbilityType;
 import com.blakeandshahan.cirque.Constants;
 
-public class AbilityCreation extends Component implements Pool.Poolable
+public class AbilityCreation implements Component, Pool.Poolable
 {
     public AbilityType abilityType;
 

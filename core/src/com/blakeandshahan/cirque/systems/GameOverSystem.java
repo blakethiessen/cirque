@@ -28,7 +28,7 @@ public class GameOverSystem extends IteratingSystem
                           PlayerDestructionSystem playerDestructionSystem,
                           AbilityDestructionSystem abilityDestructionSystem)
     {
-        super(Family.getFor(PlayerController.class));
+        super(Family.all(PlayerController.class).get());
         this.gmManager = gmManager;
         this.camera = camera;
         this.playerDestructionSystem = playerDestructionSystem;

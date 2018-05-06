@@ -18,7 +18,7 @@ public class UIRenderSystem extends IteratingSystem
 
     public UIRenderSystem(SpriteBatch spriteBatch)
     {
-        super(Family.getFor(Render.class, UI.class));
+        super(Family.all(Render.class, UI.class).get());
 
         batch = spriteBatch;
     }

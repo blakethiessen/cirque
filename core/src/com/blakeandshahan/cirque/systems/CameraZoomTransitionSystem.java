@@ -69,7 +69,7 @@ public class CameraZoomTransitionSystem extends EntitySystem
 
                         // Reset arena rotation.
                         ImmutableArray<Entity> arenaEntities =
-                                EntityFactory.engine.getEntitiesFor(Family.getFor(ArenaRotation.class));
+                                EntityFactory.engine.getEntitiesFor(Family.all(ArenaRotation.class).get());
                         for (int i = 0; i < arenaEntities.size(); i++)
                         {
                             Entity e = arenaEntities.get(i);
@@ -78,7 +78,7 @@ public class CameraZoomTransitionSystem extends EntitySystem
                         }
 
                         ImmutableArray<Entity> playerEntities =
-                                EntityFactory.engine.getEntitiesFor(Family.getFor(Player.class));
+                                EntityFactory.engine.getEntitiesFor(Family.all(Player.class).get());
                         for (int i = 0; i < playerEntities.size(); i++)
                         {
                             Entity e = playerEntities.get(i);

@@ -11,7 +11,7 @@ import com.blakeandshahan.cirque.entity.EntityFactory;
     that can be controlled in some way by a player, AI, etc.
  */
 
-public class Player extends Component implements Pool.Poolable
+public class Player implements Component, Pool.Poolable
 {
     // TODO: Remove these
     public float mouseX;

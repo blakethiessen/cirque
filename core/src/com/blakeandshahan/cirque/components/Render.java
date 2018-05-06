@@ -15,7 +15,7 @@ import com.blakeandshahan.cirque.Constants;
     representation.
  */
 
-public class Render extends Component implements Pool.Poolable
+public class Render implements Component, Pool.Poolable
 {
     public Sprite[] sprites;
 

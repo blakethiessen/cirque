@@ -13,7 +13,7 @@ public class TrapPhysicsSystem extends IteratingSystem
 {
     public TrapPhysicsSystem()
     {
-        super(Family.getFor(TrapPhysics.class));
+        super(Family.all(TrapPhysics.class).get());
     }
 
     @Override

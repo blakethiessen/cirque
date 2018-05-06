@@ -15,7 +15,7 @@ public class UIEnergyUpdateSystem extends IteratingSystem
 {
     public UIEnergyUpdateSystem()
     {
-        super(Family.getFor(AbilityCreation.class));
+        super(Family.all(AbilityCreation.class).get());
     }
 
     @Override

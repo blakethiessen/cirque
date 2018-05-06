@@ -16,7 +16,7 @@ public class GravitySystem extends IteratingSystem
 
     public GravitySystem(Vector2 arenaCenter)
     {
-        super(Family.getFor(ArenaTransform.class, DynamicPhysics.class));
+        super(Family.all(ArenaTransform.class, DynamicPhysics.class).get());
         this.arenaCenter = arenaCenter;
     }
 

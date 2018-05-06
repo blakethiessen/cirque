@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.physics.PhysicsFactory;
 
-public class TrapPhysics extends Component implements Pool.Poolable
+public class TrapPhysics implements Component, Pool.Poolable
 {
     public Fixture fixture;
     public float initialRadialPosition;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
     fashion.
  */
 
-public class Platformer extends Component implements Pool.Poolable
+public class Platformer implements Component, Pool.Poolable
 {
     public float latAccel;
     public float latMaxVel;

@@ -22,7 +22,7 @@ public class AbilityCreationSystem extends IteratingSystem
 
     public AbilityCreationSystem(AbilityDestructionSystem abilityDestructionSystem, GameModeManager gmManager, Entity trapRing)
     {
-        super(Family.getFor(AbilityUser.class));
+        super(Family.all(AbilityUser.class).get());
 
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.gmManager = gmManager;

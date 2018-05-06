@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Pool;
     other, moving physics objects.
  */
 
-public class Physics extends Component implements Pool.Poolable
+public class Physics implements Component, Pool.Poolable
 {
     public Body body;
 

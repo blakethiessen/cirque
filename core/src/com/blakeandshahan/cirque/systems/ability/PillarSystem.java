@@ -22,7 +22,7 @@ public class PillarSystem extends IteratingSystem
 
     public PillarSystem(AbilityDestructionSystem abilityDestructionSystem)
     {
-        super(Family.getFor(Pillar.class));
+        super(Family.all(Pillar.class).get());
         this.abilityDestructionSystem = abilityDestructionSystem;
     }
 

@@ -3,7 +3,7 @@ package com.blakeandshahan.cirque.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-public class Portrait extends Component implements Pool.Poolable
+public class Portrait implements Component, Pool.Poolable
 {
     public PortraitPair[] portraitPairs;
     public String deathPortrait;

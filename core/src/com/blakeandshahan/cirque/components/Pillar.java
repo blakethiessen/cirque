@@ -14,7 +14,7 @@ import java.util.Queue;
     - A timer is used to remove the top pillar piece.
  */
 
-public class Pillar extends Component implements Pool.Poolable
+public class Pillar implements Component, Pool.Poolable
 {
     public int numOfPillarSegments;
     public int prevNumOfPillarSegments;

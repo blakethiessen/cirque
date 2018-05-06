@@ -34,7 +34,7 @@ public class InputSystem extends IteratingSystem
 
     public InputSystem(OrthographicCamera camera, GameModeManager gmManager)
     {
-        super(Family.getFor(PlayerController.class));
+        super(Family.all(PlayerController.class).get());
         this.camera = camera;
         this.gmManager = gmManager;
 

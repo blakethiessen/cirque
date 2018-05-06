@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Constants;
 
-public class RenderOffset extends Component implements Pool.Poolable
+public class RenderOffset implements Component, Pool.Poolable
 {
     public Vector2 pxOffset;
 

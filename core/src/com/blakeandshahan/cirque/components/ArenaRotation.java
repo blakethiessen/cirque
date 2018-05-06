@@ -3,7 +3,7 @@ package com.blakeandshahan.cirque.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-public class ArenaRotation extends Component implements Pool.Poolable
+public class ArenaRotation implements Component, Pool.Poolable
 {
     public float rotationVelocity;
 

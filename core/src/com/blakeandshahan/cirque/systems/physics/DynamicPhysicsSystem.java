@@ -15,7 +15,7 @@ public class DynamicPhysicsSystem extends IteratingSystem
 {
     public DynamicPhysicsSystem()
     {
-        super(Family.getFor(DynamicPhysics.class, Render.class));
+        super(Family.all(DynamicPhysics.class, Render.class).get());
     }
 
     @Override

@@ -26,7 +26,7 @@ public class AbilitySystem extends IteratingSystem
     public AbilitySystem(PlayerDestructionSystem playerDestructionSystem,
                          AbilityDestructionSystem abilityDestructionSystem, DeathMatchManager dmManager)
     {
-        super(Family.getFor(Ability.class));
+        super(Family.all(Ability.class).get());
         this.playerDestructionSystem = playerDestructionSystem;
         this.abilityDestructionSystem = abilityDestructionSystem;
         this.dmManager = dmManager;

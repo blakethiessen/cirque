@@ -10,7 +10,7 @@ import com.blakeandshahan.cirque.AssetLoader;
     that has animations it can run.
  */
 
-public class Animate extends Component implements Pool.Poolable
+public class Animate implements Component, Pool.Poolable
 {
     private Animation animation;
 

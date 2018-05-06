@@ -19,7 +19,7 @@ public class AnimationSystem extends IteratingSystem
 {
     public AnimationSystem()
     {
-        super(Family.getFor(Animate.class, Render.class));
+        super(Family.all(Animate.class, Render.class).get());
     }
 
     @Override

@@ -26,7 +26,7 @@ public class PlayerMovementSystem extends IteratingSystem
 
     public PlayerMovementSystem(GameModeManager gmManager)
     {
-        super(Family.getFor(PlayerAnimation.class));
+        super(Family.all(PlayerAnimation.class).get());
         this.gmManager = gmManager;
     }
 

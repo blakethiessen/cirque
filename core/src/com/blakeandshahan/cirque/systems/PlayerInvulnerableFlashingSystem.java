@@ -11,7 +11,7 @@ public class PlayerInvulnerableFlashingSystem extends IteratingSystem
 {
     public PlayerInvulnerableFlashingSystem()
     {
-        super(Family.getFor(Player.class));
+        super(Family.all(Player.class).get());
     }
 
     @Override

@@ -14,7 +14,7 @@ public class ArenaRotationSystem extends IteratingSystem
 
     public ArenaRotationSystem()
     {
-        super(Family.getFor(ArenaRotation.class));
+        super(Family.all(ArenaRotation.class).get());
         increaseRotationalVelocity = false;
     }
 

@@ -3,7 +3,7 @@ package com.blakeandshahan.cirque.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-public class AbilityUser extends Component implements Pool.Poolable
+public class AbilityUser implements Component, Pool.Poolable
 {
     public AbilityCreation[] abilities;
 

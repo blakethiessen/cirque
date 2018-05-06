@@ -35,7 +35,7 @@ public class RenderSystem extends IteratingSystem
 
     public RenderSystem(OrthographicCamera camera, String backgroundTextureName)
     {
-        super(Family.getFor(ComponentType.getBitsFor(Render.class), new Bits(0), ComponentType.getBitsFor(UI.class)));
+        super(Family.all(Render.class).exclude(UI.class).get());
 
         batch = new SpriteBatch();
         this.camera = camera;

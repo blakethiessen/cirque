@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 import com.blakeandshahan.cirque.Action;
 
-public class PlayerController extends Component implements Pool.Poolable
+public class PlayerController implements Component, Pool.Poolable
 {
     public int controllerNum;
     public byte actionMask;
