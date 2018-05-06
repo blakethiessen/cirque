@@ -9,9 +9,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" group="desktop" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" group="desktop" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" group="desktop" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/html/html.iml" filepath="$PROJECT_DIR$/.idea/modules/html/html.iml" group="html" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/html/html_main.iml" filepath="$PROJECT_DIR$/.idea/modules/html/html_main.iml" group="html" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/html/html_test.iml" filepath="$PROJECT_DIR$/.idea/modules/html/html_test.iml" group="html" />
     </modules>
   </component>
 </project>
