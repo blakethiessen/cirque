@@ -73,7 +73,7 @@ public class Render extends Component implements Pool.Poolable
 
             if (textureRegion == null)
             {
-                textureRegion = AssetLoader.getAnimation(textureName).getKeyFrame(0);
+                textureRegion = (TextureRegion)AssetLoader.getAnimation(textureName).getKeyFrame(0);
             }
             return textureRegion;
         }

@@ -32,7 +32,7 @@ public class TextRenderSystem extends IteratingSystem
         TextRender textRender = Mapper.textRender.get(e);
 
         bitMapFont.setColor(textRender.color);
-        bitMapFont.setScale(textRender.scale);
-        bitMapFont.drawMultiLine(batch, textRender.text, textRender.position.x, textRender.position.y, textRender.alignmentSize, textRender.alignment);
+//        bitMapFont.setScale(textRender.scale);
+        bitMapFont.draw(batch, textRender.text, textRender.position.x, textRender.position.y);
     }
 }

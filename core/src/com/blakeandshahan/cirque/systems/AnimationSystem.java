@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blakeandshahan.cirque.Constants;
 import com.blakeandshahan.cirque.Mapper;
 import com.blakeandshahan.cirque.components.Animate;
@@ -31,7 +32,7 @@ public class AnimationSystem extends IteratingSystem
         if (animate != null && render != null && animate.getAnimation() != null)
         {
             Constants.setSpriteTexture(render.sprites[animate.animationArrayLocation],
-                    animate.getAnimation().getKeyFrame(animate.stateTime, true));
+                    (TextureRegion)animate.getAnimation().getKeyFrame(animate.stateTime, true));
 
             animate.stateTime += Gdx.graphics.getDeltaTime();
             animate.resetAnimationIfDone();

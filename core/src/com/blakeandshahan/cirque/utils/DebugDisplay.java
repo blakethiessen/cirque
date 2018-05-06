@@ -28,7 +28,7 @@ public class DebugDisplay
     public static void draw(SpriteBatch spriteBatch, OrthographicCamera camera)
     {
         // TODO: Draw this on the UI layer when we build that.
-        font.drawMultiLine(spriteBatch, charSequence,
+        font.draw(spriteBatch, charSequence,
                 camera.position.x - camera.viewportWidth / 2 + 100,
                 camera.position.y + camera.viewportHeight / 2 - 100);
 

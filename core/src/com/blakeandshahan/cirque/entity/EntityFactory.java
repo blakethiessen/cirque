@@ -441,17 +441,17 @@ public class EntityFactory
     }
 
     //Create aligned text
-    public static Entity createText(String text, Vector2 position, float scale,
-                                    Color color, float alignmentSize, BitmapFont.HAlignment alignment)
-    {
-        Entity e = engine.createEntity();
-
-        e.add(engine.createComponent(TextRender.class).init(text, position, color, scale, alignmentSize, alignment));
-
-        engine.addEntity(e);
-
-        return e;
-    }
+//    public static Entity createText(String text, Vector2 position, float scale,
+//                                    Color color, float alignmentSize, BitmapFont.HAlignment alignment)
+//    {
+//        Entity e = engine.createEntity();
+//
+//        e.add(engine.createComponent(TextRender.class).init(text, position, color, scale, alignmentSize, alignment));
+//
+//        engine.addEntity(e);
+//
+//        return e;
+//    }
 
     public static Entity createStaticImage(String imagePath, Vector2 position)
     {

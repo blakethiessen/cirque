@@ -16,4 +16,9 @@ public class HtmlLauncher extends GwtApplication {
         public ApplicationListener getApplicationListener () {
                 return new Cirque();
         }
+
+        @Override
+        public ApplicationListener createApplicationListener() {
+            return new Cirque();
+        }
 }
