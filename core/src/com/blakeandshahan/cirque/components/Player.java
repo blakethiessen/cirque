@@ -61,7 +61,11 @@ public class Player implements Component, Pool.Poolable
 
         friendlyKills = enemyKills = deaths = 0;
 
-        if (portrait != null)
+        if (portrait != null) {
             EntityFactory.engine.removeEntity(portrait);
+            portrait = null;
+            portraitRender = null;
+            portraitPortrait = null;
+        }
     }
 }

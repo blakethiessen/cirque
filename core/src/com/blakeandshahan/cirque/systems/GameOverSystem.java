@@ -15,6 +15,8 @@ import com.blakeandshahan.cirque.entity.EntityFactory;
 import com.blakeandshahan.cirque.gamemodemanagers.GameModeManager;
 import com.blakeandshahan.cirque.systems.ability.AbilityDestructionSystem;
 
+import java.util.ArrayList;
+
 public class GameOverSystem extends IteratingSystem
 {
     private final GameModeManager gmManager;
@@ -78,14 +80,20 @@ public class GameOverSystem extends IteratingSystem
             else
             {
                 ImmutableArray<Component> components = e.getComponents();
+                ArrayList<Class<? extends Component>> componentsToRemove = new ArrayList<>();
                 for (int i = 0; i < components.size(); i++)
                 {
                     Component curComponent = components.get(i);
                     Class<? extends Component> curComponentClass = curComponent.getClass();
+                    // Remove everything but the controller.
                     if (!curComponentClass.equals(PlayerController.class))
                     {
-                        e.remove(curComponentClass);
+                        componentsToRemove.add(curComponentClass);
                     }
+                }
+
+                for (Class<? extends Component> component : componentsToRemove) {
+                    e.remove(component);
                 }
             }
         }

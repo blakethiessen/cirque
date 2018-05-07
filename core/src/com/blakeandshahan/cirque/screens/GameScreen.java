@@ -146,7 +146,7 @@ public class GameScreen implements Screen
             inputSystem.controllerMap.put(controllers.get(i), i);
         }
 
-        AssetLoader.playMusic();
+//        AssetLoader.playMusic();
     }
 
 	@Override
